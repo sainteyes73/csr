@@ -1,5 +1,5 @@
 var express = require('express');
-var routes = require('./routes/index.js');
+var index = require('./routes/index.js');
 var engines = require('consolidate');
 var app=express();
 var cookieParser=require('cookie-parser');
@@ -7,7 +7,7 @@ var path=require('path');
 
 app.set('views',path.join(__dirname,'views'));
 app.set('view engine', 'pug');
-app.use('/', routes);
+app.use('/', index);
 app.use(cookieParser());
 /*
 app.use(function(req, res, next) {

@@ -15,16 +15,16 @@ var config={
   }
 }
 router.get('/',catchErrors(async(req,res,next)=>{
-
+  res.render('main');
 }));
 
 router.get('/select',catchErrors(async(req,res,next)=>{
   sql.connect(config).then(pool=>{
     return pool.request()
     //.input('select_sal',sql.Int,value)//input parameter
-    .query('select UserName, LoginPwd from dbo._TCAUser')//query
+    .query('select UserName, UserSeq from dbo._TCAUser')//query
   }).then(result=>{
-    console.dir(result.recordset[0].UserName);
+    console.dir(result.recordset);
     res.render('index',{results:result})
   /*
     return pool.request()
