@@ -1,0 +1,29 @@
+doctype html
+html
+  head
+    title sample
+    meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
+    script(src='https://code.jquery.com/jquery-3.2.1.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js')
+    script(src='https://cdn.ckeditor.com/ckeditor5/1.0.0-alpha.2/classic/ckeditor.js')
+    //- Notify 라이브러리 import: http://bootstrap-notify.remabledesigns.com/
+    script(src='/javascripts/bootstrap-notify.js')
+
+    //- this application
+    link(rel='stylesheet', href='/stylesheets/style.css')
+
+  body
+    .container
+      .card-box
+        .card-header
+          .title=results.recordset[0].UserName
+        .card-body.text-primary
+          .card-text
+            .place=results.recordset[0].LoginPwd
+  block content
+  
+  block footer
+    include ./includes/footer
