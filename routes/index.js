@@ -25,7 +25,7 @@ router.get('/select',catchErrors(async(req,res,next)=>{
     .query('select UserName, UserSeq from dbo._TCAUser')//query
   }).then(result=>{
     console.dir(result.recordset);
-    res.render('index',{results:result})
+    return res.render('index',{results:result})
   /*
     return pool.request()
     .input('input_parameter',sql.Int, value)
@@ -33,10 +33,10 @@ router.get('/select',catchErrors(async(req,res,next)=>{
     .execute('procedure_name')
     */
   }).then(final=>{
-    sql.close()
+    return sql.close()
   }).catch(err=>{
-    sql.close()
     console.log(err)
+    return sql.close()
   })
 
   sql.on('error', err=>{
