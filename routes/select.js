@@ -18,7 +18,7 @@ router.get('/',catchErrors(async(req,res,next)=>{
   sql.connect(config).then(pool=>{
     return pool.request()
     //.input('select_sal',sql.Int,value)//input parameter
-    .query('select UserName, UserSeq from dbo._TCAUser')//query
+    .query('select * from dbo._TCAUser')//query
   }).then(result=>{
     console.dir(result.recordset);
     return res.render('select',{results:result})

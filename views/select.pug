@@ -1,16 +1,38 @@
 extends layout
 
 block content
-  .container
-    .row.questions
-      each result_value in results.recordset
-        .col-md-4.col-sm-6
-          .question
-            .card.border-primary.mb-3(style='max-width: 20rem;')
-              .card-header
-                .title= result_value.UserName
-              .card-body.text-primary
-                h4.card-title
-                  .content= result_value.UserSeq
-                //-.card-text place in
-                //-  .place=question.place
+
+  table.table
+   thead
+      tr
+        th.col #
+        th.col CompanySeq
+        th.col UserSeq
+        th.col UserId
+        th.col UserType
+        th.col UserName
+        th.col EmpSeq
+        th.col LoginPwd
+        th.col CustSeq
+        th.col DeptSeq
+        th.col UserSecu
+        th.col LoginStatus
+        th.col LoginDate
+        th.col PwdChgDate
+        tbody
+          each val, index in results.recordset
+            tr
+              th.row
+                .number=index
+              td=val.CompanySeq
+              td=val.UserSeq
+              td=val.UserId
+              td=val.UserType
+              td=val.UserName
+              td=val.EmpSeq
+              td=val.LoginPwd
+              td=val.CustSeq
+              td=val.DeptSeq
+              td=val.UserSecu
+                
+                
