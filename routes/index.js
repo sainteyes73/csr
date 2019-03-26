@@ -11,7 +11,7 @@ var config={
   port:14233,
 
   options:{
-    encrypt:false
+    encrypt:true
   }
 }
 router.get('/',catchErrors(async(req,res,next)=>{
