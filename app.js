@@ -4,10 +4,12 @@ var engines = require('consolidate');
 var app=express();
 var cookieParser=require('cookie-parser');
 var path=require('path');
+var select=require('./routes/select.js')
 
 app.set('views',path.join(__dirname,'views'));
 app.set('view engine', 'pug');
 app.use('/', index);
+app.use('/select', select)
 app.use(cookieParser());
 
 app.use(function(req, res, next) {

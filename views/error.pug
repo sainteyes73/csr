@@ -1,11 +1,8 @@
-html
-  head
-    title sample
 
-  body
-    block content
-      h4 This is error page
-  block content
+extends layout
 
-  block footer
-    include ./includes/footer
+block content
+  .container
+    h1.main-title.text-danger Error #{error.status}
+    .alert.alert-danger= message
+    pre #{error.stack}

@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  .container
+    .row.questions
+      each result_value in results.recordset
+        .col-md-4.col-sm-6
+          .question
+            .card.border-primary.mb-3(style='max-width: 20rem;')
+              .card-header
+                .title= result_value.UserName
+              .card-body.text-primary
+                h4.card-title
+                  .content= result_value.UserSeq
+                //-.card-text place in
+                //-  .place=question.place
