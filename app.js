@@ -4,7 +4,7 @@ var engines = require('consolidate');
 var app=express();
 var cookieParser=require('cookie-parser');
 var path=require('path');
-var select=require('./routes/select.js')
+var select=require('./routes/list.js')
 
 app.set('views',path.join(__dirname,'views'));
 app.set('view engine', 'pug');

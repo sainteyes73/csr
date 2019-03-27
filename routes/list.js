@@ -21,7 +21,7 @@ router.get('/',catchErrors(async(req,res,next)=>{
     .query('select * from dbo._TCAUser')//query
   }).then(result=>{
     console.dir(result.recordset);
-    return res.render('select',{results:result})
+    return res.render('list',{results:result})
   /*
     return pool.request()
     .input('input_parameter',sql.Int, value)
