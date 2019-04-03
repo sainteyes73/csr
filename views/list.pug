@@ -5,7 +5,6 @@ block content
   table.table
    thead
       tr
-        th.col #
         th.col CompanySeq
         th.col UserSeq
         th.col UserId
@@ -22,8 +21,6 @@ block content
         tbody
           each val, index in results.recordset
             tr
-              th.row
-                .number=index
               td=val.CompanySeq
               td=val.UserSeq
               td=val.UserId

@@ -5,13 +5,15 @@ var app=express();
 var cookieParser=require('cookie-parser');
 var path=require('path');
 var select=require('./routes/list.js')
+var sassMiddleware = require('node-sass-middleware');
 
 app.set('views',path.join(__dirname,'views'));
 app.set('view engine', 'pug');
 app.use('/', index);
 app.use('/select', select)
 app.use(cookieParser());
-
+// public 디렉토리에 있는 내용은 static하게 service하도록.
+app.use(express.static(path.join(__dirname, '/public')));
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
