@@ -1,6 +1,13 @@
+
 html{
   margin:20px
 }
 .col{
   width:94px;
+}
+#inlineRadio1{
+  margin-left: 0px;
+}
+label{
+  margin-right:20px;
 }

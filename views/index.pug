@@ -1,16 +1,29 @@
-
 extends layout
 
 block content
-  form
-  .form-group
-    label(for='exampleInputEmail1') Email address
-    input#exampleInputEmail1.form-control(type='email' aria-describedby='emailHelp' placeholder='Enter email')
-    small#emailHelp.form-text.text-muted We&apos;ll never share your email with anyone else.
-  .form-group
-    label(for='exampleInputPassword1') Password
-    input#exampleInputPassword1.form-control(type='password' placeholder='Password')
-  .form-group.form-check
-    input#exampleCheck1.form-check-input(type='checkbox')
-    label.form-check-label(for='exampleCheck1') Check me out
-  button.btn.btn-primary(type='submit') Submit
+  .container
+    .clearfix
+      form.form-signin(action='/signin', method='POST')
+        h3.form-signin-heading 전산 Q/A 페이지
+        br
+        label.sr-only(for='id') ERP아이디
+        input(
+          type='email', id='email', name='email', class='form-control', 
+          placeholder='ERP ID', required, autofocus
+        )
+        br
+        label.sr-only(for='password') 비밀번호
+        input(
+          type='password', id='password', name='password', class='form-control', 
+          placeholder='password', required, autofocus
+        )
+        form-check.from-check-inline
+          br
+          input#inlineRadio1.form-check-input(type='radio' name="inlineRadioOptions",value="option1")
+          label.form-check-label(for="inlineRadio1") amotech
+          input#inlineRadio1.form-check-input(type='radio' name="inlineRadioOptions",value="option2")
+          label.form-check-label(for="inlineRadio2") amogreentech
+          input#inlineRadio1.form-check-input(type='radio' name="inlineRadioOptions",value="option3")
+          label.form-check-label(for="inlineRadio3") amosense
+          br
+          button.btn.btn-primary.btn-block(type='submit') 로그인
