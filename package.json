@@ -11,9 +11,11 @@
   "dependencies": {
     "bcrypt-nodejs": "0.0.3",
     "connect": "^3.6.6",
+    "connect-flash": "^0.1.1",
     "consolidate": "^0.15.1",
     "cookie-parser": "^1.4.4",
     "express": "^4.16.4",
+    "express-session": "^1.16.1",
     "mssql": "^5.0.3",
     "node-sass-middleware": "^0.11.0",
     "passport": "^0.4.0",
