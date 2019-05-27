@@ -4,6 +4,7 @@ var engines = require('consolidate');
 var cookieParser=require('cookie-parser');
 var path=require('path');
 var select=require('./routes/list.js')
+var bodyParser = require('body-parser');
 var sassMiddleware = require('node-sass-middleware');
 var passport=require('passport')
 var passportConfig = require('./lib/passport-config');
@@ -16,6 +17,8 @@ module.exports=(app,io)=>{
   app.set('view engine', 'pug');
   app.use(express.static(path.join(__dirname, '/public')));
   app.use(logger('dev'));
+  app.use(bodyParser.json());
+  app.use(bodyParser.urlencoded({ extended: false }));
   app.use(cookieParser());
   app.use(flash());
   app.use(session({
@@ -27,6 +30,13 @@ module.exports=(app,io)=>{
   app.use(passport.initialize());
   app.use(passport.session());
   passportConfig(passport);
+
+  app.use(function(req, res, next) {
+    res.locals.currentUser = req.user;  // passport는 req.user로 user정보 전달
+    res.locals.flashMessages = req.flash();
+    next();
+  });
+
   app.use('/', index);
   require('./routes/auth')(app, passport);
   app.use('/select', select);
@@ -43,11 +53,6 @@ module.exports=(app,io)=>{
 
 
 
-  app.use(function(req, res, next) {
-    res.locals.currentUser = req.user;  // passport는 req.user로 user정보 전달
-    res.locals.flashMessages = req.flash();
-    next();
-  });
   // error handler
 
   app.use(function(err, req, res, next) {

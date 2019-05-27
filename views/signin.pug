@@ -6,9 +6,9 @@ block content
       form.form-signin(action='/signin', method='POST')
         h3.form-signin-heading 전산 Q/A 페이지
         br
-        label.sr-only(for='id') ERP아이디
+        label.sr-only(for='userid') ERP아이디
         input(
-          type='id', id='id', name='id', class='form-control', 
+          type='text', id='userid', name='userid', class='form-control', 
           placeholder='ERP ID', required, autofocus
         )
         br
@@ -18,5 +18,5 @@ block content
           placeholder='password', required, autofocus
         )
         form-check.from-check-inline
-          br
-          button.btn.btn-primary.btn-block(type='submit') 로그인
+        br
+        button.btn.btn-primary.btn-block(type='submit') 로그인
