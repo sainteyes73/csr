@@ -3,6 +3,16 @@ var router=express.Router();
 var sql=require('mssql');
 const catchErrors=require('../lib/async-error');
 
+
+function needAuth(req, res, next) {
+  if (req.isAuthenticated()) {
+    next();
+  } else {
+    req.flash('danger', '로그인 필요');
+    res.redirect('signin');
+  }
+}
+
 var config={
   user:'genuine',
   password:'Amotech209#',
@@ -14,7 +24,7 @@ var config={
     encrypt:true
   }
 }
-router.get('/',catchErrors(async(req,res,next)=>{
+router.get('/',needAuth, catchErrors(async(req,res,next)=>{
   sql.connect(config).then(pool=>{
     return pool.request()
     //.input('select_sal',sql.Int,value)//input parameter
