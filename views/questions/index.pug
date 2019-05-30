@@ -1,3 +1,4 @@
+extends ../layout
 
 include ../includes/_paginate
 
@@ -8,12 +9,12 @@ block content
       input.form-control.mr-sm-2(type='text', name='term', placeholder='Search', aria-label='Search', value=term)
 
     h1.main-title 
-      | Event
+      | Question
       if questions.total > 0
-        .small Total #{questions.total} Event(s)
+        .small Total #{questions.total} event(s)
 
     if questions.total <= 0 
-      .alert.alert-info No Events available yet
+      .alert.alert-info 등록된 질문이 없습니다.
     else
       .questions
         each question in questions.docs
@@ -24,4 +25,4 @@ block content
       +paginate(questions, '/questions', query)
 
     hr
-    a.btn.btn-primary(href='/questions/new') Create Event
+    a.btn.btn-primary(href='/questions/new') 새 질문

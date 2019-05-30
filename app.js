@@ -11,7 +11,10 @@ var passportConfig = require('./lib/passport-config');
 var flash = require('connect-flash');
 var logger = require('morgan');
 var session = require('express-session');
-var mongoose   = require('mongoose');
+var mongoose = require('mongoose');
+var questions = require('./routes/questions');
+var passportSocketIo = require('passport.socketio');
+var db = mongoose.connection;
 
 module.exports = (app, io) => {
   app.set('views', path.join(__dirname, 'views'));
@@ -29,25 +32,66 @@ module.exports = (app, io) => {
   // mongodb connect
   //=======================================================
   mongoose.Promise = global.Promise; // ES6 Native Promise를 mongoose에서 사용한다.
-  const connStr = (process.env.NODE_ENV == 'production') ?
-    'mongodb://db1:antusdk2@ds033196.mlab.com:33196/woosung' :
-    'mongodb://localhost/mjdb4';
   //const connStr = 'mongodb://localhost/mjdb4';
   // 아래는 mLab을 사용하는 경우의 예: 본인의 접속 String으로 바꾸세요.
   // const connStr = 'mongodb://dbuser1:mju12345@ds113825.mlab.com:13825/sampledb1';
+  db.once('open', function() {
+    // CONNECTED TO MONGODB SERVER
+    console.log("Connected to mongod server");
+  });
+
+  mongoose.connect('mongodb://localhost:27017/test');
+
+
   mongoose.connection.on('error', console.error);
   app.use(cookieParser());
   app.use(flash());
+  const sessionStore = new session.MemoryStore();
+  const sessionId = 'woosung';
+  const sessionSecret = 'TODO: change this secret string for your own';
+  // session을 사용할 수 있도록.
   app.use(session({
-    secret: 'afasdwqsdasdasd',
-    resave: false,
-    saveUninitialized: true
+    name: sessionId,
+    resave: true,
+    saveUninitialized: true,
+    store: sessionStore,
+    secret: sessionSecret
   }));
 
   app.use(passport.initialize());
   app.use(passport.session());
   passportConfig(passport);
 
+  io.use(passportSocketIo.authorize({
+    cookieParser: cookieParser, // the same middleware you registrer in express
+    key: sessionId, // the name of the cookie where express/connect stores its session_id
+    secret: sessionSecret, // the session_secret to parse the cookie
+    store: sessionStore, // we NEED to use a sessionstore. no memorystore please
+    passport: passport,
+    success: (data, accept) => {
+      console.log('successful connection to socket.io');
+      accept(null, true);
+    },
+    fail: (data, message, error, accept) => {
+      // 실패 혹은 로그인 안된 경우
+      console.log('failed connection to socket.io:', message);
+      accept(null, false);
+    }
+  }));
+
+
+  // connection 요청이 온 경우
+  io.on('connection', socket => {
+    console.log('socket connection!');
+    if (socket.request.user.logged_in) {
+      // 로그인이 된 경우에만 join 요청을 받는다.
+      socket.emit('welcome');
+      socket.on('join', data => {
+        // 본인의 ID에 해당하는 채널에 가입시킨다.
+        socket.join(socket.request.user._id.toString());
+      });
+    }
+  });
   app.use(function(req, res, next) {
     res.locals.currentUser = req.user; // passport는 req.user로 user정보 전달
     res.locals.flashMessages = req.flash();
@@ -57,7 +101,8 @@ module.exports = (app, io) => {
   app.use('/', index);
   require('./routes/auth')(app, passport);
   app.use('/list', list);
-
+  app.use('/questions', questions(io));
+  app.use('/api', require('./routes/api'));
 
   // public 디렉토리에 있는 내용은 static하게 service하도록.
 

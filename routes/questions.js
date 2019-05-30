@@ -56,7 +56,7 @@ module.exports = io => {
     return null;
   }
   /* GET questions listing. */
-  router.get('/', catchErrors(async (req, res, next) => {
+  router.get('/', needAuth,catchErrors(async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
 

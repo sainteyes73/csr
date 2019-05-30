@@ -1,34 +1,29 @@
 .form-group
-  label(for="title") Event Title
-  input.form-control(type="text", name="title", placeholder="Write down Event Title", value=question.title)
+  label(for="title") 질문명
+  input.form-control(type="text", name="title", placeholder="제목", value=question.title)
 .form-group
-  label(for="place") Event place
-  input.form-control(type="text" , name="place", placeholder="Write down Event Place", value=question.event)
-.form-group
-  label(for="Start Time") Start time
-  input.form-control(type="date" , name="stime", placeholder="Write down Start Event Time" ,value=question.stime)
-.form-group
-  label(for="End Time") End time
-  input.form-control(type="date", name="etime", placeholder="Wrtie down End Time", value= question.etime)
+  event 담당자
+           .event-topic
+               select#event-tomenu.form-control(name='place')
+                   option 김기권
+                   option 금봉권
+                   option 계인석
+                   option 경민구
+                   option 김우성
+                   option 강현모
+    
 
-.form-group
-  event topic
+  event 사업장
            .event-topic
                select#event-tomenu.form-control(name='eventtopic')
-                   option Select event-topic
-                   option Music & Clubbing
-                   option Community & Culture
-                   option Family
-                   option Business & Professional
-                   option Media & Entertainment
-                   option Food & Drink
-                   option Health & Wellness
-                   option Hobbies & Interest
-                   option Home & Lifestyle
-                   option NetWork & SNS
+                   option 아모텍
+                   option 아모센스
+                   option 아모그린텍
+                   option 아모라이프사이언스
+
 
 .form-group
-  label(for="content") Explanation
+  label(for="content") 내용
   textarea#editor(name='content')
     
   script.
@@ -37,26 +32,6 @@
     .catch( error => {
     console.error( error );
     } );
-
-.form-group
-  label(for="organization") organization
-  input.form-control(name="organization", placeholder="your organization", value = question.organization)
-.form-group
-  label(for="explain_org") exp_org
-  input.form-control(name="exp_org", placeholder="Explain your organization", value = question.exp_org)
-.form-group
-  label(for="price") price
-   label.custom-control.custom-radio
-    input#radio1.custom-control-input(name="radio", type="radio")
-    span.custom-control-indicator
-    span.custom-control-description free
-   label.custom-control.custom-radio
-    input#radio2.custom-control-input(name="radio", type="radio")
-    span.custom-control-indicator
-    span.custom-control-description non_free
-  
-   label(for="non_free_price")
-   input.form-control(aria-hidden='false',name="non_free", placeholder="write price", value = 0)
 
   
    	
