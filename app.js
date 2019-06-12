@@ -14,11 +14,29 @@ var session = require('express-session');
 var mongoose = require('mongoose');
 var questions = require('./routes/questions');
 var passportSocketIo = require('passport.socketio');
-var db = mongoose.connection;
+var methodOverride = require('method-override');
+
 
 module.exports = (app, io) => {
   app.set('views', path.join(__dirname, 'views'));
   app.set('view engine', 'pug');
+
+
+  //=======================================================
+  // mongodb connect
+  //=======================================================
+  mongoose.Promise = global.Promise; // ES6 Native Promise를 mongoose에서 사용한다.
+  const connStr = (process.env.NODE_ENV == 'production') ?
+    'mongodb://db1:antusdk2@ds033196.mlab.com:33196/woosung' :
+    'mongodb://localhost:27017/mjdb4';
+  //const connStr = 'mongodb://localhost/mjdb4';
+  // 아래는 mLab을 사용하는 경우의 예: 본인의 접속 String으로 바꾸세요.
+  // const connStr = 'mongodb://dbuser1:mju12345@ds113825.mlab.com:13825/sampledb1';
+  console.log(connStr);
+  mongoose.connect(connStr, {
+    useNewUrlParser: true
+  });
+  mongoose.connection.on('error', console.error);
   app.use(express.static(path.join(__dirname, '/public')));
   app.use(logger('dev'));
   app.use(bodyParser.json());
@@ -27,24 +45,20 @@ module.exports = (app, io) => {
   }));
   app.locals.moment = require('moment');
   app.locals.querystring = require('querystring');
-
-  //=======================================================
-  // mongodb connect
-  //=======================================================
-  mongoose.Promise = global.Promise; // ES6 Native Promise를 mongoose에서 사용한다.
-  //const connStr = 'mongodb://localhost/mjdb4';
-  // 아래는 mLab을 사용하는 경우의 예: 본인의 접속 String으로 바꾸세요.
-  // const connStr = 'mongodb://dbuser1:mju12345@ds113825.mlab.com:13825/sampledb1';
-  db.once('open', function() {
-    // CONNECTED TO MONGODB SERVER
-    console.log("Connected to mongod server");
-  });
-
-  mongoose.connect('mongodb://localhost:27017/test');
-
-
-  mongoose.connection.on('error', console.error);
   app.use(cookieParser());
+  app.use(methodOverride('_method', {
+    methods: ['POST', 'GET']
+  }));
+  // sass, scss를 사용할 수 있도록
+
+  app.use(sassMiddleware({
+    src: path.join(__dirname, 'public'),
+    dest: path.join(__dirname, 'public'),
+    indentedSyntax: false, // true = .sass and false = .scss
+    debug: true,
+    sourceMap: true
+  }));
+
   app.use(flash());
   const sessionStore = new session.MemoryStore();
   const sessionId = 'woosung';

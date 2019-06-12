@@ -19,39 +19,20 @@ module.exports = io => {
   function validateForm(form, options) {
     var title = form.title || "";
     var place = form.place || "";
-    var stime = form.stime || "";
-    var etime = form.etime || "";
     var content= form.content || "";
-    var exp_org= form.exp_org || "";
-    var organization=form.organization || "";
+    var eventtopic=form.eventtopic || "";
     if (!title) {
       return 'Title is required.';
     }
-
     if (!place) {
       return 'Place is required.';
     }
-
-    if (!stime) {
-      return 'start time is required.';
-    }
-
-    if (!etime) {
-      return 'end time is required';
-    }
-
     if (!content) {
       return 'content is required';
     }
-
-    if(!exp_org){
-      return 'write down organization explain'
+    if (!eventtopic){
+      return 'eventtopic is required';
     }
-
-    if(!organization){
-      return 'write down organization'
-    }
-
 
     return null;
   }
@@ -59,7 +40,7 @@ module.exports = io => {
   router.get('/', needAuth,catchErrors(async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-
+  console.log(req+'/question(get)');
     var query = {};
     const term = req.query.term;
     if (term) {
@@ -112,12 +93,6 @@ module.exports = io => {
     question.place= req.body.place;
     question.content= req.body.content;
     question.eventtopic= req.body.eventtopic;
-    question.stime= req.body.stime;
-    question.etime= req.body.etime;
-    question.organization= req.body.organization;
-    question.exp_org=req.body.exp_org;
-    question.non_free= req.body.non_free;
-    question.check= req.body.check;
   //  question.tags = req.body.tags.split(" ").map(e => e.trim());
 
     await question.save();
@@ -138,19 +113,13 @@ module.exports = io => {
       return res.redirect('back');
     }
     const user = req.user;
+    console.log(user.userid+'okaybab');
     var question = new Question({
-      author: user._id,
+      author: user.userid,
       title: req.body.title,
       place: req.body.place,
       content: req.body.content,
       eventtopic: req.body.eventtopic,
-      img: req.body.img,
-      stime: req.body.stime,
-      etime: req.body.etime,
-      organization: req.body.organization,
-      exp_org:req.body.exp_org,
-      non_free: req.body.non_free,
-      check: req.body.check
     });
     await question.save();//mongodb에 저장하는동안 대기
     req.flash('success', 'Successfully posted');
