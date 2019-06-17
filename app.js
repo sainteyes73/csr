@@ -3,7 +3,7 @@ var index = require('./routes/index.js');
 var engines = require('consolidate');
 var cookieParser = require('cookie-parser');
 var path = require('path');
-var list = require('./routes/list.js');
+//var list = require('./routes/list.js');
 var bodyParser = require('body-parser');
 var sassMiddleware = require('node-sass-middleware');
 var passport = require('passport')
@@ -39,6 +39,7 @@ module.exports = (app, io) => {
   mongoose.connection.on('error', console.error);
   app.use(express.static(path.join(__dirname, '/public')));
   app.use(logger('dev'));
+  app.use(flash());
   app.use(bodyParser.json());
   app.use(bodyParser.urlencoded({
     extended: false
@@ -49,6 +50,7 @@ module.exports = (app, io) => {
   app.use(methodOverride('_method', {
     methods: ['POST', 'GET']
   }));
+
   // sass, scss를 사용할 수 있도록
 
   app.use(sassMiddleware({
@@ -59,7 +61,7 @@ module.exports = (app, io) => {
     sourceMap: true
   }));
 
-  app.use(flash());
+
   const sessionStore = new session.MemoryStore();
   const sessionId = 'woosung';
   const sessionSecret = 'TODO: change this secret string for your own';
@@ -114,7 +116,7 @@ module.exports = (app, io) => {
 
   app.use('/', index);
   require('./routes/auth')(app, passport);
-  app.use('/list', list);
+//  app.use('/list', list);
   app.use('/questions', questions(io));
   app.use('/api', require('./routes/api'));
 

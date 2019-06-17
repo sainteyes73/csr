@@ -10,18 +10,11 @@ block content
             .card-header
               | 세부사항
             ul.list-group.list-group-flush
-              li.list-group-item event time
+              li.list-group-item 시간
                .stime= moment(question.stime).format('YYYY-MM-DD')+" ~ " + moment(question.etime).format('YYYY-MM-DD')
               li.list-group-item place
                .place=question.place
-              li.list-group-item ticket price
-               .non_free=question.non_free
-                |  won
-              li.list-group-item organization
-               .organization=question.organization
-              li.list-group-item organization explain
-               .exp_org=question.exp_org
-              li.list-group-item Event-Topic
+              li.list-group-item 사업장
                .eventtopic=question.eventtopic
     .question.show
       br
@@ -33,12 +26,12 @@ block content
         if currentUser
           button.btn.btn-primary.question-like-btn(data-id=question.id) 
             span.for-loading #[i.fa.fa-spin.fa-refresh] Loading
-            span #[i.fa.fa-thumbs-up] Join
+            span #[i.fa.fa-thumbs-up] 좋아요
           if question.author && question.author.id == currentUser.id
             | 
-            a.btn.btn-outline-secondary(href=`/questions/${question.id}/edit`) Edit
+            a.btn.btn-outline-secondary(href=`/questions/${question.id}/edit`) 수정
             | 
-            a.btn.btn-outline-danger.need-confirm-btn(href=`/questions/${question.id}?_method=delete`) Delete
+            a.btn.btn-outline-danger.need-confirm-btn(href=`/questions/${question.id}?_method=delete`) 삭제
        
     if question.numAnswers > 0
       hr
@@ -50,9 +43,9 @@ block content
     if currentUser
       form(action=`/questions/${question.id}/answers`, method='POST')
         .form-group
-          label(for='answer') Your Answer
+          label(for='answer') 답변
           textarea.form-control(name="content", rows="5")
-        button.btn.btn-primary(type="submit") Post Your Answer
+        button.btn.btn-primary(type="submit") 등록
 
 
   script(src='/javascripts/question_client.js')

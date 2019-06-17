@@ -41,7 +41,7 @@ router.put('/:id', catchErrors(async (req, res, next) => {
   if (!question) {
     return next({status: 404, msg: 'Not exist question'});
   }
-  if (question.author != req.user.userid) {
+  if (question.author && question.author._id != req.user._id) {
     return next({status: 403, msg: 'Cannot update'});
   }
   question.title = req.body.title;

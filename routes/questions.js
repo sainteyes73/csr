@@ -22,13 +22,13 @@ module.exports = io => {
     var content= form.content || "";
     var eventtopic=form.eventtopic || "";
     if (!title) {
-      return 'Title is required.';
+      return '제목을 입력해주세요.';
     }
     if (!place) {
       return 'Place is required.';
     }
     if (!content) {
-      return 'content is required';
+      return '내용을 입력해주세요.';
     }
     if (!eventtopic){
       return 'eventtopic is required';
@@ -113,9 +113,9 @@ module.exports = io => {
       return res.redirect('back');
     }
     const user = req.user;
-    console.log(user.userid+'okaybab');
+    console.log(req.user+'okaybab');
     var question = new Question({
-      author: user.userid,
+      author: user._id,
       title: req.body.title,
       place: req.body.place,
       content: req.body.content,

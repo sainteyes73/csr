@@ -22,12 +22,12 @@ router.post('/questions/:id/like', catchErrors(async (req, res, next) => {
   if (!question) {
     return next({status: 404, msg: 'Not exist question'});
   }
-  var likeLog = await LikeLog.findOne({author: req.user.userid, question: question._id});
+  var likeLog = await LikeLog.findOne({author: req.user._id, question: question._id});
   if (!likeLog) {
     question.numLikes++;
     await Promise.all([
       question.save(),
-      LikeLog.create({author: req.user.userid, question: question._id})
+      LikeLog.create({author: req.user._id, question: question._id})
     ]);
   }
   return res.json(question);
