@@ -3,9 +3,9 @@
 .row
   .col-sm
     .numbers.
-      #[span.number.num-likes= question.numLikes] join,
-      #[span.number.num-answers= question.numAnswers] answers,
-      #[span.number.num-reads= question.numReads] reads
+      #[span.number.num-likes= question.numLikes] 좋아요,
+      #[span.number.num-answers= question.numAnswers] 답변,
+      #[span.number.num-reads= question.numReads] 조회수
   .col-sm
     .author
       | upload on #{moment(question.createdAt).format('YYYY-MM-DD')}

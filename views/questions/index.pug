@@ -9,9 +9,8 @@ block content
       input.form-control.mr-sm-2(type='text', name='term', placeholder='Search', aria-label='Search', value=term)
 
     h1.main-title 
-      | Question
       if questions.total > 0
-        .small Total #{questions.total} event(s)
+        .small 총 #{questions.total} 개의 질문(들)
 
     if questions.total <= 0 
       .alert.alert-info 등록된 질문이 없습니다.

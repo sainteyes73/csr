@@ -12,7 +12,7 @@ module.exports = io => {
     if (req.isAuthenticated()) {
       next();
     } else {
-      req.flash('danger', 'Please signin first.');
+      req.flash('danger', '로그인이 필요합니다.');
       res.redirect('/signin');
     }
   }
@@ -65,7 +65,6 @@ module.exports = io => {
   router.get('/:id/edit', needAuth, catchErrors(async (req, res, next) => {
     const question = await Question.findById(req.params.id);
     res.render('questions/edit', {question: question});
-
   }));
 
   router.get('/:id', catchErrors(async (req, res, next) => {
