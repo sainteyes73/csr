@@ -8,10 +8,10 @@ block content
           h1.main-title= question.title
           .card(style='width: 20rem;')
             .card-header
-              | 세부사항
+              | 정보
             ul.list-group.list-group-flush
-              li.list-group-item 시간
-               .stime= moment(question.stime).format('YYYY-MM-DD')+" ~ " + moment(question.etime).format('YYYY-MM-DD')
+              li.list-group-item 등록일
+               .stime= moment(question.stime).format('YYYY-MM-DD')
               li.list-group-item 담당자
                .place=question.place
               li.list-group-item 사업장
@@ -35,7 +35,7 @@ block content
        
     if question.numAnswers > 0
       hr
-      h3 #{question.numAnswers} Answer(s)
+      h3 #{question.numAnswers} 개의 답변(들)
       .answers.show
         each answer in answers
           include _answer

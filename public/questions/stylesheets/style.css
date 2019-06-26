@@ -1,17 +1,4 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat|Raleway");
-html{
-  margin:20px
-}
-.col{
-  width:94px;
-}
-#inlineRadio1{
-  margin-left: 0px;
-}
-label{
-  margin-right:20px;
-}
-
 body {
   font: 1rem 'Montserrat', sans-serif; }
   body > .main-content {
@@ -42,10 +29,7 @@ a:hover {
   margin: 1em 0 0.5em 0;
   border-bottom: 1px solid #eee;
   color: #011a72; }
-p {
-    margin-top: 0;
-    margin-bottom: 11rem;
-}
+
 .header > .navbar {
   background-color: #ffffff !important; }
 
@@ -87,6 +71,9 @@ p {
   #top_jumbo {
     margin-left: 370px;
     margin-right: 370px; } }
+
+.pagination {
+  justify-content: center; }
 
 #top_jumbo {
   position: relative;
@@ -295,6 +282,9 @@ p {
   .show .answer .content {
     margin-bottom: 0.5em;
     color: #888; }
+
+.pagination {
+  justify-content: center; }
 
 .question-like-btn, .answer-like-btn {
   cursor: pointer; }

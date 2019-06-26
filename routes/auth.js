@@ -10,7 +10,7 @@ module.exports = (app, passport) => {
 }));
   app.get('/signout', (req, res) => {
     req.logout();
-    req.flash('success', 'Successfully signed out');
+    req.flash('success', '로그아웃이 성공적으로 이루어졌습니다');
     res.redirect('/signin');
   });
 };

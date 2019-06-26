@@ -3,25 +3,28 @@ extends ../layout
 include ../includes/_paginate
 
 block content
-  .container
-    form.form-inline.search-input-group(action='/questions', method='GET')
-      i.fa.fa-search
-      input.form-control.mr-sm-2(type='text', name='term', placeholder='Search', aria-label='Search', value=term)
-
-    h1.main-title 
-      if questions.total > 0
-        .small 총 #{questions.total} 개의 질문(들)
-
-    if questions.total <= 0 
-      .alert.alert-info 등록된 질문이 없습니다.
-    else
-      .questions
-        each question in questions.docs
-          .question
-            a.title(href=`/questions/${question.id}`)= question.title
-            include _question
-
+  if questions.total <= 0 
+    .alert.alert-info 등록된 질문이 없습니다.
+  else
+    .container
+      table.table.table-hover
+        thead
+          tr
+            th 번호
+            th 제목
+            th 작성자
+            th 날짜
+            th 조회수
+            tbody
+              each question, index in questions.docs
+                tr
+                  td=index
+                  td
+                    a(href=`/questions/${question.id}`)=question.title
+                  td=question.author.name
+                  td=moment(question.createdAt).format('YYYY-MM-DD')
+                  td=question.numReads
       +paginate(questions, '/questions', query)
 
-    hr
-    a.btn.btn-primary(href='/questions/new') 새 질문
+      hr
+      a.btn.btn-primary(href='/questions/new') 새 질문

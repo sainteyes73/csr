@@ -1,17 +1,4 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat|Raleway");
-html{
-  margin:20px
-}
-.col{
-  width:94px;
-}
-#inlineRadio1{
-  margin-left: 0px;
-}
-label{
-  margin-right:20px;
-}
-
 body {
   font: 1rem 'Montserrat', sans-serif; }
   body > .main-content {

@@ -80,7 +80,7 @@ module.exports = io => {
     const question = await Question.findById(req.params.id);
 
     if (!question) {
-      req.flash('danger', 'Not exist question');
+      req.flash('danger', '등록된 질문이 없습니다.');
       return res.redirect('back');
     }
     const err = validateForm(req.body);
@@ -95,13 +95,13 @@ module.exports = io => {
   //  question.tags = req.body.tags.split(" ").map(e => e.trim());
 
     await question.save();
-    req.flash('success', 'Successfully updated');
+    req.flash('success', '성공적으로 업데이트 되었습니다.');
     res.redirect('/questions');
   }));
 
   router.delete('/:id', needAuth, catchErrors(async (req, res, next) => {
     await Question.findOneAndRemove({_id: req.params.id});
-    req.flash('success', 'Successfully deleted');
+    req.flash('success', '성공적으로 삭제 되었습니다.');
     res.redirect('/questions');
   }));
 
@@ -121,7 +121,7 @@ module.exports = io => {
       eventtopic: req.body.eventtopic,
     });
     await question.save();//mongodb에 저장하는동안 대기
-    req.flash('success', 'Successfully posted');
+    req.flash('success', '성공적으로 등록되었습니다.');
     res.redirect('/questions');
   }));
 
@@ -130,7 +130,7 @@ module.exports = io => {
     const question = await Question.findById(req.params.id);
 
     if (!question) {
-      req.flash('danger', 'Not exist question');
+      req.flash('danger', '질문이 존재하지 않습니다.');
       return res.redirect('back');
     }
 
@@ -147,7 +147,7 @@ module.exports = io => {
     io.to(question.author.toString())
       .emit('answered', {url: url, question: question});
     console.log('SOCKET EMIT', question.author.toString(), 'answered', {url: url, question: question})
-    req.flash('success', 'Successfully answered');
+    req.flash('success', '성공적으로 답변이 달렸습니다.');
     res.redirect(`/questions/${req.params.id}`);
   }));
 

@@ -25,6 +25,7 @@ router.post('/questions/:id/like', catchErrors(async (req, res, next) => {
   var likeLog = await LikeLog.findOne({author: req.user._id, question: question._id});
   if (!likeLog) {
     question.numLikes++;
+    console.log('question numlike +1');
     await Promise.all([
       question.save(),
       LikeLog.create({author: req.user._id, question: question._id})
@@ -37,6 +38,7 @@ router.post('/questions/:id/like', catchErrors(async (req, res, next) => {
 router.post('/answers/:id/like', catchErrors(async (req, res, next) => {
   const answer = await Answer.findById(req.params.id);
   answer.numLikes++;
+  console.log('answer numlike +1');
   await answer.save();
   return res.json(answer);
 }));

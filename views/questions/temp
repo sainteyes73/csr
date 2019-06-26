@@ -1,0 +1,14 @@
+.content!= question.content
+
+.row
+  .col-sm
+    .numbers.
+      #[span.number.num-likes= question.numLikes] 좋아요,
+      #[span.number.num-answers= question.numAnswers] 답변,
+      #[span.number.num-reads= question.numReads] 조회수
+  .col-sm
+    .author
+      | upload on #{moment(question.createdAt).format('YYYY-MM-DD')}
+      if question.author
+        | 
+        | by #[a(href=`/users/${question.author.id}`)= question.author.name]
