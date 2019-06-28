@@ -2,6 +2,8 @@ const express = require('express');
 const Question = require('../models/question');
 const Answer = require('../models/answer');
 const catchErrors = require('../lib/async-error');
+var multipart = require('connect-multiparty');
+var multipartMiddleware = multipart();
 
 
 module.exports = io => {
@@ -16,11 +18,22 @@ module.exports = io => {
       res.redirect('/signin');
     }
   }
+
+  function multi(req, res, next) {
+    if (req.isAuthenticated()) {
+      multipartMiddleware;
+      next();
+    } else {
+      req.flash('danger', '로그인이 필요합니다.');
+      res.redirect('/signin');
+    }
+  }
+
   function validateForm(form, options) {
     var title = form.title || "";
     var place = form.place || "";
-    var content= form.content || "";
-    var eventtopic=form.eventtopic || "";
+    var content = form.content || "";
+    var eventtopic = form.eventtopic || "";
     if (!title) {
       return '제목을 입력해주세요.';
     }
@@ -30,50 +43,82 @@ module.exports = io => {
     if (!content) {
       return '내용을 입력해주세요.';
     }
-    if (!eventtopic){
+    if (!eventtopic) {
       return 'eventtopic is required';
     }
 
     return null;
   }
   /* GET questions listing. */
-  router.get('/', needAuth,catchErrors(async (req, res, next) => {
+  router.get('/', needAuth, catchErrors(async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-  console.log(req+'/question(get)');
+    console.log(req + '/question(get)');
     var query = {};
     const term = req.query.term;
     if (term) {
-      query = {$or: [
-        {title: {'$regex': term, '$options': 'i'}},
-        {content: {'$regex': term, '$options': 'i'}},
-        {eventtopic: {'$regex': term, '$options': 'i'}}
-      ]};
+      query = {
+        $or: [{
+            title: {
+              '$regex': term,
+              '$options': 'i'
+            }
+          },
+          {
+            content: {
+              '$regex': term,
+              '$options': 'i'
+            }
+          },
+          {
+            eventtopic: {
+              '$regex': term,
+              '$options': 'i'
+            }
+          }
+        ]
+      };
     }
     const questions = await Question.paginate(query, {
-      sort: {createdAt: -1},
+      sort: {
+        createdAt: -1
+      },
       populate: 'author',
-      page: page, limit: limit
+      page: page,
+      limit: limit
     });
-    res.render('questions/index', {questions: questions, term: term, query: req.query});
+    res.render('questions/index', {
+      questions: questions,
+      term: term,
+      query: req.query
+    });
   }));
 
   router.get('/new', needAuth, (req, res, next) => {
-    res.render('questions/new', {question: {}});
+    res.render('questions/new', {
+      question: {}
+    });
   });
 
   router.get('/:id/edit', needAuth, catchErrors(async (req, res, next) => {
     const question = await Question.findById(req.params.id);
-    res.render('questions/edit', {question: question});
+    res.render('questions/edit', {
+      question: question
+    });
   }));
 
   router.get('/:id', catchErrors(async (req, res, next) => {
     const question = await Question.findById(req.params.id).populate('author');
-    const answers = await Answer.find({question: question.id}).populate('author');
-    question.numReads++;    // TODO: 동일한 사람이 본 경우에 Read가 증가하지 않도록???
+    const answers = await Answer.find({
+      question: question.id
+    }).populate('author');
+    question.numReads++; // TODO: 동일한 사람이 본 경우에 Read가 증가하지 않도록???
 
     await question.save();
-    res.render('questions/show', {question: question, answers: answers});
+    res.render('questions/show', {
+      question: question,
+      answers: answers
+    });
   }));
 
   router.put('/:id', catchErrors(async (req, res, next) => {
@@ -88,11 +133,11 @@ module.exports = io => {
       req.flash('danger', err);
       return res.redirect('back');
     }
-    question.title= req.body.title;
-    question.place= req.body.place;
-    question.content= req.body.content;
-    question.eventtopic= req.body.eventtopic;
-  //  question.tags = req.body.tags.split(" ").map(e => e.trim());
+    question.title = req.body.title;
+    question.place = req.body.place;
+    question.content = req.body.content;
+    question.eventtopic = req.body.eventtopic;
+    //  question.tags = req.body.tags.split(" ").map(e => e.trim());
 
     await question.save();
     req.flash('success', '성공적으로 업데이트 되었습니다.');
@@ -100,10 +145,20 @@ module.exports = io => {
   }));
 
   router.delete('/:id', needAuth, catchErrors(async (req, res, next) => {
-    await Question.findOneAndRemove({_id: req.params.id});
+    await Question.findOneAndRemove({
+      _id: req.params.id
+    });
     req.flash('success', '성공적으로 삭제 되었습니다.');
     res.redirect('/questions');
   }));
+  router.post('/uploader',multipartMiddleware, function(req, res){
+    var fs=require('fs');
+
+    var orifilepath=req.files.upload.path;
+    var orifilename=req.files.upload.name;
+    var srvfilename=uuid()+path.extname(orifilename);
+    fs
+  })
 
   router.post('/', needAuth, catchErrors(async (req, res, next) => {
     const err = validateForm(req.body);
@@ -112,15 +167,15 @@ module.exports = io => {
       return res.redirect('back');
     }
     const user = req.user;
-    console.log(req.user+'okaybab');
+    console.log(req.user + 'okaybab');
     var question = new Question({
       author: user._id,
       title: req.body.title,
       place: req.body.place,
       content: req.body.content,
-      eventtopic: req.body.eventtopic,
+      eventtopic: req.body.eventtopic
     });
-    await question.save();//mongodb에 저장하는동안 대기
+    await question.save(); //mongodb에 저장하는동안 대기
     req.flash('success', '성공적으로 등록되었습니다.');
     res.redirect('/questions');
   }));
@@ -145,8 +200,14 @@ module.exports = io => {
 
     const url = `/questions/${question._id}#${answer._id}`;
     io.to(question.author.toString())
-      .emit('answered', {url: url, question: question});
-    console.log('SOCKET EMIT', question.author.toString(), 'answered', {url: url, question: question})
+      .emit('answered', {
+        url: url,
+        question: question
+      });
+    console.log('SOCKET EMIT', question.author.toString(), 'answered', {
+      url: url,
+      question: question
+    })
     req.flash('success', '성공적으로 답변이 달렸습니다.');
     res.redirect(`/questions/${req.params.id}`);
   }));

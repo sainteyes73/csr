@@ -16,7 +16,7 @@ var questions = require('./routes/questions');
 var passportSocketIo = require('passport.socketio');
 var methodOverride = require('method-override');
 var favicon = require('serve-favicon');
-
+var users = require('./routes/users');
 module.exports = (app, io) => {
   // view engine setup
   app.set('views', path.join(__dirname, 'views'));
@@ -54,13 +54,6 @@ module.exports = (app, io) => {
   app.use(methodOverride('_method', {methods: ['POST', 'GET']}));
 
   // sass, scss를 사용할 수 있도록
-  app.use(sassMiddleware({
-    src: path.join(__dirname, 'public'),
-    dest: path.join(__dirname, 'public'),
-    indentedSyntax: false, // true = .sass and false = .scss
-    debug: true,
-    sourceMap: true
-  }));
 
   const sessionStore = new session.MemoryStore();
   const sessionId = 'mjoverflow.sid';
@@ -130,6 +123,7 @@ module.exports = (app, io) => {
 //  app.use('/list', list);
   app.use('/questions', questions(io));
   app.use('/api', require('./routes/api'));
+  app.use('/users', users);
 
   // public 디렉토리에 있는 내용은 static하게 service하도록.
 

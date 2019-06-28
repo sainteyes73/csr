@@ -8,14 +8,12 @@ html
     script(src='https://code.jquery.com/jquery-3.2.1.min.js')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js')
-    script(src='https://cdn.ckeditor.com/ckeditor5/1.0.0-alpha.2/classic/ckeditor.js')
+    script(src="https://cdn.ckeditor.com/4.11.4/standard/ckeditor.js")
     //- Notify 라이브러리 import: http://bootstrap-notify.remabledesigns.com/
     script(src='../javascripts/bootstrap-notify.js')
-
-    script(src='../javascripts/question_client.js')
     script(src='/socket.io/socket.io.js') 
     //- this application
-    link(rel='stylesheet', href='stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
     script(src='/javascripts/application.js')
   body
     block top-nav

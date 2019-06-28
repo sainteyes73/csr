@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+  .container
+    h1.main-title= user.name
+          
+    dl.row
+      dt.col-sm-5 사번
+      dd.col-sm-9= user.userid
+        
+      dt.col-sm-5 직급
+      dd.col-sm-9= user.minorname
+      
+      dt.col-sm-5 핸드폰
+      dd.col-sm-9= user.phonenum
+      
+      dt.col-sm-5 내선전화
+      dd.col-sm-9= user.extension
+        
+      dt.col-sm-5 Created At
+      dd.col-sm-9= user.createdAt
+      
+      
+      

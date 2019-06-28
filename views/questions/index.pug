@@ -5,13 +5,15 @@ include ../includes/_paginate
 block content
   if questions.total <= 0 
     .alert.alert-info 등록된 질문이 없습니다.
+    hr
+    a.btn.btn-primary(href='/questions/new') 새 질문
   else
     .container
       table.table.table-hover
         thead
-          tr
+          tr.table-head
             th 번호
-            th 제목
+            th.table-title 제목
             th 작성자
             th 날짜
             th 조회수
@@ -25,6 +27,5 @@ block content
                   td=moment(question.createdAt).format('YYYY-MM-DD')
                   td=question.numReads
       +paginate(questions, '/questions', query)
-
       hr
       a.btn.btn-primary(href='/questions/new') 새 질문

@@ -24,14 +24,12 @@
 
 .form-group
   label(for="content") 내용
-  textarea#editor(name='content')
+  textarea#ckeditor(name='content')
     
   script.
-    ClassicEditor
-    .create( document.querySelector( '#editor' ) )
-    .catch( error => {
-    console.error( error );
-    } );
+      CKEDITOR.replace('ckeditor', {
+          filebrowserUploadUrl: '/uploader'
+      });
 
   
    	
