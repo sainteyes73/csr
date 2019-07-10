@@ -23,9 +23,8 @@ block content
 
     .question.show
       br
-      if question.image
-        img.img-fluid(src=question.img)
       include _question
+      
     
       .buttons
         if currentUser
@@ -49,7 +48,7 @@ block content
       form(action=`/questions/${question.id}/answers`, method='POST')
         .form-group
           label(for='answer') 답변
-          textarea.form-control(name="content", rows="5")
+          textarea.form-control(name="noticeContent", rows="5")
         button.btn.btn-primary(type="submit") 등록
 
 

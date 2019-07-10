@@ -1,3 +1,4 @@
+
 .form-group
   label(for="title") 제목
   input.form-control(type="text", name="title", placeholder="제목", value=question.title)
@@ -23,15 +24,13 @@
 
 
 .form-group
-  label(for="content") 내용
-  textarea#ckeditor(name='content')
-    
-  script.
-      CKEDITOR.replace('ckeditor', {
-          filebrowserUploadUrl: '/uploader'
-      });
+  label(for='noticeContent') 내용;
+  textarea#noticeContent.form-control(name='noticeContent' cols='100' rows='30')
 
-  
+  script.
+      CKEDITOR.replace('noticeContent');
+
+
    	
 
 

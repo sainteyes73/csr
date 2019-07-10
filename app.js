@@ -54,7 +54,13 @@ module.exports = (app, io) => {
   app.use(methodOverride('_method', {methods: ['POST', 'GET']}));
 
   // sass, scss를 사용할 수 있도록
-
+  app.use(sassMiddleware({
+    src: path.join(__dirname, 'public'),
+    dest: path.join(__dirname, 'public'),
+    indentedSyntax: false, // true = .sass and false = .scss
+    debug: true,
+    sourceMap: true
+  }));
   const sessionStore = new session.MemoryStore();
   const sessionId = 'mjoverflow.sid';
   const sessionSecret =  'TODO: change this secret string for your own'

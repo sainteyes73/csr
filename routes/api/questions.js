@@ -45,7 +45,7 @@ router.put('/:id', catchErrors(async (req, res, next) => {
     return next({status: 403, msg: 'Cannot update'});
   }
   question.title = req.body.title;
-  question.content = req.body.content;
+  question.noticeContent = req.body.noticeContent;
   question.tags = req.body.tags;
   await question.save();
   res.json(question);

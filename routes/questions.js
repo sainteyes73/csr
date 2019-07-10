@@ -19,20 +19,11 @@ module.exports = io => {
     }
   }
 
-  function multi(req, res, next) {
-    if (req.isAuthenticated()) {
-      multipartMiddleware;
-      next();
-    } else {
-      req.flash('danger', '로그인이 필요합니다.');
-      res.redirect('/signin');
-    }
-  }
 
   function validateForm(form, options) {
     var title = form.title || "";
     var place = form.place || "";
-    var content = form.content || "";
+    var noticeContent = form.noticeContent || "";
     var eventtopic = form.eventtopic || "";
     if (!title) {
       return '제목을 입력해주세요.';
@@ -40,9 +31,10 @@ module.exports = io => {
     if (!place) {
       return 'Place is required.';
     }
-    if (!content) {
-      return '내용을 입력해주세요.';
+    if(!noticeContent){
+      return '내용을 입력해주세요.'
     }
+
     if (!eventtopic) {
       return 'eventtopic is required';
     }
@@ -65,7 +57,7 @@ module.exports = io => {
             }
           },
           {
-            content: {
+            noticeContent: {
               '$regex': term,
               '$options': 'i'
             }
@@ -97,6 +89,30 @@ module.exports = io => {
   router.get('/new', needAuth, (req, res, next) => {
     res.render('questions/new', {
       question: {}
+    });
+  });
+
+  router.post('/uploader', multipartMiddleware, function(req, res) {
+    var fs = require('fs');
+
+    fs.readFile(req.files.upload.path, function (err, data) {
+        var newPath = __dirname + '/../public/uploads/' + req.files.upload.name;
+        console.log(newPath);
+        fs.writeFile(newPath, data, function (err) {
+            if (err) console.log({err: err});
+            else {
+              html = "";
+              html += "<script type='text/javascript'>";
+              html += "    var funcNum = " + req.query.CKEditorFuncNum + ";";
+              html += "    var url     = \"/uploads/" + req.files.upload.name + "\";";
+              html += "    var message = \"서버로 전송 클릭 후 이미지 크기 조절해주세요.\";";
+              html += "";
+              html += "    window.parent.CKEDITOR.tools.callFunction(funcNum, url, message);";
+              html += "</script>";
+
+              res.send(html);
+            }
+        });
     });
   });
 
@@ -135,7 +151,7 @@ module.exports = io => {
     }
     question.title = req.body.title;
     question.place = req.body.place;
-    question.content = req.body.content;
+    question.noticeContent = req.body.noticeContent;
     question.eventtopic = req.body.eventtopic;
     //  question.tags = req.body.tags.split(" ").map(e => e.trim());
 
@@ -151,14 +167,7 @@ module.exports = io => {
     req.flash('success', '성공적으로 삭제 되었습니다.');
     res.redirect('/questions');
   }));
-  router.post('/uploader',multipartMiddleware, function(req, res){
-    var fs=require('fs');
 
-    var orifilepath=req.files.upload.path;
-    var orifilename=req.files.upload.name;
-    var srvfilename=uuid()+path.extname(orifilename);
-    fs
-  })
 
   router.post('/', needAuth, catchErrors(async (req, res, next) => {
     const err = validateForm(req.body);
@@ -172,7 +181,7 @@ module.exports = io => {
       author: user._id,
       title: req.body.title,
       place: req.body.place,
-      content: req.body.content,
+      noticeContent: req.body.noticeContent,
       eventtopic: req.body.eventtopic
     });
     await question.save(); //mongodb에 저장하는동안 대기
@@ -192,7 +201,7 @@ module.exports = io => {
     var answer = new Answer({
       author: user._id,
       question: question._id,
-      content: req.body.content
+      noticeContent: req.body.noticeContent
     });
     await answer.save();
     question.numAnswers++;
