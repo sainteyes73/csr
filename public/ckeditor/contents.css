@@ -44,9 +44,7 @@ blockquote
 	padding-right: 8px;
 	border-left-width: 5px;
 }
-#cke_contents cke_reset{
-	height:500px;
-}
+
 .cke_contents_rtl blockquote
 {
 	padding-left: 8px;

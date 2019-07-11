@@ -8,13 +8,12 @@
                select#event-tomenu.form-control(name='place')
                    option 김기권
                    option 금봉권
-                   option 계인석
                    option 경민구
                    option 김우성
                    option 강현모
     
 
-  event 사업장
+  event 법인
            .event-topic
                select#event-tomenu.form-control(name='eventtopic')
                    option 아모텍
@@ -24,11 +23,11 @@
 
 
 .form-group
-  label(for='noticeContent') 내용;
-  textarea#noticeContent.form-control(name='noticeContent' cols='100' rows='30')
+  label(for='editor') 내용;
+  textarea#editor.form-control(name='noticeContent' cols='100' rows='60')
 
   script.
-      CKEDITOR.replace('noticeContent');
+      CKEDITOR.replace('editor');
 
 
    	
