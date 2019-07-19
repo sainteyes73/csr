@@ -8,7 +8,8 @@ var schema = new Schema({
   userid: {type: String, required: true, index: true, unique: true, trim: true},
   password: {type: String},
   createdAt: {type: Date, default: Date.now},
-  minorname: {type: String, trim: true}
+  minorname: {type: String, trim: true},
+  adminflag:{type:Number, default: 0}
 }, {
   toJSON: { virtuals: true},
   toObject: {virtuals: true}

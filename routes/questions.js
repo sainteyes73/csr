@@ -125,6 +125,7 @@ module.exports = io => {
 
   router.get('/:id', catchErrors(async (req, res, next) => {
     const question = await Question.findById(req.params.id).populate('author');
+    const user= await User.findById(req.params.id);
     const answers = await Answer.find({
       question: question.id
     }).populate('author');
@@ -132,6 +133,7 @@ module.exports = io => {
 
     await question.save();
     res.render('questions/show', {
+      user:user,
       question: question,
       answers: answers
     });

@@ -8,7 +8,6 @@ const router = express.Router();
 router.get('/', catchErrors(async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 10;
-
   const questions = await Question.paginate({}, {
     sort: {createdAt: -1},
     populate: 'author',
