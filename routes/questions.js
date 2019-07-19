@@ -92,6 +92,10 @@ module.exports = io => {
     });
   });
 
+  router.get('/adminpage', needAuth, (req,res,next)=>{
+    res.render('questions/adminpage');
+  })
+
   router.post('/uploader', multipartMiddleware, function(req, res) {
     var fs = require('fs');
 
