@@ -71,7 +71,7 @@
 
 .question-like-btn, .answer-like-btn {
   .for-loading {display: none;}
-  cursor: pointer; 
+  cursor: pointer;
 
   &.loading {
     & > span {display: none;}

@@ -3,23 +3,9 @@ extends ../layout
 block content
   .container
     .row
-      .col-sm-6
-        .main
-          h1.main-title=question.title
-    .card(style='width:30%')
-      .card-body
-        .row
-          .col-sm
-            .card-header
-              | 담당자
-            ul-list-group.list-group-flush
-              li.list-group-item=question.place
-          .col-sm
-            .card-header
-              | 사업장
-            ul-list-group.list-group-flush
-              li.list-group-item=question.eventtopic
-        
+      .main
+        h1.main-title=question.title
+
 
     .question.show
       br

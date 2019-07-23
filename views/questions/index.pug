@@ -3,29 +3,30 @@ extends ../layout
 include ../includes/_paginate
 
 block content
-  if questions.total <= 0 
-    .alert.alert-info 등록된 질문이 없습니다.
-    hr
-    a.btn.btn-primary(href='/questions/new') 새 질문
-  else
-    .container
-      table.table.table-hover
-        thead
-          tr.table-head
-            th 번호
-            th.table-title 제목
-            th 작성자
-            th 날짜
-            th 조회수
-            tbody
-              each question, index in questions.docs
-                tr
-                  td=index
-                  td
-                    a(href=`/questions/${question.id}`)=question.title
-                  td=question.author.name
-                  td=moment(question.createdAt).format('YYYY-MM-DD')
-                  td=question.numReads
+  .container
+    if questions.total <= 0 
+      .alert.alert-info 등록된 질문이 없습니다.
+      hr
+      a.btn.btn-primary(href='/questions/new') 새 질문
+    else
+      .container
+        table.table.table-hover
+          thead
+            tr.table-head
+              th 번호
+              th.table-title 제목
+              th 작성자
+              th 날짜
+              th 조회수
+              tbody
+                each question, index in questions.docs
+                  tr
+                    td=index+1
+                    td
+                      a(href=`/questions/${question.id}`)=question.title
+                    td=question.author.name
+                    td=moment(question.createdAt).format('YYYY-MM-DD')
+                    td=question.numReads
       +paginate(questions, '/questions', query)
       hr
       a.btn.btn-primary(href='/questions/new') 새 질문

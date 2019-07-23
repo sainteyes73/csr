@@ -10,7 +10,10 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light
         a.nav-link(href='/questions/new') 새 질문
       if currentUser.adminflag==1
         li.nav-item
-          a.nav-link(href='/questions/adminpage') 내 질문함
+          a.nav-link(href='/questions/adminpage') 관리자 페이지
+      else
+        li.nav-item
+          a.nav-link(href='/questions/userpage') 내가 쓴 글
       li.nav-item
         a.nav-link(href='/signout') 로그아웃
       
