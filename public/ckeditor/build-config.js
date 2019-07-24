@@ -13,10 +13,10 @@
  * (1) https://ckeditor.com/cke4/builder
  *     Visit online builder to build CKEditor from scratch.
  *
- * (2) https://ckeditor.com/cke4/builder/6fe56fcf337536a2ad2dc551b878e2e7
+ * (2) https://ckeditor.com/cke4/builder/886c4ec98ad145368f8ce6bf463a75e3
  *     Visit online builder to build CKEditor, starting with the same setup as before.
  *
- * (3) https://ckeditor.com/cke4/builder/download/6fe56fcf337536a2ad2dc551b878e2e7
+ * (3) https://ckeditor.com/cke4/builder/download/886c4ec98ad145368f8ce6bf463a75e3
  *     Straight download link to the latest version of CKEditor (Optimized) with the same setup as before.
  *
  * NOTE:
@@ -25,7 +25,7 @@
  */
 
 var CKBUILDER_CONFIG = {
-	skin: 'moono-dark',
+	skin: 'office2013',
 	preset: 'standard',
 	ignore: [
 		'.DS_Store',
@@ -53,13 +53,13 @@ var CKBUILDER_CONFIG = {
 	],
 	plugins : {
 		'a11yhelp' : 1,
+		'about' : 1,
 		'basicstyles' : 1,
 		'blockquote' : 1,
 		'clipboard' : 1,
 		'contextmenu' : 1,
 		'elementspath' : 1,
 		'enterkey' : 1,
-		'entities' : 1,
 		'filebrowser' : 1,
 		'floatingspace' : 1,
 		'format' : 1,
@@ -74,7 +74,6 @@ var CKBUILDER_CONFIG = {
 		'pastetext' : 1,
 		'removeformat' : 1,
 		'resize' : 1,
-		'scayt' : 1,
 		'showborders' : 1,
 		'sourcearea' : 1,
 		'specialchar' : 1,
@@ -85,9 +84,8 @@ var CKBUILDER_CONFIG = {
 		'tabletools' : 1,
 		'toolbar' : 1,
 		'undo' : 1,
-		'uploadcare' : 1,
+		'uploadfile' : 1,
 		'uploadimage' : 1,
-		'wsc' : 1,
 		'wysiwygarea' : 1
 	},
 	languages : {

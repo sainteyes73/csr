@@ -105,16 +105,35 @@ module.exports = io => {
         fs.writeFile(newPath, data, function (err) {
             if (err) console.log({err: err});
             else {
-              html = "";
-              html += "<script type='text/javascript'>";
+
               html += "    var funcNum = " + req.query.CKEditorFuncNum + ";";
               html += "    var url     = \"/uploads/" + req.files.upload.name + "\";";
-              html += "    var message = \"서버로 전송 클릭 후 이미지 크기 조절해주세요.\";";
+              html += "    var message = \"이미지 크기 조절 후 확인버튼 눌러주세요.\";";
               html += "";
               html += "    window.parent.CKEDITOR.tools.callFunction(funcNum, url, message);";
               html += "</script>";
 
               res.send(html);
+            }
+        });
+    });
+  });
+  router.post('/uploader/drag', multipartMiddleware, function(req, res) {
+    var fs = require('fs');
+
+    fs.readFile(req.files.upload.path, function (err, data) {
+        var newPath = __dirname + '/../public/uploads/drag/' + req.files.upload.name;
+        console.log(newPath);
+        fs.writeFile(newPath, data, function (err) {
+            if (err) console.log({err: err});
+            else {
+              var file= {
+                uploaded:1,
+                url:"/uploads/drag/" + req.files.upload.name,
+                filename:req.files.upload.name
+              }
+              console.log(file);
+              res.json(file);
             }
         });
     });
@@ -127,7 +146,7 @@ module.exports = io => {
     });
   }));
 
-  router.get('/:id', catchErrors(async (req, res, next) => {
+  router.get('/:id',needAuth, catchErrors(async (req, res, next) => {
     const question = await Question.findById(req.params.id).populate('author');
     const answers = await Answer.find({
       question: question.id
