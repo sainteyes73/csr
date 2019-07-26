@@ -105,7 +105,8 @@ module.exports = io => {
         fs.writeFile(newPath, data, function (err) {
             if (err) console.log({err: err});
             else {
-
+              html = "";
+              html += "<script type='text/javascript'>";
               html += "    var funcNum = " + req.query.CKEditorFuncNum + ";";
               html += "    var url     = \"/uploads/" + req.files.upload.name + "\";";
               html += "    var message = \"이미지 크기 조절 후 확인버튼 눌러주세요.\";";

@@ -34,8 +34,10 @@ block content
       form(action=`/questions/${question.id}/answers`, method='POST')
         .form-group
           label(for='answer') 답변
-          textarea.form-control(name="noticeContent", rows="5")
+          textarea#editor.form-control(name="noticeContent", rows="5")
         button.btn.btn-primary(type="submit") 등록
 
 
   script(src='/javascripts/question_client.js')
+  script.
+      CKEDITOR.replace('editor');
