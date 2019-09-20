@@ -9,9 +9,10 @@ CKEDITOR.editorConfig = function( config ) {
 	// The configuration options below are needed when running CKEditor from source files.
 	config.plugins = 'dialogui,dialog,about,a11yhelp,basicstyles,blockquote,notification,button,toolbar,clipboard,panel,floatpanel,menu,contextmenu,resize,elementspath,enterkey,popup,filetools,filebrowser,floatingspace,listblock,richcombo,format,horizontalrule,wysiwygarea,image,indent,indentlist,fakeobjects,link,list,magicline,maximize,pastetext,pastefromword,removeformat,showborders,sourcearea,specialchar,stylescombo,tab,table,tabletools,tableselection,undo,lineutils,widgetselection,widget,notificationaggregator,uploadwidget,uploadimage,uploadfile';
 	config.skin = 'office2013';
-	config.filebrowserUploadUrl='uploader',
-	config.uploadUrl='uploader/drag'
+	config.filebrowserUploadUrl='uploader';
+	config.uploadUrl='uploader/drag';
 	config.filebrowserUploadMethod = 'form';
+	config.extraPlugin='imageresize';
 	// %REMOVE_END%
 
 	// Define changes to default configuration here.
@@ -45,4 +46,8 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
+
+	config.imageResize={ maxWidth: 800, maxHeight: 800};
+
+  config.allowedContent=true;
 };

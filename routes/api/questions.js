@@ -45,7 +45,8 @@ router.put('/:id', catchErrors(async (req, res, next) => {
   }
   question.title = req.body.title;
   question.noticeContent = req.body.noticeContent;
-  question.tags = req.body.tags;
+  question.selectoption=req.body.selectoption;
+  question.manager=req.body.manager;
   await question.save();
   res.json(question);
 }));

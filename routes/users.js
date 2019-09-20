@@ -16,7 +16,7 @@ function needAuth(req, res, next) {
 router.get('/', needAuth, catchErrors(async (req, res, next) => {
   const users = await User.find({});
   var userEmail=req.user.email;
-  if(userEmail!="admin@admin.com"){
+  if(userEmail!="administrator"){
     req.flash('danger', '관리자만 접근 가능');
     return res.redirect('back');
   }

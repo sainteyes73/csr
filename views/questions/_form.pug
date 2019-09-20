@@ -2,41 +2,54 @@
 .form-group
   label(for="title") 제목
   input(
-    type='text', id='title', name='title', class='form-control', 
+    type='text', id='title', name='title', class='form-control', value=question.title
     placeholder='제목', required, autofocus
   )
 .row
   .col
     .form-group
-        event 담당자
+        event 법인
             .event-topic
-                select#event-tomenu.form-control(type="text",name='place', value=question.event)
-                    option 김기권
-                    option 금봉권
-                    option 경민구
-                    option 김우성
-                    option 강현모
+                select#event-tomenu1.form-control(type="text",name='manager', value=question.manager)
+                    option(value='', selected='') 선택하세요
+                    option(value='amo') 아모텍
+                    option(value='amg') 아모그린텍
+                    option(value='ams') 아모센스
+                    option(value='amol') 아모라이프사이언스
+                    option(value='etc') 기타 
+
+
+                    
   .col
     .form-groups
-        event 법인
-          .event-topic
-                select#event-tomenu.form-control(type="text",name='eventtopic', value=question.eventtopic)
-                    option 아모텍
-                    option 아모센스
-                    option 아모그린텍
-                    option 아모라이프사이언스
+        event 담당자
+          .selectoption
+                select#event-tomenu2.form-control(type="text",name='selectoption', value=question.selectoption)
+                  option(value='', selected='') 선택하세요
+                  option(value='11') 김기권
+                  option(value='12') 금봉권
+                  option(value='13') 경민구
+                  option(value='14') 김우성
+                  option(value='15') 강현모            
+                    
+
 
 
 .form-group
   label(for='editor') 내용
-  textarea#editor.form-control(type='text', name='noticeContent' ,value=question.noticeContent)
+  textarea#comment.form-control( type='text', name='noticeContent', 
+  placeholder='내용', required, autofocus ) #{question.noticeContent}
+    
     
   script.
-      CKEDITOR.replace('editor',{
+      var EDITOR_NAME='comment';
+      CKEDITOR.replace('comment',{
         height: 500
         });
 
-   	
+
+      
+      
 
 
  
