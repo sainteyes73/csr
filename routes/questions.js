@@ -85,7 +85,7 @@ module.exports = io => {
     });
   });
 
-  router.get('/adminpage', needAuth, async (req,res,next)=>{
+  router.get('/:id/adminpage', needAuth, async (req,res,next)=>{
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     console.log(req + '/question(get)');
@@ -106,7 +106,7 @@ module.exports = io => {
             }
           },
           {
-            eventtopic: {
+            manager: {
               '$regex': term,
               '$options': 'i'
             }
@@ -215,7 +215,13 @@ module.exports = io => {
   });
 
   router.get('/:id/edit', needAuth, catchErrors(async (req, res, next) => {
+    console.log('okedit');
+    console.log(req._passport.session.user);
     const question = await Question.findById(req.params.id);
+    const author = await Question.findById(req.params.id).populate('author');
+    if(author.author._id!=req._passport.session.user){ //타사용자가 edit 방지
+      res.redirect('/questions')
+    }
     res.render('questions/edit', {
       question: question
     });
