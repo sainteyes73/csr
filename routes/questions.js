@@ -1,6 +1,7 @@
 const express = require('express');
 const Question = require('../models/question');
 const Answer = require('../models/answer');
+const User = require('../models/user');
 const catchErrors = require('../lib/async-error');
 var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart();
@@ -59,7 +60,11 @@ module.exports = io => {
             eventtopic: {
               '$regex': term,
               '$options': 'i'
-            }
+            },
+            manager:{
+              '$regex': term,
+              '$options': 'i'
+              }
           }
         ]
       };
@@ -85,27 +90,19 @@ module.exports = io => {
     });
   });
 
-  router.get('/:id/adminpage', needAuth, async (req,res,next)=>{
+  router.get('/adminpage', needAuth, async (req,res,next)=>{
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
-    console.log(req + '/question(get)');
+    console.log(req._passport.session.user);
+    const user = await User.findOne({
+      "_id":req._passport.session.user
+    });
     var query = {};
-    const term = req.query.term;
+    console.log(user.userid);
+    const term = user.name;
     if (term) {
       query = {
         $or: [{
-            title: {
-              '$regex': term,
-              '$options': 'i'
-            }
-          },
-          {
-            noticeContent: {
-              '$regex': term,
-              '$options': 'i'
-            }
-          },
-          {
             manager: {
               '$regex': term,
               '$options': 'i'
@@ -122,9 +119,8 @@ module.exports = io => {
       page: page,
       limit: limit
     });
-    res.render('questions/index', {
+    res.render('questions/adminpage', {
       questions: questions,
-      term: term,
       query: req.query
     });
   })
