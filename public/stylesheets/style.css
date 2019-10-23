@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat|Raleway");
 body {
-  font: 1rem 'Montserrat', sans-serif; }
+  font: 1rem 'Montserrat', sans-serif;
+  background-color: #FFFCF4; }
   body > .main-content {
     min-height: 400px; }
 
@@ -122,6 +123,9 @@ a:hover {
 
 #more_item .display3 {
   color: #F2F2F2; }
+
+body {
+  background-color: '#F6ECD1'; }
 
 .form-signin {
   width: 300px;

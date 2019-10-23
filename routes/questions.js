@@ -91,27 +91,15 @@ module.exports = io => {
   });
 
   router.get('/adminpage', needAuth, async (req,res,next)=>{
+    if(req.user.adminflag!='1'){
+      res.redirect('/questions')
+    }
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     console.log(req._passport.session.user);
-    const user = await User.findOne({
-      "_id":req._passport.session.user
-    });
-    var query = {};
-    console.log(user.userid);
-    const term = user.name;
-    if (term) {
-      query = {
-        $or: [{
-            manager: {
-              '$regex': term,
-              '$options': 'i'
-            }
-          }
-        ]
-      };
-    }
-    const questions = await Question.paginate(query, {
+    const questions = await Question.paginate({
+      manager:req.user._id
+    }, {
       sort: {
         createdAt: -1
       },
@@ -124,10 +112,26 @@ module.exports = io => {
       query: req.query
     });
   })
-
+  router.get('/userpage', needAuth, async (req,res,next)=>{
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    console.log(req._passport.session.user);
+    const questions = await Question.paginate({
+      author:req.user._id
+    }, {
+      sort: {
+        createdAt: -1
+      },
+      populate: 'author',
+      page: page,
+      limit: limit
+    });
+    res.render('questions/userpage', {
+      questions: questions,
+      query: req.query
+    });
+  })
   router.post('/uploader', multipartMiddleware, function(req, res) {
-
-
     fs.readFile(req.files.upload.path, function (err, data) {
         var newPath = __dirname + '/../public/uploads/' + req.files.upload.name;
         console.log(newPath);
@@ -168,8 +172,6 @@ module.exports = io => {
     });
   });
   router.post('/:id/uploader', multipartMiddleware, function(req, res) {
-
-
     fs.readFile(req.files.upload.path, function (err, data) {
         var newPath = __dirname + '/../public/uploads/' + req.files.upload.name;
         console.log(newPath);
@@ -274,16 +276,38 @@ module.exports = io => {
 
   router.post('/', needAuth, catchErrors(async (req, res, next) => {
     const err = validateForm(req.body);
+    var managerid;
     if (err) {
       req.flash('danger', err);
       return res.redirect('back');
     }
-    const user = req.user;
-    console.log(req.user + 'okaybab');
+    console.log(req.body.manager);
+
+    if (req.body.manager=='01'){//김기권
+      managerid='A0607024'
+    }
+    else if(req.body.manager=='02'){//금봉권
+      managerid='A0701008'
+    }
+    else if(req.body.manager=='03'){//경민구
+      managerid='A1901009'
+    }
+    else if(req.body.manager=='04'){//김우성
+      managerid='A1903009';
+    }
+    else if(req.body.manager=='05'){// 강현모
+      managerid='A1904002'
+    }
+    const manager = await User.findOne({
+      "userid":managerid
+    });
+
+    const user=req.user;
+    console.log(managerid + 'okaybab');
     var question = new Question({
       author: user._id,
       title: req.body.title,
-      manager: req.body.manager,
+      manager: manager._id,
       noticeContent: req.body.noticeContent,
       selectoption: req.body.selectoption
     });

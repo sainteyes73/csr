@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 var schema = new Schema({
   author:  { type: Schema.Types.ObjectId, ref: 'User' },
   title: {type: String, trim: true, required: true},
-  manager: {type: String, trim: true, required: true},
+  manager: {type: Schema.Types.ObjectId, ref: 'User'},
   noticeContent: {type: String, trim: true, required: true},
   phonenum:{type: String, trim:true},
   extension: {type:Number, default:0},
