@@ -2,7 +2,7 @@
 doctype html
 html
   head
-    title sample
+    title AMO CSR
     meta(name="viewport", content="width=device-width, initial-scale=1, shrink-to-fit=no")
     link(rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css')
@@ -15,7 +15,7 @@ html
 
     //- this application
     link(rel='stylesheet', href='stylesheets/style.css')
-  body
+  body(style= "background-image:url('background.png')")
     block top-nav
     block hero-unit
     if flashMessages
@@ -31,19 +31,23 @@ block content
   .container
     .clearfix(style="margin-top: 120px")
       form.form-signin(action='/signin', method='POST')
-        h3.form-signin-heading 전산작업 의뢰서
-        br
-        label.sr-only(for='userid') ERP아이디
-        input(
-          type='text', id='userid', name='userid', class='form-control', 
-          placeholder='ERP ID', required, autofocus
-        )
-        br
-        label.sr-only(for='password') 비밀번호
-        input(
-          type='password', id='password', name='password', class='form-control', 
-          placeholder='password', required, autofocus
-        )
-        form-check.from-check-inline
-        br
-        button.btn.btn-primary.btn-block(type='submit') 로그인
+        div.card
+          div.card-body
+            img(src='logo2.jpg' style="width: 300px")
+            br
+            label.sr-only(for='userid') ERP아이디
+            input(
+              type='text', id='userid', name='userid', class='form-control', 
+              placeholder='ERP ID', required, autofocus
+            )
+            br
+            label.sr-only(for='password') 비밀번호
+            input(
+              type='password', id='password', name='password', class='form-control', 
+              placeholder='password', required, autofocus
+            )
+            form-check.from-check-inline
+            br
+            button.btn.btn-primary.btn-block(type='submit') 로그인
+
+      

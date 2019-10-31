@@ -94,10 +94,38 @@ module.exports = io => {
     if(req.user.adminflag!='1'){
       res.redirect('/questions')
     }
+    var query = {};
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     console.log(req._passport.session.user);
-    const questions = await Question.paginate({
+    if (term) {
+      query = {
+        $or: [{
+            title: {
+              '$regex': term,
+              '$options': 'i'
+            }
+          },
+          {
+            noticeContent: {
+              '$regex': term,
+              '$options': 'i'
+            }
+          },
+          {
+            eventtopic: {
+              '$regex': term,
+              '$options': 'i'
+            },
+            manager:{
+              '$regex': term,
+              '$options': 'i'
+              }
+          }
+        ]
+      };
+    }
+    const questions = await Question.paginate(query,{
       manager:req.user._id
     }, {
       sort: {
@@ -116,6 +144,34 @@ module.exports = io => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     console.log(req._passport.session.user);
+    var query = {};
+    if (term) {
+      query = {
+        $or: [{
+            title: {
+              '$regex': term,
+              '$options': 'i'
+            }
+          },
+          {
+            noticeContent: {
+              '$regex': term,
+              '$options': 'i'
+            }
+          },
+          {
+            eventtopic: {
+              '$regex': term,
+              '$options': 'i'
+            },
+            manager:{
+              '$regex': term,
+              '$options': 'i'
+              }
+          }
+        ]
+      };
+    }
     const questions = await Question.paginate({
       author:req.user._id
     }, {

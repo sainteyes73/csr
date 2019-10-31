@@ -1,7 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat|Raleway");
 body {
-  font: 1rem 'Montserrat', sans-serif;
-  background-color: #FFFCF4; }
+  font: 1rem 'Montserrat', sans-serif; }
   body > .main-content {
     min-height: 400px; }
 
@@ -124,13 +123,20 @@ a:hover {
 #more_item .display3 {
   color: #F2F2F2; }
 
-body {
-  background-color: '#F6ECD1'; }
-
 .form-signin {
-  width: 300px;
+  width: 482px;
+  height: 582px;
   margin: 0 auto;
-  padding: 1em; }
+  padding: 1em;
+  text-align: center; }
+  .form-signin .card {
+    height: 562px;
+    opacity: 0.9; }
+  .form-signin .card-body > img {
+    width: 170px;
+    height: auto;
+    padding-bottom: 50px;
+    padding-top: 50px; }
   .form-signin .form-signin-heading, .form-signin .checkbox {
     margin-bottom: 10px; }
   .form-signin .form-control {
@@ -206,6 +212,10 @@ body {
     margin-bottom: 0.5em;
     color: #888; }
 
+.nav-button {
+  width: 95px;
+  padding-right: 10px; }
+
 .question-like-btn, .answer-like-btn {
   cursor: pointer; }
   .question-like-btn .for-loading, .answer-like-btn .for-loading {
@@ -220,5 +230,11 @@ body {
   .question-like-btn.disabled, .answer-like-btn.disabled {
     color: #bbb;
     cursor: default; }
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  height: 100px;
+  width: 100%; }
 
 /*# sourceMappingURL=style.css.map */

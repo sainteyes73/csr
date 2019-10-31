@@ -1,12 +1,7 @@
 .answer.card(id= answer.id)
-  .numbers.like-badge
-    .number
-      span.number.num-likes= answer.numLikes
-    .button
-      a.like.answer-like-btn(href='#', data-id=answer.id)
-        i.fa.fa-thumbs-up
-        | 
-        | 좋아요
+  .nav.nav-pill
+    li(role='presentation')
+      a(href='#') 수정
 
   .card-body
     .content!= answer.noticeContent

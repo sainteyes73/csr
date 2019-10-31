@@ -1,11 +1,21 @@
-body{
-  background-color: '#F6ECD1';
-}
+
 .form-signin {
-  width: 300px;
+  width: 482px;
+  height: 582px;
   margin: 0 auto;
   padding: 1em;
+  text-align: center;
 
+  .card{
+    height: 562px;
+    opacity : 0.9;
+  }
+  .card-body > img{
+    width: 170px;
+    height: auto;
+    padding-bottom: 50px;
+    padding-top: 50px;
+  }
   .form-signin-heading, .checkbox {
     margin-bottom: 10px;
   }

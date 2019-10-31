@@ -17,6 +17,7 @@ var passportSocketIo = require('passport.socketio');
 var methodOverride = require('method-override');
 var favicon = require('serve-favicon');
 var users = require('./routes/users');
+
 module.exports = (app, io) => {
   // view engine setup
   app.set('views', path.join(__dirname, 'views'));

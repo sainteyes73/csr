@@ -68,6 +68,11 @@
     }
   }
 }
+.nav-button{
+  width:95px;
+  padding-right:10px;
+
+}
 
 .question-like-btn, .answer-like-btn {
   .for-loading {display: none;}
@@ -84,4 +89,10 @@
     color: #bbb;
     cursor: default;
   }
+}
+.footer{
+  position: absolute;
+  bottom:0;
+  height:100px;
+  width:100%;
 }
