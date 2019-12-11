@@ -12,6 +12,7 @@
     font-size: 1.3rem;
   }
   .content {
+
     color: #666;
   }
   .tags {
@@ -35,6 +36,7 @@
 }
 .questions {
   .content {
+    max-width:100%;
     max-height: 5em;
     overflow: hidden;
     text-overflow:ellipsis;
@@ -42,6 +44,7 @@
 }
 .show {
   .content {
+    max-width:100%;
     white-space: pre-wrap;
   }
   .buttons {
@@ -58,9 +61,7 @@
         font-size: 0.8em;
       }
     }
-    .card-body{
-      padding-left: 4em;
-    }
+
     margin-bottom: 1em;
     .content {
       margin-bottom: 0.5em;
@@ -73,7 +74,13 @@
   padding-right:10px;
 
 }
+div.content{
+  img{
+    max-width:100%;
+    height:auto;
+  }
 
+}
 .question-like-btn, .answer-like-btn {
   .for-loading {display: none;}
   cursor: pointer;
@@ -91,8 +98,11 @@
   }
 }
 .footer{
-  position: absolute;
   bottom:0;
   height:100px;
   width:100%;
+}
+#form-row{
+  margin-left:0px;
+  margin-right:0px;
 }

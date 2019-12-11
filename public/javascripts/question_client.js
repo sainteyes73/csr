@@ -44,5 +44,37 @@ $(function() {
       }
     });
   });
+  $('.btn.btn-primary.btn-sm').click(function(e){
+    var html= `.nav.nav-pill`
+    var $el=$(e.currentTarget);// event값의 전체 반환
+    console.log($el);
+    $.ajax({
+      url:'/api/answers/'+$el.data('id')+'/edit',
+      method: 'GET',
+      dataType:'json',
+      success: function(data){
+        var content='<form action=/questions/'+$el.data('id')+'/answers/edit?_method=PUT, method="POST">' +
+        ' <div class="form-group">'+
+        '   <textarea class="form-control" id="editor" name="noticeContent">'+data.content+'</textarea>' +
+        ' </div>' +
+        ' <button class="btn btn-warning" type="submit">수정완료</button>'+
+        ' <button class="btn btn-danger" onclick="window.location.reload()">취소</button>' +
+        '</form>';
+
+    //    $el.parents('.answer.card').find('.content').hide().wrap('<textarea class="form-control" id="editor" name="noticeContent">'+data.content);
+        $el.parents('.answer.card').find('.content').replaceWith(content);
+        $el.parents('.nav.nav-pill').empty();
+      //  CKEDITOR.replace('editor');
+    //    $el.parents('.nav.nav-pill').find('.btn.btn-danger.btn-sm').hide().wrap('<button type="button" class="btn btn-danger">취소</button>');
+    //    $el.parents('.nav.nav-pill').find('.btn.btn-primary.btn-sm').hide().wrap('<button type="button class=btn btn-warning">수정완료</button>')
+    //    $el.unwrap().wrap('<form action="/questions/"'+$el.data('id')+'/edit method="PUT">');
+      //  $el.unwrap().wrap('<form action="/questions/"'+$el.data('id')+'/edit method="PUT"');
+    //    $el.unwrap().wrap('<button type="button" class="btn btn-warning" type="submit">수정완료</button>');
+
+      //  $el.parents('.answer.card').find('.content').hide().wrap('<textarea class="form-control" id="editor" name="noticeContent">'+data.content);
+        CKEDITOR.replace('editor');
+      }
+    });
+  });
 
 });

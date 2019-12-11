@@ -1,11 +1,10 @@
-.content!= question.noticeContent
+.content(style="max-width:100%, height:auto")!= question.noticeContent
 
 .row
   .col-sm
     .numbers.
-      #[span.number.num-likes= question.numLikes] 좋아요,
-      #[span.number.num-answers= question.numAnswers] 답변,
-      #[span.number.num-reads= question.numReads] 조회수
+
+
   .col-sm
     .author
       | upload on #{moment(question.createdAt).format('YYYY-MM-DD')}

@@ -1,11 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat|Raleway');
 
 body {
-  font: 1rem 'Montserrat', sans-serif;
+  font: 1.4rem 'Montserrat', sans-serif;
   & > .main-content {
     min-height: 400px;
   }
-
 }
 
 a:hover {
@@ -62,19 +61,12 @@ a:hover {
     #small_search{
       display: none;
     }
-    #top_jumbo
-    {
-      margin-left: 30px;
-      margin-right: 30px;
-    }
+
     #footer #pc{
       margin-bottom:270px;
     }
   }
 @media (min-width: 992px){
-.navbar-nav li{
-  border-left: 1px solid #E6E6E6;
-}
 #last_li{
   border-right: 1px solid #E6E6E6;
 }

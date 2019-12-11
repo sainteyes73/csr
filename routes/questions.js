@@ -60,11 +60,7 @@ module.exports = io => {
             eventtopic: {
               '$regex': term,
               '$options': 'i'
-            },
-            manager:{
-              '$regex': term,
-              '$options': 'i'
-              }
+            }
           }
         ]
       };
@@ -94,38 +90,10 @@ module.exports = io => {
     if(req.user.adminflag!='1'){
       res.redirect('/questions')
     }
-    var query = {};
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     console.log(req._passport.session.user);
-    if (term) {
-      query = {
-        $or: [{
-            title: {
-              '$regex': term,
-              '$options': 'i'
-            }
-          },
-          {
-            noticeContent: {
-              '$regex': term,
-              '$options': 'i'
-            }
-          },
-          {
-            eventtopic: {
-              '$regex': term,
-              '$options': 'i'
-            },
-            manager:{
-              '$regex': term,
-              '$options': 'i'
-              }
-          }
-        ]
-      };
-    }
-    const questions = await Question.paginate(query,{
+    const questions = await Question.paginate({
       manager:req.user._id
     }, {
       sort: {
@@ -144,36 +112,8 @@ module.exports = io => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     console.log(req._passport.session.user);
-    var query = {};
-    if (term) {
-      query = {
-        $or: [{
-            title: {
-              '$regex': term,
-              '$options': 'i'
-            }
-          },
-          {
-            noticeContent: {
-              '$regex': term,
-              '$options': 'i'
-            }
-          },
-          {
-            eventtopic: {
-              '$regex': term,
-              '$options': 'i'
-            },
-            manager:{
-              '$regex': term,
-              '$options': 'i'
-              }
-          }
-        ]
-      };
-    }
     const questions = await Question.paginate({
-      author:req.user._id
+      manager:req.user._id
     }, {
       sort: {
         createdAt: -1
@@ -310,8 +250,29 @@ module.exports = io => {
       req.flash('danger', err);
       return res.redirect('back');
     }
+
+    if (req.body.manager=='01'){//김기권
+      managerid='A0607024'
+    }
+    else if(req.body.manager=='02'){//금봉권
+      managerid='A0701008'
+    }
+    else if(req.body.manager=='03'){//경민구
+      managerid='A1901009'
+    }
+    else if(req.body.manager=='04'){//김우성
+      managerid='A1903009';
+      console.log('04ok')
+    }
+    else if(req.body.manager=='05'){// 강현모
+      managerid='A1904002'
+    }
+    const manager = await User.findOne({
+      "userid":managerid
+    });
+
     question.title = req.body.title;
-    question.manager = req.body.manager;
+    question.manager = manager._id
     question.noticeContent = req.body.noticeContent;
     question.selectoption=req.body.selectoption;
     //  question.tags = req.body.tags.split(" ").map(e => e.trim());
@@ -350,6 +311,7 @@ module.exports = io => {
     }
     else if(req.body.manager=='04'){//김우성
       managerid='A1903009';
+      console.log('04ok')
     }
     else if(req.body.manager=='05'){// 강현모
       managerid='A1904002'
@@ -402,6 +364,43 @@ module.exports = io => {
     })
     req.flash('success', '성공적으로 답변이 달렸습니다.');
     res.redirect(`/questions/${req.params.id}`);
+  }));
+
+  router.post('/:id/answers/edit', needAuth, catchErrors(async (req, res, next) => {
+    const answer = await Answer.findById(req.params.id);
+    const question = await Question.findById(answer.question);
+    /*
+    if (!question) {
+      req.flash('danger', '질문이 존재하지 않습니다.');
+      return res.redirect('back');
+    }
+    */
+    answer.noticeContent=req.body.noticeContent
+    await answer.save();
+    const url = `/questions/${question._id}#${answer._id}`;
+    io.to(question.author.toString())
+      .emit('answered', {
+        url: url,
+        question: question
+      });
+    console.log('SOCKET EMIT', question.author.toString(), 'answered', {
+      url: url,
+      question: question
+    })
+    req.flash('success', '성공적으로 답변이 수정되었습니다.');
+    res.redirect(`/questions/${question._id}`);
+  }));
+
+  router.delete('/answers/:id', needAuth, catchErrors(async (req, res, next) => {
+    var answer= await Answer.findById(req.params.id);
+    var question = await Question.findById(answer.question);
+    await Answer.findOneAndRemove({
+      _id: req.params.id
+    });
+    question.numAnswers--;
+    await question.save();
+    req.flash('success', '성공적으로 삭제 되었습니다.');
+    res.redirect('back');
   }));
 
   return router;

@@ -1,10 +1,10 @@
-.answer.card(id= answer.id)
-  .nav.nav-pill
-    li(role='presentation')
-      a(href='#') 수정
-
+.answer.card
   .card-body
     .content!= answer.noticeContent
+
+    
+
+
   .row.card-body
     .col-sm
     .col-sm.text-right
@@ -13,3 +13,9 @@
         if answer.author
           | 
           | by #[a(href=`/users/${answer.author.id}`)= answer.author.name]
+  if answer.author && answer.author.id == currentUser.id
+    .nav.nav-pill
+      a.btn.btn-primary.btn-sm(id='answer-edit-btn' data-id=answer.id) 수정
+      | 
+      a.btn.btn-danger.btn-sm(id='answer-delete-btn' href=`/questions/answers/${answer.id}?_method=delete`) 삭제
+  hr

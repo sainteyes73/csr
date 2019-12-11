@@ -5,7 +5,7 @@
     type='text', id='title', name='title', class='form-control', value=question.title
     placeholder='제목', required, autofocus
   )
-.row
+#form-row.row
   .col
     .form-group
         event 법인
@@ -42,10 +42,10 @@
     
     
   script.
-      var EDITOR_NAME='comment';
-      CKEDITOR.replace('comment',{
-        height: 500
-        });
+    var EDITOR_NAME='comment';
+    CKEDITOR.replace('comment',{
+      height: 500
+    });
 
 
       

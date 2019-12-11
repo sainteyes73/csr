@@ -17,6 +17,7 @@ router.use(catchErrors(async (req, res, next) => {
 router.use('/questions', require('./questions'));
 
 // Like for Question
+/*
 router.post('/questions/:id/like', catchErrors(async (req, res, next) => {
   const question = await Question.findById(req.params.id);
   if (!question) {
@@ -42,7 +43,7 @@ router.post('/answers/:id/like', catchErrors(async (req, res, next) => {
   await answer.save();
   return res.json(answer);
 }));
-
+*/
 router.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.json({
@@ -50,5 +51,15 @@ router.use((err, req, res, next) => {
     msg: err.msg || err
   });
 });
+router.get('/answers/:id/edit', catchErrors(async(req, res, next)=>{
+  const answer = await Answer.findById(req.params.id);
+  if(!answer){
+    return next({status: 404, msg: '삭제된 답변입니다.'})
+  }
+  console.log('good click')
+  res.json({
+    content:answer.noticeContent
+  });
 
+}));
 module.exports = router;

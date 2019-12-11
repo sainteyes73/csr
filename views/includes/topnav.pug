@@ -1,23 +1,24 @@
-nav.navbar.navbar-expand-lg.navbar-light.bg-light(style="margin-bottom:30px")
-  input.nav-button(type='image' src="amo_logo.png")
-  button.navbar-toggler(type='button', data-toggle='collapse', data-target='#navbarColor02', aria-controls='navbarColor02', aria-expanded='false', aria-label='Toggle navigation')
-    span.navbar-toggler-icon
-  #navbarColor02.collapse.navbar-collapse
-    ul.navbar-nav.mr-auto
-      li.nav-item.active
+nav.navbar.navbar-inverse(style="margin-bottom:30px")
+  div.container-fluid
+    div.navbar-header
+      a.navbar-brand(href='/') AMO CSR
+    div.collapse.navbar-collapse
+      ul.nav.navbar-nav
+        li.nav-item.active
           span.sr-only (current)
-      li.nav-item
-        a.nav-link(href='/questions/new') 새 질문
-      if currentUser.adminflag==1
         li.nav-item
-          a.nav-link(href='/questions/adminpage') 관리자 페이지
-      else
+          a.nav-link(href='/questions/new') 새 질문
+        if currentUser.adminflag==1
+          li.nav-item
+            a.nav-link(href='/questions/adminpage') 관리자 페이지
+        else
+          li.nav-item
+            a.nav-link(href='/questions/userpage') 내가 쓴 글
         li.nav-item
-          a.nav-link(href='/questions/userpage') 내가 쓴 글
-      li.nav-item
-        a.nav-link(href='/signout') 로그아웃
-      
-    form.form-inline(action='/questions',method='GET')
-      input.form-control.mr-sm-2(type='text', name='term', placeholder='Search', aria-label='Search', value=term)
-      button.btn.btn-outline-success.my-2.my-sm-0(type='submit') 검색
-      |
+          a.nav-link(href='/signout') 로그아웃
+      form.navbar-form.navbar-right
+        div.form-group(action='/questions',method='GET')
+          input.form-control(type='text', name='term', placeholder='Search', aria-label='Search', value=term)
+          button.btn.btn-default(type='submit') 검색
+          |
+script.

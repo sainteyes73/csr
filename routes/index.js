@@ -13,7 +13,6 @@ function needAuth(req, res, next) {
 }
 
 router.get('/', needAuth,catchErrors(async(req,res,next)=>{
-
   res.render('index');
 }));
 
