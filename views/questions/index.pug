@@ -4,13 +4,16 @@ include ../includes/_paginate
 
 block content
   .container
+    .row
+      .main
+        h1.main-title 요청 리스트
     if questions.total <= 0 
       .alert.alert-info 등록된 질문이 없습니다.
       hr
       a.btn.btn-primary(href='/questions/new') 새 질문
     else
       .container
-        table.table.table-hover
+        table.table.table-hover(style="margin-top:30px")
           thead
             tr.table-head
               th 번호
@@ -34,9 +37,9 @@ block content
                     td=question.numReads
                     td
                       if question.status == 0
-                        span.label.label-default 처리중
+                        span.label.label-warning 처리중
                       else
-                        span.label.label-primary 처리완료
+                        span.label.label-success 처리완료
       +paginate(questions, '/questions', query)
       hr
       a.btn.btn-primary(href='/questions/new') 새 질문

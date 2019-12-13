@@ -14,7 +14,7 @@ html
     script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous')
     //- Notify 라이브러리 import: http://bootstrap-notify.remabledesigns.com/
     script(src='/javascripts/bootstrap-notify.js')
-
+    script(src='/socket.io/socket.io.js') 
     //- this application
     link(rel='stylesheet', href='stylesheets/style.css')
   body(style= "background-image:url('background.png')")
@@ -23,7 +23,7 @@ html
     if flashMessages
       each texts, type in flashMessages
         .container
-          .alert.alert-dismissible.fade.show(class=`alert-${type}`)
+          .alert(class=`alert-${type}`)
             each msg in texts
               | #{msg} 
             button.close(type='button', data-dismiss='alert', aria-label='close')
@@ -51,5 +51,27 @@ block content
             form-check.from-check-inline
             br
             button.btn.btn-primary.btn-block(type='submit') 로그인
+  script.
+        
+    // WebSocket을 만들고 접속
+      var socket = io();
+        
+      socket.on('welcome', function() {
+        // welcome 메시지를 받으면 join을 보낸다.
+        console.log('received welcome');
+        socket.emit('join');
+      });
+        
+      socket.on('answered', function(data) {
+        // answered를 받으면 링크를 notifier로 출력한다.
+        var title = $('<div></div>').text(data.question.title).html();
+        $.notify({
+        icon: 'fa fa-bell',
+        title: '답변이 달렸습니다.',
+        url: data.url,
+        message: title
+      });
+    });
+
 
       

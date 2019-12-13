@@ -215,18 +215,18 @@ div.content img {
   max-width: 100%;
   height: auto; }
 
-.question-like-btn, .answer-like-btn {
+.status-btn {
   cursor: pointer; }
-  .question-like-btn .for-loading, .answer-like-btn .for-loading {
+  .status-btn .for-loading {
     display: none; }
-  .question-like-btn.loading, .answer-like-btn.loading {
+  .status-btn.loading {
     filter: opacity(30%);
     cursor: wait; }
-    .question-like-btn.loading > span, .answer-like-btn.loading > span {
+    .status-btn.loading > span {
       display: none; }
-    .question-like-btn.loading .for-loading, .answer-like-btn.loading .for-loading {
+    .status-btn.loading .for-loading {
       display: inline-block; }
-  .question-like-btn.disabled, .answer-like-btn.disabled {
+  .status-btn.disabled {
     color: #bbb;
     cursor: default; }
 

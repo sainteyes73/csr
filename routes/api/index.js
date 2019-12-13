@@ -17,21 +17,16 @@ router.use(catchErrors(async (req, res, next) => {
 router.use('/questions', require('./questions'));
 
 // Like for Question
-/*
-router.post('/questions/:id/like', catchErrors(async (req, res, next) => {
+
+router.post('/questions/:id/status', catchErrors(async (req, res, next) => {
   const question = await Question.findById(req.params.id);
   if (!question) {
     return next({status: 404, msg: 'Not exist question'});
   }
-  var likeLog = await LikeLog.findOne({author: req.user._id, question: question._id});
-  if (!likeLog) {
-    question.numLikes++;
-    console.log('question numlike +1');
-    await Promise.all([
-      question.save(),
-      LikeLog.create({author: req.user._id, question: question._id})
-    ]);
+  if (question.status==0){
+    question.status=1;
   }
+  await question.save();
   return res.json(question);
 }));
 
@@ -43,7 +38,7 @@ router.post('/answers/:id/like', catchErrors(async (req, res, next) => {
   await answer.save();
   return res.json(answer);
 }));
-*/
+
 router.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.json({

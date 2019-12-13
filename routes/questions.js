@@ -113,7 +113,7 @@ module.exports = io => {
     const limit = parseInt(req.query.limit) || 10;
     console.log(req._passport.session.user);
     const questions = await Question.paginate({
-      manager:req.user._id
+      author:req.user._id
     }, {
       sort: {
         createdAt: -1
@@ -330,6 +330,16 @@ module.exports = io => {
       selectoption: req.body.selectoption
     });
     await question.save(); //mongodb에 저장하는동안 대기
+    const url = `/questions/${question._id}`;
+    io.to(question.manager.toString())
+      .emit('trans', {
+        url: url,
+        question: question
+      });
+    console.log('SOCKET EMIT', question.manager.toString(), 'trans', {
+      url: url,
+      question: question
+    })
     req.flash('success', '성공적으로 등록되었습니다.');
     res.redirect('/questions');
   }));
