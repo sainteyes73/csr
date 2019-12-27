@@ -317,8 +317,6 @@ module.exports = io => {
       managerid = 'A0607024'
     } else if (req.body.manager == '02') { //금봉권
       managerid = 'A0701008'
-    } else if (req.body.manager == '03') { //경민구
-      managerid = 'A1901009'
     } else if (req.body.manager == '04') { //김우성
       managerid = 'A1903009';
       console.log('04ok')
@@ -362,8 +360,6 @@ module.exports = io => {
       managerid = 'A0607024'
     } else if (req.body.manager == '02') { //금봉권
       managerid = 'A0701008'
-    } else if (req.body.manager == '03') { //경민구
-      managerid = 'A1901009'
     } else if (req.body.manager == '04') { //김우성
       managerid = 'A1903009';
       console.log('04ok')
