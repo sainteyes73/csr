@@ -54,7 +54,14 @@ html
             title: '답변이 달렸습니다.',
             url: data.url,
             message: title
-          });
+          },{
+            type:"warning",
+            placement:{
+              from:"top",
+              align:"right"
+            },
+            delay:0
+            });
         });
         
         socket.on('trans', function(data){
@@ -64,5 +71,12 @@ html
             title: '질문이 도착했습니다.',
             url: data.url,
             message: title
-            });
+            },{
+              type:"danger",
+              placement:{
+                from:"top",
+                align:"right"
+              },
+              delay:0
+              });
           });

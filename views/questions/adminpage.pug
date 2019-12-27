@@ -11,7 +11,6 @@ block content
     if questions.total <= 0 
       .alert.alert-info 등록된 질문이 없습니다.
       hr
-      a.btn.btn-primary(href='/questions/new') 새 질문
     else
       .container
         table.table.table-hover(style="margin-top:30px")
@@ -42,5 +41,4 @@ block content
                       else
                         span.label.label-primary 처리완료
       +paginate(questions, '/questions', query)
-      hr
-      a.btn.btn-primary(href='/questions/new') 공지사항
+    

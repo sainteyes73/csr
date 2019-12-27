@@ -9,7 +9,8 @@ var schema = new Schema({
   password: {type: String},
   createdAt: {type: Date, default: Date.now},
   minorname: {type: String, trim: true},
-  adminflag:{type:Number, default: 0}
+  adminflag:{type:Number, default: 0},
+  email:{type: String}
 }, {
   toJSON: { virtuals: true},
   toObject: {virtuals: true}

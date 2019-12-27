@@ -2,13 +2,69 @@ const express = require('express');
 const Question = require('../models/question');
 const Answer = require('../models/answer');
 const User = require('../models/user');
+const nodemailer = require('nodemailer');
+const smtpPool = require('nodemailer-smtp-pool');
 const catchErrors = require('../lib/async-error');
 var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart();
 var fs = require('file-system');
+var multer = require('multer');
 
 module.exports = io => {
+
+  function makeid()
+  {
+      var text = "";
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+      for( var i=0; i < 30; i++ )
+          text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+      return text;
+  }
+  var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+      cb(null, 'public/uploads/')
+    }
+  });
+
+  var upload = multer({
+    storage: storage
+  });
   const router = express.Router();
+  var mailSender = {
+    // 메일발송 함수
+    sendGmail: function(param) {
+      var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        prot: 587,
+        host: 'smtp.gmail.com',
+        secure: false,
+        requireTLS: true,
+        auth: {
+          user: 'amocsrsend@gmail.com',
+          pass: 'A190300('
+        }
+      });
+      // 메일 옵션
+      var mailOptions = {
+        from: 'amocsrsend@gmail.com',
+        to: param.toEmail, // 수신할 이메일
+        subject: param.subject, // 메일 제목
+        text: param.text, // 메일 내용
+        html: param.html
+      };
+      // 메일 발송
+      transporter.sendMail(mailOptions, function(error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
+
+    }
+  }
 
   // 동일한 코드가 users.js에도 있습니다. 이것은 나중에 수정합시다.
   function needAuth(req, res, next) {
@@ -28,7 +84,7 @@ module.exports = io => {
     if (!title) {
       return '제목을 입력해주세요.';
     }
-    if(!noticeContent){
+    if (!noticeContent) {
       return '내용을 입력해주세요.'
     }
 
@@ -86,15 +142,15 @@ module.exports = io => {
     });
   });
 
-  router.get('/adminpage', needAuth, async (req,res,next)=>{
-    if(req.user.adminflag!='1'){
+  router.get('/adminpage', needAuth, async (req, res, next) => {
+    if (req.user.adminflag != '1') {
       res.redirect('/questions')
     }
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     console.log(req._passport.session.user);
     const questions = await Question.paginate({
-      manager:req.user._id
+      manager: req.user._id
     }, {
       sort: {
         createdAt: -1
@@ -108,12 +164,12 @@ module.exports = io => {
       query: req.query
     });
   })
-  router.get('/userpage', needAuth, async (req,res,next)=>{
+  router.get('/userpage', needAuth, async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     console.log(req._passport.session.user);
     const questions = await Question.paginate({
-      author:req.user._id
+      author: req.user._id
     }, {
       sort: {
         createdAt: -1
@@ -127,84 +183,90 @@ module.exports = io => {
       query: req.query
     });
   })
-  router.post('/uploader', multipartMiddleware, function(req, res) {
-    fs.readFile(req.files.upload.path, function (err, data) {
-        var newPath = __dirname + '/../public/uploads/' + req.files.upload.name;
-        console.log(newPath);
-        fs.writeFile(newPath, data, function (err) {
-            if (err) console.log({err: err});
-            else {
-              html = "";
-              html += "<script type='text/javascript'>";
-              html += "    var funcNum = " + req.query.CKEditorFuncNum + ";";
-              html += "    var url     = \"/uploads/" + req.files.upload.name + "\";";
-              html += "    var message = \"이미지 크기 조절 후 확인버튼 눌러주세요.\";";
-              html += "";
-              html += "    window.parent.CKEDITOR.tools.callFunction(funcNum, url, message);";
-              html += "</script>";
-
-              res.send(html);
+  /*
+  router.post('/uploader', upload.single('upload'), function(req, res) {
+    fs.readFile(req.file.path, function (err, data) {
+          if (err) console.log({err: err});
+          else {
+            html = "";
+            html += "<script type='text/javascript'>";
+            html += "    var funcNum = " + req.query.CKEditorFuncNum + ";";
+            html += "    var url     = \"/uploads/" + req.file.filename + "\";";
+            html += "    var message = \"이미지 크기 조절 후 확인버튼 눌러주세요.\";";
+            html += "";
+            html += "    window.parent.CKEDITOR.tools.callFunction(funcNum, url, message);";
+            html += "</script>";
+            res.send(html);
             }
+    });
+  });
+  router.post('/uploader/drag', upload.single('upload'), function(req, res) {
+    fs.readFile(req.file.path, function (err, data) {
+          if (err) console.log({err: err});
+          else {
+            console.log(req.file);
+            var file= {
+              uploaded:1,
+              url:"/uploads/" + req.file.filename,
+              filename:req.file.originalname
+            }
+            console.log(file);
+            res.json(file);
+          }
+    });
+  });
+*/
+  router.post('/uploader', multipartMiddleware, function(req, res) {
+    fs.readFile(req.files.upload.path, function(err, data) {
+      var id=makeid();
+      var makedir=__dirname+'/../public/uploads/'+id;
+      var dir= fs.mkdir(makedir, err=>{
+        if(err && err.code != 'EEXIST') throw 'up'
+          console.log("Already exists");
+      })
+      fs.writeFile(makedir, data, function(err) {
+        if (err) console.log({
+          err: err
         });
+        else {
+          html = "";
+          html += "<script type='text/javascript'>";
+          html += "    var funcNum = " + req.query.CKEditorFuncNum + ";";
+          html += "    var url     = \"/uploads/" + req.files.upload.name + "\";";
+          html += "    var message = \"이미지 크기 조절 후 확인버튼 눌러주세요.\";";
+          html += "";
+          html += "    window.parent.CKEDITOR.tools.callFunction(funcNum, url, message);";
+          html += "</script>";
+
+          res.send(html);
+        }
+      });
     });
   });
   router.post('/uploader/drag', multipartMiddleware, function(req, res) {
-
-    fs.readFile(req.files.upload.path, function (err, data) {
-        var newPath = __dirname + '/../public/uploads/drag/' + req.files.upload.name;
-        console.log(newPath);
-        fs.writeFile(newPath, data, function (err) {
-            if (err) console.log({err: err});
-            else {
-              var file= {
-                uploaded:1,
-                url:"/uploads/drag/" + req.files.upload.name,
-                filename:req.files.upload.name
-              }
-              console.log(file);
-              res.json(file);
-            }
+    fs.readFile(req.files.upload.path, function(err, data) {
+      console.log(req);
+      var id=makeid();
+      var makedir=__dirname+'/../public/uploads/drag/'+id;
+      var dir= fs.mkdir(makedir, err=>{
+        if(err && err.code != 'EEXIST') throw 'up'
+          console.log("Already exists");
+      })
+      console.log(makedir);
+      fs.writeFile(makedir + '/' + req.files.upload.name, data, function(err) {
+        if (err) console.log({
+          err: err
         });
-    });
-  });
-  router.post('/:id/uploader', multipartMiddleware, function(req, res) {
-    fs.readFile(req.files.upload.path, function (err, data) {
-        var newPath = __dirname + '/../public/uploads/' + req.files.upload.name;
-        console.log(newPath);
-        fs.writeFile(newPath, data, function (err) {
-            if (err) console.log({err: err});
-            else {
-              html = "";
-              html += "<script type='text/javascript'>";
-              html += "    var funcNum = " + req.query.CKEditorFuncNum + ";";
-              html += "    var url     = \"/uploads/" + req.files.upload.name + "\";";
-              html += "    var message = \"이미지 크기 조절 후 확인버튼 눌러주세요.\";";
-              html += "";
-              html += "    window.parent.CKEDITOR.tools.callFunction(funcNum, url, message);";
-              html += "</script>";
-
-              res.send(html);
-            }
-        });
-    });
-  });
-  router.post('/:id/uploader/drag', multipartMiddleware, function(req, res) {
-
-    fs.readFile(req.files.upload.path, function (err, data) {
-        var newPath = __dirname + '/../public/uploads/drag/' + req.files.upload.name;
-        console.log(newPath);
-        fs.writeFile(newPath, data, function (err) {
-            if (err) console.log({err: err});
-            else {
-              var file= {
-                uploaded:1,
-                url:"/uploads/drag/" + req.files.upload.name,
-                filename:req.files.upload.name
-              }
-              console.log(file);
-              res.json(file);
-            }
-        });
+        else {
+          var file = {
+            uploaded: 1,
+            url: "/uploads/drag/"+id+'/' + req.files.upload.name,
+            filename: req.files.upload.name
+          }
+          console.log(file);
+          res.json(file);
+        }
+      });
     });
   });
 
@@ -213,18 +275,18 @@ module.exports = io => {
     console.log(req._passport.session.user);
     const question = await Question.findById(req.params.id);
     const author = await Question.findById(req.params.id).populate('author');
-    if(author.author._id!=req._passport.session.user){ //타사용자가 edit 방지
+    if (author.author._id != req._passport.session.user) { //타사용자가 edit 방지
       res.redirect('/questions')
     }
     res.render('questions/edit', {
       question: question
     });
   }));
-  router.get('/:id/indexcall',needAuth, catchErrors(async(req, res, next)=>{
+  router.get('/:id/indexcall', needAuth, catchErrors(async (req, res, next) => {
     const question = await Question.findById(req.params.id);
 
   }))
-  router.get('/:id',needAuth, catchErrors(async (req, res, next) => {
+  router.get('/:id', needAuth, catchErrors(async (req, res, next) => {
     const question = await Question.findById(req.params.id).populate('author');
     const answers = await Answer.find({
       question: question.id
@@ -251,30 +313,26 @@ module.exports = io => {
       return res.redirect('back');
     }
 
-    if (req.body.manager=='01'){//김기권
-      managerid='A0607024'
-    }
-    else if(req.body.manager=='02'){//금봉권
-      managerid='A0701008'
-    }
-    else if(req.body.manager=='03'){//경민구
-      managerid='A1901009'
-    }
-    else if(req.body.manager=='04'){//김우성
-      managerid='A1903009';
+    if (req.body.manager == '01') { //김기권
+      managerid = 'A0607024'
+    } else if (req.body.manager == '02') { //금봉권
+      managerid = 'A0701008'
+    } else if (req.body.manager == '03') { //경민구
+      managerid = 'A1901009'
+    } else if (req.body.manager == '04') { //김우성
+      managerid = 'A1903009';
       console.log('04ok')
-    }
-    else if(req.body.manager=='05'){// 강현모
-      managerid='A1904002'
+    } else if (req.body.manager == '05') { // 강현모
+      managerid = 'A1904002'
     }
     const manager = await User.findOne({
-      "userid":managerid
+      "userid": managerid
     });
 
     question.title = req.body.title;
     question.manager = manager._id
     question.noticeContent = req.body.noticeContent;
-    question.selectoption=req.body.selectoption;
+    question.selectoption = req.body.selectoption;
     //  question.tags = req.body.tags.split(" ").map(e => e.trim());
 
     await question.save();
@@ -300,27 +358,23 @@ module.exports = io => {
     }
     console.log(req.body.manager);
 
-    if (req.body.manager=='01'){//김기권
-      managerid='A0607024'
-    }
-    else if(req.body.manager=='02'){//금봉권
-      managerid='A0701008'
-    }
-    else if(req.body.manager=='03'){//경민구
-      managerid='A1901009'
-    }
-    else if(req.body.manager=='04'){//김우성
-      managerid='A1903009';
+    if (req.body.manager == '01') { //김기권
+      managerid = 'A0607024'
+    } else if (req.body.manager == '02') { //금봉권
+      managerid = 'A0701008'
+    } else if (req.body.manager == '03') { //경민구
+      managerid = 'A1901009'
+    } else if (req.body.manager == '04') { //김우성
+      managerid = 'A1903009';
       console.log('04ok')
-    }
-    else if(req.body.manager=='05'){// 강현모
-      managerid='A1904002'
+    } else if (req.body.manager == '05') { // 강현모
+      managerid = 'A1904002'
     }
     const manager = await User.findOne({
-      "userid":managerid
+      "userid": managerid
     });
 
-    const user=req.user;
+    const user = req.user;
     console.log(managerid + 'okaybab');
     var question = new Question({
       author: user._id,
@@ -331,6 +385,15 @@ module.exports = io => {
     });
     await question.save(); //mongodb에 저장하는동안 대기
     const url = `/questions/${question._id}`;
+    var emailParam = {
+      from: '"woosung kim"<amocsrsend@gmail.co.kr>',
+      toEmail: manager.email,
+      subject: "전산업무 요청입니다.",
+      html: "<a href='its.amotech.co.kr" + url + "'>" + " 페이지 이동 </a>"
+    }
+    mailSender.sendGmail(emailParam);
+
+
     io.to(question.manager.toString())
       .emit('trans', {
         url: url,
@@ -385,7 +448,7 @@ module.exports = io => {
       return res.redirect('back');
     }
     */
-    answer.noticeContent=req.body.noticeContent
+    answer.noticeContent = req.body.noticeContent
     await answer.save();
     const url = `/questions/${question._id}#${answer._id}`;
     io.to(question.author.toString())
@@ -402,7 +465,7 @@ module.exports = io => {
   }));
 
   router.delete('/answers/:id', needAuth, catchErrors(async (req, res, next) => {
-    var answer= await Answer.findById(req.params.id);
+    var answer = await Answer.findById(req.params.id);
     var question = await Question.findById(answer.question);
     await Answer.findOneAndRemove({
       _id: req.params.id
