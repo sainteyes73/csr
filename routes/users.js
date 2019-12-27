@@ -7,8 +7,12 @@ function needAuth(req, res, next) {
   if (req.isAuthenticated()) {
     next();
   } else {
-    req.flash('danger', 'Please signin first.');
-    res.redirect('/signin');
+    req.session.returnTo= req.path;
+    req.session.save(function(err){
+      if(err) return next(err);
+      req.flash('danger', '로그인이 필요합니다.');
+      res.redirect('/signin')
+    })
   }
 }
 

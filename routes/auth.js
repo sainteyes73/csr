@@ -3,11 +3,21 @@ module.exports = (app, passport) => {
     res.render('signin');
   });
 
-  app.post('/signin', passport.authenticate('local-signin', {
-    successRedirect : '/', // redirect to the secure profile section, 이때는 routes에 index.js를 가져온다
+  app.post('/signin', passport.authenticate('local-signin',{
     failureRedirect : '/signin', // redirect back to the signup page if there is an error
     failureFlash : true // allow flash messages
-}));
+}),(req, res)=>{
+  if(req.session.returnTo){
+    var redirURL=req.session.returnTo;
+    delete req.session.returnTo;
+    req.session.save(function(err){
+      if(err) return next(err);
+      res.redirect('/questions'+redirURL);
+    });
+  }else{
+    res.redirect('/');
+  }
+});
   app.get('/signout', (req, res) => {
     req.logout();
     req.flash('success', '로그아웃이 성공적으로 이루어졌습니다');
