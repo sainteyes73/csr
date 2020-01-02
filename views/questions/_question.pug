@@ -1,8 +1,6 @@
 .content!= question.noticeContent
 
 .row
-  .col-sm
-    .numbers.
 
 
   .col-sm
@@ -11,4 +9,9 @@
       if question.author
         | 
         | by #[a(href=`/users/${question.author.id}`)= question.author.name] 
+  .col-sm
+    if question.manager
+      |
+      | 담당자 #[a(href=`/users/${question.manager.id}`)= question.manager.name]
+        
         
