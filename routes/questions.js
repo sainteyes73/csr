@@ -98,7 +98,7 @@ module.exports = io => {
   /* GET questions listing. */
   router.get('/', needAuth, catchErrors(async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = parseInt(req.query.limit) || 15;
     console.log(req + '/question(get)');
     var query = {};
     const term = req.query.term;
@@ -152,7 +152,7 @@ module.exports = io => {
       res.redirect('/questions')
     }
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = parseInt(req.query.limit) || 15;
     console.log(req._passport.session.user);
     const questions = await Question.paginate({
       manager: req.user._id
@@ -171,7 +171,7 @@ module.exports = io => {
   })
   router.get('/userpage', needAuth, async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
+    const limit = parseInt(req.query.limit) || 15;
     console.log(req._passport.session.user);
     const questions = await Question.paginate({
       author: req.user._id
@@ -376,7 +376,8 @@ module.exports = io => {
     });
 
     const user = req.user;
-    console.log(managerid + 'okaybab');
+    console.log(user);
+    console.log('//'+manager + 'okaybab');
     var question = new Question({
       author: user._id,
       title: req.body.title,
