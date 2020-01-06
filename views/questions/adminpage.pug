@@ -51,5 +51,6 @@ block content
                         span.label.label-default 처리중
                       else
                         span.label.label-primary 처리완료
-      +paginate(questions, '/questions/adminpage', query)
+      div#pagination
+        +paginate(questions, '/questions/adminpage', query)
     
