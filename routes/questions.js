@@ -374,6 +374,7 @@ module.exports = io => {
     const manager = await User.findOne({
       "userid": managerid
     });
+    const othermanager= await User.distinct("email",{"adminflag":1});
 
     const user = req.user;
     console.log(user);
@@ -389,12 +390,14 @@ module.exports = io => {
     const url = `/questions/${question._id}`;
     var emailParam = {
       from: '"woosung kim"<amocsrsend@gmail.co.kr>',
-      toEmail: manager.email,
+      toEmail: othermanager,
       subject: "전산업무 요청입니다.",
-      html:"<h3>"+question.title+"의 내용으로 CSR에 문의가 들어왔습니다.</h3>"
+      html:"<h2>"+question.title+"의 내용으로 CSR에 문의가 들어왔습니다.</h3>"
+      +"<h4> 담당자는 "+manager.name + "입니다. </h2>"
       +"<a href='its.amotech.co.kr" + url + "'>" + " 페이지 이동 </a>"
     }
     mailSender.sendGmail(emailParam);
+
 
 
     io.to(question.manager.toString())
