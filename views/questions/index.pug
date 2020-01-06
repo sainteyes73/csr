@@ -17,11 +17,11 @@ block content
           thead
             tr.table-head
               th 번호
-              th 법인
-              th 담당자
+              th 전산담당자
               th.table-title(style='width: 516px') 제목
-              th
-              th 작성자
+              th 댓글
+              th 법인
+              th 요청자
               th 날짜
               th 조회수
               th 처리상태
@@ -29,22 +29,22 @@ block content
                 each question, index in questions.docs
                   tr
                     td=index+1
-                    if question.selectoption==100
-                      td AMT
-                    if question.selectoption==101
-                      td AMG
-                    if question.selectoption==102
-                      td AMS
-                    if question.selectoption==103
-                      td AML
-                    if question.selectoption==104
-                      td 기타
                     td=question.manager.name
+
                     td(style='display: inline-block; width: 500px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap')
-                      a(href=`/questions/${question.id}` )=question.title + " "
-                      
+                      a(href=`/questions/${question.id}` )=question.title + " "  
                     td
                       span.badge.badge-pill.badge-warning=" + "+question.numAnswers
+                      if question.selectoption==100
+                        td AMT
+                      if question.selectoption==101
+                        td AMG
+                      if question.selectoption==102
+                        td AMS
+                      if question.selectoption==103
+                        td AML
+                      if question.selectoption==104
+                        td 기타
                     td=question.author.name
                     td=moment(question.createdAt).format('YYYY-MM-DD')
                     td=question.numReads

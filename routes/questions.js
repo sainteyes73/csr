@@ -393,7 +393,7 @@ module.exports = io => {
       toEmail: othermanager,
       subject: "전산업무 요청입니다.",
       html:"<h2>"+question.title+"의 내용으로 CSR에 문의가 들어왔습니다.</h3>"
-      +"<h4> 담당자는 "+manager.name + "입니다. </h2>"
+      +"<h4> 담당자는 "+manager.name +' ' +manager.minorname +"입니다. </h2>"
       +"<a href='its.amotech.co.kr" + url + "'>" + " 페이지 이동 </a>"
     }
     mailSender.sendGmail(emailParam);
