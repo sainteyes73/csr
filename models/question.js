@@ -13,6 +13,7 @@ var schema = new Schema({
   createdAt: {type: Date, default: Date.now},
   selectoption: {type: String, trim:true, required: true},
   status:{type: Number, default:0, required: true},
+  statusDate:{type: Date, default: 0},
   deadline:{type: Date, default:0}
 
 }, {

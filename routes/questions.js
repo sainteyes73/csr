@@ -130,7 +130,7 @@ module.exports = io => {
       sort: {
         createdAt: -1
       },
-      populate: 'author',
+      populate:['author','manager'],
       page: page,
       limit: limit
     });
@@ -160,7 +160,7 @@ module.exports = io => {
       sort: {
         createdAt: -1
       },
-      populate: 'author',
+      populate:['author','manager'],
       page: page,
       limit: limit
     });
@@ -179,7 +179,7 @@ module.exports = io => {
       sort: {
         createdAt: -1
       },
-      populate: 'author',
+      populate:['author','manager'],
       page: page,
       limit: limit
     });
@@ -292,7 +292,7 @@ module.exports = io => {
 
   }))
   router.get('/:id', needAuth, catchErrors(async (req, res, next) => {
-    const question = await Question.findById(req.params.id).populate('author');
+    const question = await Question.findById(req.params.id).populate('author').populate('manager');
     const answers = await Answer.find({
       question: question.id
     }).populate('author');
