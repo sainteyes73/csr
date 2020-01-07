@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 var schema = new Schema({
   name: {type: String, required: true, trim: true},
   userid: {type: String, required: true, index: true, unique: true, trim: true},
+  company: {type: String},
   password: {type: String},
   createdAt: {type: Date, default: Date.now},
   minorname: {type: String, trim: true},

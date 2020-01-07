@@ -26,6 +26,9 @@ router.post('/questions/:id/status', catchErrors(async (req, res, next) => {
   if (question.status==0){
     question.status=1;
   }
+  else{
+    question.status=0;
+  }
   await question.save();
   return res.json(question);
 }));
