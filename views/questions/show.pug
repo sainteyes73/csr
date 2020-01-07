@@ -26,7 +26,7 @@ block content
           | 
           a.btn.btn-danger(href=`/questions/${question.id}?_method=delete`) 삭제
           |
-        if question.status==0 && question.author && question.author.id == currentUser.id || question.status==0 && question.manager == currentUser.id
+        if question.status==0 && question.author && question.author.id == currentUser.id || question.status==0 && question.manager.id == currentUser.id
           button.btn.btn-primary.status-btn(data-id=question.id style="float:right" onclick="window.location.reload()") 처리완료
             span.for-loading #[i.fa.fa-spin.fa-refresh] Loading
        
