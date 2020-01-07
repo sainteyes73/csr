@@ -387,14 +387,16 @@ module.exports = io => {
       selectoption: req.body.selectoption
     });
     await question.save(); //mongodb에 저장하는동안 대기
+    const author = await User.findById(user._id);
     const url = `/questions/${question._id}`;
     var emailParam = {
       from: '"woosung kim"<amocsrsend@gmail.co.kr>',
       toEmail: othermanager,
       subject: "전산업무 요청입니다.",
       html:"<h2>"+question.title+"의 내용으로 CSR에 문의가 들어왔습니다.</h3>"
-      +"<h4> 담당자는 "+manager.name +' ' +manager.minorname +"입니다. </h2>"
-      +"<a href='its.amotech.co.kr" + url + "'>" + " 페이지 이동 </a>"
+      +"<h4> 담당자: "+manager.name +' ' +manager.minorname+"</h2>"
+      +"<h4> 요청자: "+author.name+' '+ author.minorname +"</h4>"
+      +"<a href='its.amotech.co.kr" + url + "'>" + " 해당 웹페이지로 이동 </a>"
     }
     mailSender.sendGmail(emailParam);
 
