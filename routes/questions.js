@@ -389,13 +389,25 @@ module.exports = io => {
     await question.save(); //mongodb에 저장하는동안 대기
     const author = await User.findById(user._id);
     const url = `/questions/${question._id}`;
+    var com;
+    if(req.body.selectoption=='100'){
+      com='AMT';
+    }else if(req.body.selectoption=='101'){
+      com='AMG'
+    }else if(req.body.selectoption=='102'){
+      com='AMS'
+    }else if(req.body.selectoption=='103'){
+      com='AML'
+    }else if(req.body.selectoption=='104'){
+      com='기타'
+    }
     var emailParam = {
       from: '"woosung kim"<amocsrsend@gmail.co.kr>',
       toEmail: othermanager,
       subject: "전산업무 요청입니다.",
       html:"<h2>"+question.title+"의 내용으로 CSR에 문의가 들어왔습니다.</h3>"
       +"<h4> 담당자: "+manager.name +' ' +manager.minorname+"</h2>"
-      +"<h4> 요청자: "+author.name+' '+ author.minorname +"</h4>"
+      +"<h4> 요청자: "+author.name+' '+ author.minorname +"("+ com+")</h4>"
       +"<a href='its.amotech.co.kr" + url + "'>" + " 해당 웹페이지로 이동 </a>"
     }
     mailSender.sendGmail(emailParam);
