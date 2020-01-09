@@ -429,8 +429,8 @@ module.exports = io => {
 
   router.post('/:id/answers', needAuth, catchErrors(async (req, res, next) => {
     const user = req.user;
-    const question = await Question.findById(req.params.id);
-
+    const question = await Question.findById(req.params.id).populate('author');
+    const manager = await User.findById(question.manager);
     if (!question) {
       req.flash('danger', '질문이 존재하지 않습니다.');
       return res.redirect('back');
@@ -444,8 +444,34 @@ module.exports = io => {
     await answer.save();
     question.numAnswers++;
     await question.save();
-
+    var com;
+    if(req.body.selectoption=='100'){
+      com='AMT';
+    }else if(req.body.selectoption=='101'){
+      com='AMG'
+    }else if(req.body.selectoption=='102'){
+      com='AMS'
+    }else if(req.body.selectoption=='103'){
+      com='AML'
+    }else if(req.body.selectoption=='104'){
+      com='기타'
+    }
     const url = `/questions/${question._id}#${answer._id}`;
+    if(answer.author==question.author.id){
+      var emailParam = {
+        from: '"woosung kim"<amocsrsend@gmail.co.kr>',
+        toEmail: manager.email,
+        subject: "요청자가 글에 댓글을 남겼습니다.",
+        html:"<h2>"+question.title+"의 글에 댓글이 달렸습니다.</h3>"
+        +"<h4> 담당자: "+manager.name +' ' +manager.minorname+"</h2>"
+        +"<h4> 요청자: "+question.author.name+' '+ question.author.minorname +"("+ com+")</h4>"
+        +"<a href='its.amotech.co.kr" + url + "'>" + " 해당 웹페이지로 이동 </a>"
+      }
+      console.log('emailsendanswer');
+      mailSender.sendGmail(emailParam);
+    }
+
+
     io.to(question.author.toString())
       .emit('answered', {
         url: url,
