@@ -16,20 +16,20 @@ block content
         table.table.table-hover(style="margin-top:30px")
           thead
             tr.table-head
-              th 번호
-              th 전산담당자
-              th.table-title(style='width: 516px') 제목
+              th(style='text-align:center') 번호
+              th(style='text-align:center') 전산담당자
+              th.table-title(style='width: 516px; text-align:center') 제목
               th 댓글
               th 법인
               th 요청자
-              th 날짜
-              th 조회수
+              th(style='text-align:center') 날짜
+              th(style='text-align:center') 조회수
               th 처리상태
               tbody
                 each question, index in questions.docs
                   tr
-                    td=index+1
-                    td=question.manager.name
+                    td(style='text-align:center')=index+1
+                    td(style='text-align:center')=question.manager.name
 
                     td(style='display: inline-block; width: 500px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap')
                       a(href=`/questions/${question.id}` )=question.title + " "  
@@ -46,8 +46,8 @@ block content
                       if question.selectoption==104
                         td 기타
                     td=question.author.name
-                    td=moment(question.createdAt).format('YYYY-MM-DD')
-                    td=question.numReads
+                    td(style='text-align:center')=moment(question.createdAt).format('YYYY-MM-DD')
+                    td(style='text-align:center')=question.numReads
                     td
                       if question.status == 0
                         span.label.label-warning 처리중
