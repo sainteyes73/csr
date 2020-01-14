@@ -408,7 +408,7 @@ module.exports = io => {
       html:"<h2>"+question.title+"의 내용으로 CSR에 문의가 들어왔습니다.</h3>"
       +"<h4> 담당자: "+manager.name +' ' +manager.minorname+"</h2>"
       +"<h4> 요청자: "+author.name+' '+ author.minorname +"("+ com+")</h4>"
-      +"<a href='its.amotech.co.kr" + url + "'>" + " 해당 웹페이지로 이동 </a>"
+      +"<a href='http://its.amotech.co.kr" + url + "' target='_blank'>페이지 이동</a>"
     }
     mailSender.sendGmail(emailParam);
 
@@ -465,7 +465,7 @@ module.exports = io => {
         html:"<h2>"+question.title+"의 글에 댓글이 달렸습니다.</h3>"
         +"<h4> 담당자: "+manager.name +' ' +manager.minorname+"</h2>"
         +"<h4> 요청자: "+question.author.name+' '+ question.author.minorname +"("+ com+")</h4>"
-        +"<a href='its.amotech.co.kr" + url + "'>" + " 해당 웹페이지로 이동 </a>"
+        +"<a href='http://its.amotech.co.kr" + url + "' target='_blank'>페이지 이동</a>"
       }
       console.log('emailsendanswer');
       mailSender.sendGmail(emailParam);
