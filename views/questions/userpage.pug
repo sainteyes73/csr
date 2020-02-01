@@ -30,7 +30,7 @@ block content
               th 처리상태
               tbody
                 each question, index in questions.docs
-                  if question.numReads > 40
+                  if question.numReads > 25
                     tr(style='background-color:#CCDFF8')
                       td(style='text-align:center')=index+1
                       if question.item
