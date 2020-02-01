@@ -156,7 +156,7 @@ module.exports = io => {
       sort: {
         createdAt: -1
       },
-      populate:['author','manager','company'],
+      populate:['author','manager','company','item'],
       page: page,
       limit: limit
     });
@@ -175,7 +175,7 @@ module.exports = io => {
       sort: {
         createdAt: -1
       },
-      populate:['author','manager','company'],
+      populate:['author','manager','company','item'],
       page: page,
       limit: limit
     });
