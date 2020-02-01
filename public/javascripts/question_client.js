@@ -8,7 +8,7 @@ $(function() {
       method: 'POST',
       dataType: 'json',
       success: function(data) {
-        console.log('answer status 1')
+        console.log('answer status 1');
       },
       error: function(data, status) {
         if (data.status == 401) {
@@ -33,6 +33,7 @@ $(function() {
       success: function(data) {
         $el.parents('.answer').find('.num-likes').text(data.numLikes);
         $el.addClass('disabled');
+
       },
       error: function(data, status) {
         if (data.status == 401) {

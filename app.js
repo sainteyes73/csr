@@ -124,7 +124,6 @@ module.exports = (app, io) => {
       });
     }
   });
-
   app.use('/', index);
   require('./routes/auth')(app, passport);
 //  app.use('/list', list);

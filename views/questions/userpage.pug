@@ -13,12 +13,14 @@ block content
       hr
       a.btn.btn-primary(href='/questions/new') 새 질문
     else
+      
       .container
         table.table.table-hover(style="margin-top:30px")
           thead
             tr.table-head
               th(style='text-align:center') 번호
-              th(style='text-align:center') 전산담당자
+              th(style='text-align:center') 구분
+              th(style='text-align:center') CS담당자
               th.table-title(style='width: 516px; text-align:center') 제목
               th 댓글
               th 법인
@@ -28,32 +30,60 @@ block content
               th 처리상태
               tbody
                 each question, index in questions.docs
-                  tr
-                    td(style='text-align:center')=index+1
-                    td(style='text-align:center')=question.manager.name
-
-                    td(style='display: inline-block; width: 500px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap')
-                      a(href=`/questions/${question.id}` )=question.title + " "  
-                    td
-                      span.badge.badge-pill.badge-warning=" + "+question.numAnswers
-                      if question.selectoption==100
-                        td AMT
-                      if question.selectoption==101
-                        td AMG
-                      if question.selectoption==102
-                        td AMS
-                      if question.selectoption==103
-                        td AML
-                      if question.selectoption==104
-                        td 기타
-                    td=question.author.name
-                    td(style='text-align:center')=moment(question.createdAt).format('YYYY-MM-DD')
-                    td(style='text-align:center')=question.numReads
-                    td
-                      if question.status == 0
-                        span.label.label-warning 처리중
+                  if question.numReads > 40
+                    tr(style='background-color:#CCDFF8')
+                      td(style='text-align:center')=index+1
+                      if question.item
+                        td(style='text-align:center')=question.item.name
                       else
-                        span.label.label-success 처리완료
+                        td
+                      td(style='text-align:center')=question.manager.name
+
+                      td(style='display: inline-block; width: 500px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap')
+                        a(href=`/questions/${question.id}` )=question.title + " "  
+                      td
+                        span.badge.badge-pill.badge-warning=" + "+question.numAnswers
+                      if question.company
+                        td(style='text-align:center')=question.company.name
+                      else
+                        td
+                      td=question.author.name
+                      td(style='text-align:center')=moment(question.createdAt).format('YYYY-MM-DD')
+                      td(style='text-align:center')=question.numReads
+                      td
+                        if question.status == 0
+                          span.label.label-warning 접수대기
+                        if question.status == 1
+                          span.label.label-success 처리중
+                        if question.status == 2
+                          span.label.label-success 처리완료
+                  else
+                    tr
+                      td(style='text-align:center')=index+1
+                      if question.item
+                        td(style='text-align:center')=question.item.name
+                      else
+                        td
+                      td(style='text-align:center')=question.manager.name
+
+                      td(style='display: inline-block; width: 500px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap')
+                        a(href=`/questions/${question.id}` )=question.title + " "  
+                      td
+                        span.badge.badge-pill.badge-warning=" + "+question.numAnswers
+                      if question.company
+                        td(style='text-align:center')=question.company.name
+                      else
+                        td
+                      td=question.author.name
+                      td(style='text-align:center')=moment(question.createdAt).format('YYYY-MM-DD')
+                      td(style='text-align:center')=question.numReads
+                      td
+                        if question.status == 0
+                          span.label.label-warning 접수중
+                        if question.status == 1
+                          span.label.label-success 처리중
+                        if question.status == 2
+                          span.label.label-success 처리완료
       div#pagination
         +paginate(questions, '/questions/userpage', query)
       hr

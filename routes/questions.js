@@ -2,6 +2,8 @@ const express = require('express');
 const Question = require('../models/question');
 const Answer = require('../models/answer');
 const User = require('../models/user');
+const Company = require('../models/company');
+const Item = require('../models/item');
 const nodemailer = require('nodemailer');
 const smtpPool = require('nodemailer-smtp-pool');
 const catchErrors = require('../lib/async-error');
@@ -116,12 +118,6 @@ module.exports = io => {
               '$regex': term,
               '$options': 'i'
             }
-          },
-          {
-            eventtopic: {
-              '$regex': term,
-              '$options': 'i'
-            }
           }
         ]
       };
@@ -130,7 +126,7 @@ module.exports = io => {
       sort: {
         createdAt: -1
       },
-      populate:['author','manager'],
+      populate:['author','manager','company','item'],
       page: page,
       limit: limit
     });
@@ -160,7 +156,7 @@ module.exports = io => {
       sort: {
         createdAt: -1
       },
-      populate:['author','manager'],
+      populate:['author','manager','company'],
       page: page,
       limit: limit
     });
@@ -179,7 +175,7 @@ module.exports = io => {
       sort: {
         createdAt: -1
       },
-      populate:['author','manager'],
+      populate:['author','manager','company'],
       page: page,
       limit: limit
     });
@@ -331,11 +327,18 @@ module.exports = io => {
     const manager = await User.findOne({
       "userid": managerid
     });
+    const company = await Company.findOne({
+      "number": req.body.company
+    });
+    const item = await Item.findOne({
+      "number": req.body.item
+    });
 
     question.title = req.body.title;
     question.manager = manager._id
     question.noticeContent = req.body.noticeContent;
-    question.selectoption = req.body.selectoption;
+    question.company=company._id;
+    question.item=item._id
     //  question.tags = req.body.tags.split(" ").map(e => e.trim());
 
     await question.save();
@@ -360,7 +363,6 @@ module.exports = io => {
       return res.redirect('back');
     }
     console.log(req.body.manager);
-
     if (req.body.manager == '01') { //김기권
       managerid = 'A0607024'
     } else if (req.body.manager == '02') { //금봉권
@@ -374,6 +376,12 @@ module.exports = io => {
     const manager = await User.findOne({
       "userid": managerid
     });
+    const company = await Company.findOne({
+      "number": req.body.company
+    });
+    const item = await Item.findOne({
+      "number": req.body.item
+    });
     const othermanager= await User.distinct("email",{"adminflag":1});
 
     const user = req.user;
@@ -384,30 +392,19 @@ module.exports = io => {
       title: req.body.title,
       manager: manager._id,
       noticeContent: req.body.noticeContent,
-      selectoption: req.body.selectoption
+      company:company._id,
+      item: item._id
     });
     await question.save(); //mongodb에 저장하는동안 대기
     const author = await User.findById(user._id);
     const url = `/questions/${question._id}`;
-    var com;
-    if(req.body.selectoption=='100'){
-      com='AMT';
-    }else if(req.body.selectoption=='101'){
-      com='AMG'
-    }else if(req.body.selectoption=='102'){
-      com='AMS'
-    }else if(req.body.selectoption=='103'){
-      com='AML'
-    }else if(req.body.selectoption=='104'){
-      com='기타'
-    }
     var emailParam = {
       from: '"woosung kim"<amocsrsend@gmail.co.kr>',
       toEmail: othermanager,
       subject: "전산업무 요청입니다.",
       html:"<h2>"+question.title+"의 내용으로 CSR에 문의가 들어왔습니다.</h3>"
       +"<h4> 담당자: "+manager.name +' ' +manager.minorname+"</h2>"
-      +"<h4> 요청자: "+author.name+' '+ author.minorname +"("+ com+")</h4>"
+      +"<h4> 요청자: "+author.name+' '+ author.minorname +"("+company.name+")</h4>"
       +"<a href='http://its.amotech.co.kr" + url + "' target='_blank'>페이지 이동</a>"
     }
     mailSender.sendGmail(emailParam);

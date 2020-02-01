@@ -11,9 +11,8 @@ var schema = new Schema({
   numAnswers: {type: Number, default: 0},
   numReads: {type: Number, default: 0},
   createdAt: {type: Date, default: Date.now},
-  selectoption: {type: String, trim:true, required: true},
+  company: {type: Schema.Types.ObjectId, ref:'Company'},
   status:{type: Number, default:0, required: true},
-  statusDate:{type: Date, default: 0},
   deadline:{type: Date, default:0},
   item:{type: Schema.Types.ObjectId, ref: 'Item'}
 }, {
