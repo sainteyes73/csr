@@ -47,7 +47,7 @@ block content
         each answer in answers
           include _answer
 
-    if currentUser
+    if currentUser && question.status != 0
       form(action=`/questions/${question.id}/answers`, method='POST')
         .form-group
           label(for='answer') 답변
