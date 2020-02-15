@@ -1,27 +1,82 @@
 $(function() {
   $('.status-btn').click(function(e) {
-    var $el = $(e.currentTarget);
-    if ($el.hasClass('loading')) return;
-    $el.addClass('loading');
-    $.ajax({
-      url: '/api/questions/' + $el.data('id') + '/status',
-      method: 'POST',
-      dataType: 'json',
-      success: function(data) {
-        console.log('answer status 1');
-      },
-      error: function(data, status) {
-        if (data.status == 401) {
-          alert('Login required!');
-          location = '/signin';
-        }
-        console.log(data, status);
-      },
-      complete: function(data) {
-        $el.removeClass('loading');
+    textbox_data = CKEDITOR.instances.editor.getData();
+    if(textbox_data!=''){
+      console.log("not empty editor");
+      if(confirm('작성 중인 댓글이 있습니다. 계속 진행하시겠습니까?')){
+        var $el = $(e.currentTarget);
+        if ($el.hasClass('loading')) return;
+        $el.addClass('loading');
+        $.ajax({
+          url: '/api/questions/' + $el.data('id') + '/status',
+          method: 'POST',
+          dataType: 'json',
+          success: function(data) {
+            console.log('answer status 1');
+            if(data.responseText!=2){
+              setTimeout(function(){// wait for 5 secs(2)
+                location.reload(); // then reload the page.(3)
+              }, 3000);
+            }
+          },
+          error: function(data, status) {
+            if (data.status == 401) {
+              alert('Login required!');
+              location = '/signin';
+            }
+            console.log(data, status);
+          },
+          complete: function(data) {
+            console.log(data.responseText);
+            if(data.responseText==2){
+              location = '/questions'
+            }
+          }
+        });
+      }else{
+        e.preventDefault();
       }
-    });
+    }else{
+      var $el = $(e.currentTarget);
+      if ($el.hasClass('loading')) return;
+      $el.addClass('loading');
+      $.ajax({
+        url: '/api/questions/' + $el.data('id') + '/status',
+        method: 'POST',
+        dataType: 'json',
+        success: function(data) {
+          console.log('answer status 1');
+          if(data.responseText!=2){
+            setTimeout(function(){// wait for 5 secs(2)
+              location.reload(); // then reload the page.(3)
+            }, 3000);
+          }
+        },
+        error: function(data, status) {
+          if (data.status == 401) {
+            alert('Login required!');
+            location = '/signin';
+          }
+          console.log(data, status);
+        },
+        complete: function(data) {
+          console.log(data.responseText);
+          if(data.responseText==2){
+            location = '/questions'
+          }
+        }
+      });
+    }
   });
+  /*
+  $('#sub_button2').on('click', function(event){
+    if($("#editor").val()==''){
+      console.log("editor empty");
+      alert('내용을 입력해야 처리완료가 됩니다.');
+      event.preventDefault();
+    }
+  });
+*/
 
   $('.answer-like-btn').click(function(e) {
     var $el = $(e.currentTarget);

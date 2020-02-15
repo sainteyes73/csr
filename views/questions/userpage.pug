@@ -26,6 +26,7 @@ block content
               th 법인
               th 요청자
               th(style='text-align:center') 등록날짜
+              th(style='text-align:center') 완료날짜
               th(style='text-align:center') 조회수
               th 처리상태
               tbody
@@ -49,6 +50,10 @@ block content
                         td
                       td=question.author.name
                       td(style='text-align:center')=moment(question.createdAt).format('YYYY-MM-DD')
+                      if question.status==2
+                        td(style='text-align:center')=moment(question.completeDate).format('YYYY-MM-DD')
+                      else
+                        td
                       td(style='text-align:center')=question.numReads
                       td
                         if question.status == 0
@@ -76,6 +81,10 @@ block content
                         td
                       td=question.author.name
                       td(style='text-align:center')=moment(question.createdAt).format('YYYY-MM-DD')
+                      if question.status==2
+                        td(style='text-align:center')=moment(question.completeDate).format('YYYY-MM-DD')
+                      else
+                        td
                       td(style='text-align:center')=question.numReads
                       td
                         if question.status == 0

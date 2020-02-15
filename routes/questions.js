@@ -149,7 +149,6 @@ module.exports = io => {
     }
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 15;
-    console.log(req._passport.session.user);
     const questions = await Question.paginate({
       manager: req.user._id
     }, {
@@ -168,7 +167,6 @@ module.exports = io => {
   router.get('/userpage', needAuth, async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 15;
-    console.log(req._passport.session.user);
     const questions = await Question.paginate({
       author: req.user._id
     }, {
@@ -393,6 +391,7 @@ module.exports = io => {
       manager: manager._id,
       noticeContent: req.body.noticeContent,
       company:company._id,
+      statusDate:0,
       item: item._id
     });
     await question.save(); //mongodb에 저장하는동안 대기

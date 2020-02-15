@@ -3,6 +3,7 @@ const Question = require('../../models/question');
 const Answer = require('../../models/answer');
 const LikeLog = require('../../models/like-log');
 const catchErrors = require('../../lib/async-error');
+const moment = require('moment');
 
 const router = express.Router();
 
@@ -28,12 +29,14 @@ router.post('/questions/:id/status', catchErrors(async (req, res, next) => {
   }
   else if(question.status==1){
     question.status=2;
+    question.statusDate=moment().valueOf();
   }
   else if(question.status==2){
     question.status=1;
+    question.completeDate=0;
   }
   await question.save();
-  return res.json(question);
+  return res.json(question.status);
 }));
 
 // Like for Answer
