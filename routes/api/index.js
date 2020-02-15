@@ -33,7 +33,7 @@ router.post('/questions/:id/status', catchErrors(async (req, res, next) => {
   }
   else if(question.status==2){
     question.status=1;
-    question.completeDate=0;
+    question.statusDate=0;
   }
   await question.save();
   return res.json(question.status);
