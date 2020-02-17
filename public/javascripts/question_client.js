@@ -68,15 +68,36 @@ $(function() {
       });
     }
   });
-  /*
-  $('#sub_button2').on('click', function(event){
-    if($("#editor").val()==''){
-      console.log("editor empty");
-      alert('내용을 입력해야 처리완료가 됩니다.');
-      event.preventDefault();
-    }
+
+  $('#firststep').on('click', function(e){
+    var $el = $(e.currentTarget);
+    if ($el.hasClass('loading')) return;
+    $el.addClass('loading');
+    $.ajax({
+      url: '/api/questions/' + $el.data('id') + '/status',
+      method: 'POST',
+      dataType: 'json',
+      success: function(data) {
+        console.log('answer status 1');
+        if(data.responseText!=2){
+          setTimeout(function(){// wait for 5 secs(2)
+            location.reload(); // then reload the page.(3)
+          }, 3000);
+        }
+      },
+      error: function(data, status) {
+        if (data.status == 401) {
+          alert('Login required!');
+          location = '/signin';
+        }
+        console.log(data, status);
+      },
+      complete: function(data) {
+        console.log(data.responseText);
+      }
+    });
   });
-*/
+
 
   $('.answer-like-btn').click(function(e) {
     var $el = $(e.currentTarget);

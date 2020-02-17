@@ -310,6 +310,21 @@ div.content img {
     color: #bbb;
     cursor: default; }
 
+#firststep {
+  cursor: pointer; }
+  #firststep .for-loading {
+    display: none; }
+  #firststep.loading {
+    filter: opacity(30%);
+    cursor: wait; }
+    #firststep.loading > span {
+      display: none; }
+    #firststep.loading .for-loading {
+      display: inline-block; }
+  #firststep.disabled {
+    color: #bbb;
+    cursor: default; }
+
 .footer {
   bottom: 0;
   height: 100px;
