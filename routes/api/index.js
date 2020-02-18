@@ -30,13 +30,16 @@ router.post('/questions/:id/status', catchErrors(async (req, res, next) => {
   else if(question.status==1){
     question.status=2;
     question.statusDate=moment().valueOf();
-    var answer = new Answer({
-      author: req.user._id,
-      question: question._id,
-      noticeContent: req.body.content
-    });
-    await answer.save();
-    question.numAnswers++;
+    console.log(req.body.content);
+    if(req.body.content){
+      var answer = new Answer({
+        author: req.user._id,
+        question: question._id,
+        noticeContent: req.body.content
+      });
+      await answer.save();
+      question.numAnswers++;
+    }
   }
   else if(question.status==2){
     question.status=1;
