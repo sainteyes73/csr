@@ -10,7 +10,10 @@ $(function() {
         $.ajax({
           url: '/api/questions/' + $el.data('id') + '/status',
           method: 'POST',
-          dataType: 'json',
+          data:{
+            content: textbox_data
+          },
+          dataType:'JSON',
           success: function(data) {
             console.log('answer status 1');
             if(data.responseText!=2){
