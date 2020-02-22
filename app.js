@@ -130,7 +130,6 @@ module.exports = (app, io) => {
   app.use('/questions', questions(io));
   app.use('/api', require('./routes/api'));
   app.use('/users', users);
-
   // public 디렉토리에 있는 내용은 static하게 service하도록.
 
   app.use(function(req, res, next) {

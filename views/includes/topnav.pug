@@ -11,9 +11,10 @@ nav.navbar.navbar-inverse(style="margin-bottom:30px")
         if currentUser.adminflag==1
           li.nav-item
             a.nav-link(href='/questions/adminpage') 관리자 페이지
-      
         li.nav-item
           a.nav-link(href='/questions/userpage') 내 요청사항
+        li.nav-item
+          a.nav-link(href=`/users/${currentUser._id}/edit`) 이메일 등록
         li.nav-item
           a.nav-link(href='/signout') 로그아웃
       form.navbar-form.navbar-right

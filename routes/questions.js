@@ -94,7 +94,6 @@ module.exports = io => {
     if (!noticeContent) {
       return '내용을 입력해주세요.'
     }
-
     return null;
   }
   /* GET questions listing. */
@@ -440,34 +439,34 @@ module.exports = io => {
     await answer.save();
     question.numAnswers++;
     await question.save();
-    var com;
-    if(req.body.selectoption=='100'){
-      com='AMT';
-    }else if(req.body.selectoption=='101'){
-      com='AMG'
-    }else if(req.body.selectoption=='102'){
-      com='AMS'
-    }else if(req.body.selectoption=='103'){
-      com='AML'
-    }else if(req.body.selectoption=='104'){
-      com='기타'
-    }
     const url = `/questions/${question._id}#${answer._id}`;
-    if(answer.author==question.author.id){
+    if(answer.author==question.author.id){//요청자와 그 댓글의 주인이 같을 경우
       var emailParam = {
         from: '"woosung kim"<amocsrsend@gmail.co.kr>',
         toEmail: manager.email,
         subject: "요청자가 글에 댓글을 남겼습니다.",
         html:"<h2>"+question.title+"의 글에 댓글이 달렸습니다.</h3>"
         +"<h4> 담당자: "+manager.name +' ' +manager.minorname+"</h2>"
-        +"<h4> 요청자: "+question.author.name+' '+ question.author.minorname +"("+ com+")</h4>"
+        +"<h4> 요청자: "+question.author.name+' '+ question.author.minorname +"("+question.company.name+")</h4>"
         +"<a href='http://its.amotech.co.kr" + url + "' target='_blank'>페이지 이동</a>"
       }
       console.log('emailsendanswer');
       mailSender.sendGmail(emailParam);
     }
-
-
+    console.log(manager.id)
+    if(manager.id==answer.author&&question.author.email!=''){//그 글의 담당자와 댓글의 주인이 같을 때
+      console.log('emailokok')
+      var emailParam = {
+        from: '"woosung kim"<amocsrsend@gmail.co.kr>',
+        toEmail: question.author.email,
+        subject: "CSR에 등록하신 글에 댓글이 달렸습니다.",
+        html:"<h2>"+question.title+"의 내용으로 문의하신 글에 댓글이 달렸습니다.</h3>"
+        +"<h4> 담당자: "+manager.name +' ' +manager.minorname+"</h2>"
+        +"<h4> 요청자: "+question.author.name+' '+ question.author.minorname +"("+question.company.name+")</h4>"
+        +"<a href='http://its.amotech.co.kr" + url + "' target='_blank'>페이지 이동</a>"
+      }
+      mailSender.sendGmail(emailParam);
+    }
     io.to(question.author.toString())
       .emit('answered', {
         url: url,
