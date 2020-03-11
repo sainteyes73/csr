@@ -17,6 +17,7 @@
     "connect-multiparty": "^2.2.0",
     "consolidate": "^0.15.1",
     "cookie-parser": "^1.4.4",
+    "date-utils": "^1.2.21",
     "express": "^4.16.4",
     "express-session": "^1.16.1",
     "file-system": "^2.2.2",
@@ -38,6 +39,8 @@
     "path": "^0.12.7",
     "pug": "^2.0.3",
     "serve-favicon": "^2.5.0",
-    "socket.io": "^2.2.0"
+    "socket.io": "^2.2.0",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^4.4.2"
   }
 }

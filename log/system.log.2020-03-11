@@ -1,0 +1,22 @@
+2020-03-11 11:06:28 [INFO] - { adminflag: 1,
+  _id: 5e046633e41f9a08ccb8a388,
+  userid: 'A1903009',
+  name: '김우성',
+  minorname: '주임',
+  createdAt: 2019-12-26T07:50:11.742Z,
+  password:
+   '$2b$10$tBDhBcypySmktHvPfd1GiOhOlDymBPe85DE1HZigV2R.rBVz4i0yC',
+  __v: 0,
+  email: 'sainteyes73@amotech.co.kr',
+  id: '5e046633e41f9a08ccb8a388' }
+2020-03-11 11:06:55 [INFO] - { adminflag: 1,
+  _id: 5e046633e41f9a08ccb8a388,
+  userid: 'A1903009',
+  name: '김우성',
+  minorname: '주임',
+  createdAt: 2019-12-26T07:50:11.742Z,
+  password:
+   '$2b$10$tBDhBcypySmktHvPfd1GiOhOlDymBPe85DE1HZigV2R.rBVz4i0yC',
+  __v: 0,
+  email: 'sainteyes73@amotech.co.kr',
+  id: '5e046633e41f9a08ccb8a388' }
