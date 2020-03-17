@@ -1,9 +1,12 @@
+
 .answer.card
   .card-body
-    .content!= answer.noticeContent
-
-    
-
+    if answer.secret == 0 
+      .content!= answer.noticeContent
+    else if answer.secret == 1&&question.author.id==currentUser.id || answer.secret ==1 && answer.author.id == currentUser.id
+      .content!= answer.noticeContent
+    else if answer.secret == 1
+      .content(style='color: #A71111') 비밀글 입니다. 요청자, 댓글 작성자만 확인할 수 있습니다.
 
   .row.card-body
     .col-sm

@@ -50,7 +50,8 @@ block content
     if currentUser && question.status != 0
       form(action=`/questions/${question.id}/answers`, method='POST')
         .form-group
-          label(for='answer') 답변
+          label(for='answer') 답변(비밀글일시 오른쪽 체크박스 클릭)
+          input(type='checkbox' name='secretcheck' value=1)
           textarea#editor.form-control(name="noticeContent", rows="5")
         button.btn.btn-primary#sub_button2(type="submit") 등록
 

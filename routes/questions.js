@@ -14,15 +14,14 @@ var multer = require('multer');
 
 module.exports = io => {
 
-  function makeid()
-  {
-      var text = "";
-      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  function makeid() {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-      for( var i=0; i < 30; i++ )
-          text += possible.charAt(Math.floor(Math.random() * possible.length));
+    for (var i = 0; i < 30; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
 
-      return text;
+    return text;
   }
   var storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -74,9 +73,9 @@ module.exports = io => {
     if (req.isAuthenticated()) {
       next();
     } else {
-      req.session.returnTo= req.path;
-      req.session.save(function(err){
-        if(err) return next(err);
+      req.session.returnTo = req.path;
+      req.session.save(function(err) {
+        if (err) return next(err);
         req.flash('danger', '로그인이 필요합니다.');
         res.redirect('/signin')
       })
@@ -103,7 +102,29 @@ module.exports = io => {
     console.log(req + '/question(get)');
     var query = {};
     const term = req.query.term;
-    console.log(req.query.term);
+    const searchvalue = req.query.search;
+    /*
+    var populateObj;
+    console.log(searchvalue);
+    console.log(term);
+    if (req.query.search=='item'){
+      populateObj = {name:term};
+      console.log('item');
+      console.log(questions);
+    }
+    if (searchvalue=='manager'){
+      query={path:'manager', match:{name:{$regex:term, $option:"i"}}};
+    }
+    if (searchvalue=='title'){
+      query={$regex:searchvalue, $option:"i"};
+    }
+    if (searchvalue=='noticeContent'){
+      query={$regex:searchvalue, $option:"i"};
+    }
+    if (searchvalue=='noticeContent'){
+      query={$regex:searchvalue, $option:"i"};
+    }
+    */
     if (term) {
       query = {
         $or: [{
@@ -117,18 +138,44 @@ module.exports = io => {
               '$regex': term,
               '$options': 'i'
             }
+          },
+          {
+            manager: {
+              'regex': term
+            }
+          }, {
+            company: {
+              'regex': term
+            }
           }
         ]
       };
     }
+
+
     const questions = await Question.paginate(query, {
       sort: {
         createdAt: -1
       },
-      populate:['author','manager','company','item'],
+      populate:[
+        {
+          path:'item'
+        },
+        {
+          path:'author'
+        },
+        {
+          path:'manager'
+        },
+        {
+          path:'company'
+        }
+      ],
       page: page,
       limit: limit
     });
+
+    console.log(questions);
     res.render('questions/index', {
       questions: questions,
       term: term,
@@ -154,7 +201,7 @@ module.exports = io => {
       sort: {
         createdAt: -1
       },
-      populate:['author','manager','company','item'],
+      populate: ['author', 'manager', 'company', 'item'],
       page: page,
       limit: limit
     });
@@ -172,7 +219,7 @@ module.exports = io => {
       sort: {
         createdAt: -1
       },
-      populate:['author','manager','company','item'],
+      populate: ['author', 'manager', 'company', 'item'],
       page: page,
       limit: limit
     });
@@ -216,11 +263,11 @@ module.exports = io => {
 */
   router.post('/uploader', multipartMiddleware, function(req, res) {
     fs.readFile(req.files.upload.path, function(err, data) {
-      var id=makeid();
-      var makedir=__dirname+'/../public/uploads/'+id;
-      var dir= fs.mkdir(makedir, err=>{
-        if(err && err.code != 'EEXIST') throw 'up'
-          console.log("Already exists");
+      var id = makeid();
+      var makedir = __dirname + '/../public/uploads/' + id;
+      var dir = fs.mkdir(makedir, err => {
+        if (err && err.code != 'EEXIST') throw 'up'
+        console.log("Already exists");
       })
       fs.writeFile(makedir, data, function(err) {
         if (err) console.log({
@@ -244,11 +291,11 @@ module.exports = io => {
   router.post('/uploader/drag', multipartMiddleware, function(req, res) {
     fs.readFile(req.files.upload.path, function(err, data) {
       console.log(req);
-      var id=makeid();
-      var makedir=__dirname+'/../public/uploads/drag/'+id;
-      var dir= fs.mkdir(makedir, err=>{
-        if(err && err.code != 'EEXIST') throw 'up'
-          console.log("Already exists");
+      var id = makeid();
+      var makedir = __dirname + '/../public/uploads/drag/' + id;
+      var dir = fs.mkdir(makedir, err => {
+        if (err && err.code != 'EEXIST') throw 'up'
+        console.log("Already exists");
       })
       console.log(makedir);
       fs.writeFile(makedir + '/' + req.files.upload.name, data, function(err) {
@@ -258,7 +305,7 @@ module.exports = io => {
         else {
           var file = {
             uploaded: 1,
-            url: "/uploads/drag/"+id+'/' + req.files.upload.name,
+            url: "/uploads/drag/" + id + '/' + req.files.upload.name,
             filename: req.files.upload.name
           }
           console.log(file);
@@ -320,7 +367,7 @@ module.exports = io => {
       console.log('04ok')
     } else if (req.body.manager == '05') { // 강현모
       managerid = 'A1904002'
-    } else if (req.body.manager ==' 06') {
+    } else if (req.body.manager == ' 06') {
       managerid = 'A2002004'
     }
     const manager = await User.findOne({
@@ -336,8 +383,8 @@ module.exports = io => {
     question.title = req.body.title;
     question.manager = manager._id
     question.noticeContent = req.body.noticeContent;
-    question.company=company._id;
-    question.item=item._id
+    question.company = company._id;
+    question.item = item._id
     //  question.tags = req.body.tags.split(" ").map(e => e.trim());
 
     await question.save();
@@ -383,18 +430,20 @@ module.exports = io => {
     const item = await Item.findOne({
       "number": req.body.item
     });
-    const othermanager= await User.distinct("email",{"adminflag":1});
+    const othermanager = await User.distinct("email", {
+      "adminflag": 1
+    });
 
     const user = req.user;
     console.log(user);
-    console.log('//'+manager + 'okaybab');
+    console.log('//' + manager + 'okaybab');
     var question = new Question({
       author: user._id,
       title: req.body.title,
       manager: manager._id,
       noticeContent: req.body.noticeContent,
-      company:company._id,
-      statusDate:0,
+      company: company._id,
+      statusDate: 0,
       item: item._id
     });
     await question.save(); //mongodb에 저장하는동안 대기
@@ -404,10 +453,10 @@ module.exports = io => {
       from: '"woosung kim"<amocsrsend@gmail.co.kr>',
       toEmail: othermanager,
       subject: "전산업무 요청입니다.",
-      html:"<h2>"+question.title+"의 내용으로 CSR에 문의가 들어왔습니다.</h3>"
-      +"<h4> 담당자: "+manager.name +' ' +manager.minorname+"</h2>"
-      +"<h4> 요청자: "+author.name+' '+ author.minorname +"("+company.name+")</h4>"
-      +"<a href='http://its.amotech.co.kr" + url + "' target='_blank'>페이지 이동</a>"
+      html: "<h2>" + question.title + "의 내용으로 CSR에 문의가 들어왔습니다.</h3>" +
+        "<h4> 담당자: " + manager.name + ' ' + manager.minorname + "</h2>" +
+        "<h4> 요청자: " + author.name + ' ' + author.minorname + "(" + company.name + ")</h4>" +
+        "<a href='http://its.amotech.co.kr" + url + "' target='_blank'>페이지 이동</a>"
     }
     mailSender.sendGmail(emailParam);
 
@@ -428,46 +477,48 @@ module.exports = io => {
 
   router.post('/:id/answers', needAuth, catchErrors(async (req, res, next) => {
     const user = req.user;
+    var secret;
     const question = await Question.findById(req.params.id).populate('author');
     const manager = await User.findById(question.manager);
     if (!question) {
       req.flash('danger', '질문이 존재하지 않습니다.');
       return res.redirect('back');
     }
-
+    console.log(req.body.secretcheck+'secret ok');
     var answer = new Answer({
       author: user._id,
       question: question._id,
-      noticeContent: req.body.noticeContent
+      noticeContent: req.body.noticeContent,
+      secret: req.body.secretcheck
     });
     await answer.save();
     question.numAnswers++;
     await question.save();
     const url = `/questions/${question._id}#${answer._id}`;
-    if(answer.author==question.author.id){//요청자와 그 댓글의 주인이 같을 경우
+    if (answer.author == question.author.id) { //요청자와 그 댓글의 주인이 같을 경우
       var emailParam = {
         from: '"woosung kim"<amocsrsend@gmail.co.kr>',
         toEmail: manager.email,
         subject: "요청자가 글에 댓글을 남겼습니다.",
-        html:"<h2>"+question.title+"의 글에 댓글이 달렸습니다.</h3>"
-        +"<h4> 담당자: "+manager.name +' ' +manager.minorname+"</h2>"
-        +"<h4> 요청자: "+question.author.name+' '+ question.author.minorname +"("+question.company.name+")</h4>"
-        +"<a href='http://its.amotech.co.kr" + url + "' target='_blank'>페이지 이동</a>"
+        html: "<h2>" + question.title + "의 글에 댓글이 달렸습니다.</h3>" +
+          "<h4> 담당자: " + manager.name + ' ' + manager.minorname + "</h2>" +
+          "<h4> 요청자: " + question.author.name + ' ' + question.author.minorname + "(" + question.company.name + ")</h4>" +
+          "<a href='http://its.amotech.co.kr" + url + "' target='_blank'>페이지 이동</a>"
       }
       console.log('emailsendanswer');
       mailSender.sendGmail(emailParam);
     }
     console.log(manager.id)
-    if(manager.id==answer.author&&question.author.email!=''){//그 글의 담당자와 댓글의 주인이 같을 때
+    if (manager.id == answer.author && question.author.email != '') { //그 글의 담당자와 댓글의 주인이 같을 때
       console.log('emailokok')
       var emailParam = {
         from: '"woosung kim"<amocsrsend@gmail.co.kr>',
         toEmail: question.author.email,
         subject: "CSR에 등록하신 글에 댓글이 달렸습니다.",
-        html:"<h2>"+question.title+"의 내용으로 문의하신 글에 댓글이 달렸습니다.</h3>"
-        +"<h4> 담당자: "+manager.name +' ' +manager.minorname+"</h2>"
-        +"<h4> 요청자: "+question.author.name+' '+ question.author.minorname +"("+question.company.name+")</h4>"
-        +"<a href='http://its.amotech.co.kr" + url + "' target='_blank'>페이지 이동</a>"
+        html: "<h2>" + question.title + "의 내용으로 문의하신 글에 댓글이 달렸습니다.</h3>" +
+          "<h4> 담당자: " + manager.name + ' ' + manager.minorname + "</h2>" +
+          "<h4> 요청자: " + question.author.name + ' ' + question.author.minorname + "(" + question.company.name + ")</h4>" +
+          "<a href='http://its.amotech.co.kr" + url + "' target='_blank'>페이지 이동</a>"
       }
       mailSender.sendGmail(emailParam);
     }
