@@ -8,11 +8,11 @@
       | upload on #{moment(question.createdAt).format('YYYY-MM-DD')}
       if question.author
         | 
-        | by #[a(href=`/users/${question.author.id}`)= question.author.name] 
+        | 요청자 #[a(href=`/users/${question.author.id}`)= question.author.name] 
   .col-sm
     .author
       if question.manager
         |
-        | 담당자 #[a(href=`/users/${question.manager.id}`)= question.manager.name]
+        | CSR 담당자 #[a(href=`/users/${question.manager.id}`)= question.manager.name]
         
         
