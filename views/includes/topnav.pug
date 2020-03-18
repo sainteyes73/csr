@@ -7,16 +7,16 @@ nav.navbar.navbar-inverse(style="margin-bottom:30px")
         li.nav-item.active
           span.sr-only (current)
         li.nav-item
-          a.nav-link(href='/questions/new') 새 질문
+          a.nav-link(href='/questions/new') New
         if currentUser.adminflag==1
           li.nav-item
-            a.nav-link(href='/questions/adminpage') CSR담당자
+            a.nav-link(href='/questions/adminpage') CSR Manager
         li.nav-item
-          a.nav-link(href='/questions/userpage') MYPAGE
+          a.nav-link(href='/questions/userpage') My Page
         li.nav-item
-          a.nav-link(href=`/users/${currentUser._id}/edit`) 이메일 등록
+          a.nav-link(href=`/users/${currentUser._id}/edit`) Email register
         li.nav-item
-          a.nav-link(href='/signout') 로그아웃
+          a.nav-link(href='/signout') Logout
       form.navbar-form.navbar-right
         div.form-group(action='/questions',method='GET')
         // select#searchvalue.form-control(type="text",name='search')

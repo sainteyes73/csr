@@ -2,7 +2,7 @@ extends ../layout
 
 block content
   .container
-    h1.main-title 이메일 업데이트
+    h1.main-title Email register
     form(action=`/users/${user._id}?_method=PUT`, method='POST')
       .form-group
         label(for='email') 이메일 주소
