@@ -10,16 +10,24 @@ nav.navbar.navbar-inverse(style="margin-bottom:30px")
           a.nav-link(href='/questions/new') 새 질문
         if currentUser.adminflag==1
           li.nav-item
-            a.nav-link(href='/questions/adminpage') 관리자 페이지
+            a.nav-link(href='/questions/adminpage') CSR담당자
         li.nav-item
-          a.nav-link(href='/questions/userpage') 내 요청사항
+          a.nav-link(href='/questions/userpage') MYPAGE
         li.nav-item
           a.nav-link(href=`/users/${currentUser._id}/edit`) 이메일 등록
         li.nav-item
           a.nav-link(href='/signout') 로그아웃
       form.navbar-form.navbar-right
         div.form-group(action='/questions',method='GET')
-          input.form-control(type='text', name='term', placeholder='Search', aria-label='Search', value=term)
-          button.btn.btn-default(type='submit') 검색
-          |
+        // select#searchvalue.form-control(type="text",name='search')
+            option(value='', selected='') 선택하세요
+            option(value='item') 구분
+            option(value='manager') CS담당자
+            option(value='title') 제목
+            option(value='noticeContent') 내용    
+            option(value='author') 요청자 
+        
+        input.form-control(type='text', name='term', placeholder='Search', aria-label='Search', value=term)
+        button.btn.btn-default(type='submit') 검색
+        |
 script.
