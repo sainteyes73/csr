@@ -3,7 +3,7 @@
   .card-body
     if answer.secret == 0 
       .content!= answer.noticeContent
-    else if answer.secret == 1&&question.author.id==currentUser.id || answer.secret ==1 && answer.author.id == currentUser.id
+    else if answer.secret == 1&&question.author.id==currentUser.id || answer.secret ==1 && answer.author.id == currentUser.id ||  answer.secret ==1 && question.manager.id == currentUser.id
       img(src='../padlock-svgrepo-com.svg' style='width: 25px')
       | 
       .content!= answer.noticeContent
