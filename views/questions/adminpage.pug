@@ -31,7 +31,7 @@ block content
                 each question, index in questions.docs
                   if question.numReads > 25
                     tr(style='background-color:#F68686')
-                      td(style='text-align:center')=index+1
+                      td(style='text-align:center')=question.indexnum
                       if question.item
                         td(style='text-align:center')=question.item.name
                       else
@@ -62,7 +62,7 @@ block content
                           span.label.label-success 처리완료
                   else
                     tr
-                      td(style='text-align:center')=index+1
+                      td(style='text-align:center')=question.indexnum
                       if question.item
                         td(style='text-align:center')=question.item.name
                       else
