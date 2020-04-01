@@ -321,7 +321,7 @@ module.exports = io => {
     console.log(req._passport.session.user);
     const question = await Question.findById(req.params.id);
     const author = await Question.findById(req.params.id).populate('author');
-    if (author.author._id != req._passport.session.user) { //타사용자가 edit 방지
+    if (question.manager._id != req._passport.session.user) { //타사용자가 edit 방지
       res.redirect('/questions')
     }
     res.render('questions/edit', {
