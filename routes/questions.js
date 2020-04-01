@@ -4,6 +4,7 @@ const Answer = require('../models/answer');
 const User = require('../models/user');
 const Company = require('../models/company');
 const Item = require('../models/item');
+const Counter = require('../models/counter');
 const nodemailer = require('nodemailer');
 const smtpPool = require('nodemailer-smtp-pool');
 const catchErrors = require('../lib/async-error');
@@ -433,7 +434,8 @@ module.exports = io => {
     const othermanager = await User.distinct("email", {
       "adminflag": 1
     });
-
+    var count = await Counter.findOne({name:"posts"});
+    console.log(count);
     const user = req.user;
     console.log(user);
     console.log('//' + manager + 'okaybab');
@@ -444,8 +446,11 @@ module.exports = io => {
       noticeContent: req.body.noticeContent,
       company: company._id,
       statusDate: 0,
-      item: item._id
+      item: item._id,
+      indexnum: count.totalCount
     });
+    await count.totalCount++;
+    await count.save();
     await question.save(); //mongodb에 저장하는동안 대기
     const author = await User.findById(user._id);
     const url = `/questions/${question._id}`;

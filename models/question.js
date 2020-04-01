@@ -15,7 +15,8 @@ var schema = new Schema({
   status:{type: Number, default:0, required: true},
   deadline:{type: Date, default:0},
   item:{type: Schema.Types.ObjectId, ref: 'Item'},
-  statusDate:{type:Date, default:0}
+  statusDate:{type:Date, default:0},
+  indexnum:{type:Number, required: true}
 }, {
   toJSON: { virtuals: true},
   toObject: {virtuals: true}
