@@ -368,7 +368,7 @@ module.exports = io => {
       console.log('04ok')
     } else if (req.body.manager == '05') { // 강현모
       managerid = 'A1904002'
-    } else if (req.body.manager == ' 06') {
+    } else if (req.body.manager == '06') { //김한성
       managerid = 'A2002004'
     }
     const manager = await User.findOne({
