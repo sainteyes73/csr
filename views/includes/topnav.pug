@@ -17,17 +17,30 @@ nav.navbar.navbar-inverse(style="margin-bottom:30px")
           a.nav-link(href=`/users/${currentUser._id}/edit`) Email Register
         li.nav-item
           a.nav-link(href='/signout') LogOut
-      form.navbar-form.navbar-right
-        div.form-group(action='/questions',method='GET')
-        // select#searchvalue.form-control(type="text",name='search')
-            option(value='', selected='') 선택하세요
-            option(value='item') 구분
-            option(value='manager') CS담당자
-            option(value='title') 제목
-            option(value='noticeContent') 내용    
-            option(value='author') 요청자 
+      form.navbar-form.navbar-right(action='/questions/result',method='GET')
+        select#searchvalue.form-control(type="text",name='search')
+          option(value='', selected='') 선택하세요
+          option(value='item') 구분
+          option(value='manager') CS담당자
+          option(value='title') 제목
+          option(value='noticeContent') 내용    
+          option(value='author') 요청자
+          option(value='number') 접수번호
+        i.fa.fa-search
+        input.form-control.mr-sm-2#searchinput(type='text', name='term', placeholder='Search', aria-label='Search', value=term)
+        button.btn.btn-default#searchbutton(type='submit') 검색
+          
+          
         
-        input.form-control(type='text', name='term', placeholder='Search', aria-label='Search', value=term)
-        button.btn.btn-default(type='submit') 검색
-        |
 script.
+  $('#searchbutton').on('click', function(event){
+    if($("#searchvalue").val()==''){
+      console.log('ok');
+      alert('항목을 선택해주세요.');
+      event.preventDefault();
+    }
+    if($("#searchinput").val()==''){
+      alert('내용을 입력해주세요.');
+      event.preventDefault();
+    }
+  });

@@ -104,57 +104,52 @@ module.exports = io => {
     var query = {};
     const term = req.query.term;
     const searchvalue = req.query.search;
-    /*
+    var itemval;
     var populateObj;
     console.log(searchvalue);
     console.log(term);
+
     if (req.query.search=='item'){
-      populateObj = {name:term};
-      console.log('item');
-      console.log(questions);
+      console.log('item'+'okay');
+      itemval= await Item.findOne({'name': {'$regex':term, '$options':'i'}}, function(err, value){
+        if(value != null){
+          query={'item':value._id};
+        }else{
+          query=null;
+        }
+      });
     }
     if (searchvalue=='manager'){
-      query={path:'manager', match:{name:{$regex:term, $option:"i"}}};
+      console.log('manager'+'okay');
+      itemval = await User.findOne({'name':{'$regex':term}}, function(err, value){
+        if(value != null){
+          query={'manager':value._id};
+        }else{
+          query=null;
+        }
+      })
+    }
+    if (searchvalue=='author'){
+      console.log('author'+'okay');
+      itemval = await User.findOne({'name':{'$regex':term}}, function(err, value){
+        if(value != null){
+          query={'author':value._id};
+        }else{
+          query=null;
+        }
+      })
     }
     if (searchvalue=='title'){
-      query={$regex:searchvalue, $option:"i"};
+      query={'title':{$regex:term,'$options':'i'}};
     }
     if (searchvalue=='noticeContent'){
-      query={$regex:searchvalue, $option:"i"};
+      query={'noticeContent':{$regex:term, '$options':'i'}};
     }
-    if (searchvalue=='noticeContent'){
-      query={$regex:searchvalue, $option:"i"};
-    }
-    */
-    if (term) {
-      query = {
-        $or: [{
-            title: {
-              '$regex': term,
-              '$options': 'i'
-            }
-          },
-          {
-            noticeContent: {
-              '$regex': term,
-              '$options': 'i'
-            }
-          },
-          {
-            manager: {
-              'regex': term
-            }
-          }, {
-            company: {
-              'regex': term
-            }
-          }
-        ]
-      };
+    if (searchvalue=='number'){
+      query={'indexnum':term};
     }
 
-
-    const questions = await Question.paginate(query, {
+    const questions = await Question.paginate(query,{
       sort: {
         createdAt: -1
       },
@@ -166,7 +161,7 @@ module.exports = io => {
           path:'author'
         },
         {
-          path:'manager'
+          path:'manager',
         },
         {
           path:'company'
@@ -180,6 +175,84 @@ module.exports = io => {
     res.render('questions/index', {
       questions: questions,
       term: term,
+      query: req.query
+    });
+  }));
+  router.get('/result', needAuth, catchErrors(async (req, res, next) =>{
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 15;
+    console.log(req + '/question(get)');
+    var query = {};
+    const term = req.query.term;
+    const searchvalue = req.query.search;
+    var itemval;
+    var populateObj;
+    console.log(searchvalue);
+    console.log(term);
+
+    if (req.query.search=='item'){
+      console.log('item'+'okay');
+      itemval= await Item.findOne({'name': {'$regex':term, '$options':'i'}}, function(err, value){
+        if(value != null){
+          query={'item':value._id};
+        }else{
+          query={'item':[]}
+        }
+      });
+    }
+    if (searchvalue=='manager'){
+      console.log('manager'+'okay');
+      itemval = await User.findOne({'name':{'$regex':term}}, function(err, value){
+        if(value != null){
+          query={'manager':value._id};
+        }else{
+          query={'manager':[]};
+        }
+      })
+    }
+    if (searchvalue=='author'){
+      console.log('author'+'okay');
+      itemval = await User.findOne({'name':{'$regex':term}}, function(err, value){
+        if(value != null){
+          query={'author':value._id};
+        }else{
+          query={'author':[]};
+        }
+      })
+    }
+    if (searchvalue=='title'){
+      query={'title':{$regex:term,'$options':'i'}};
+    }
+    if (searchvalue=='noticeContent'){
+      query={'noticeContent':{$regex:term, '$options':'i'}};
+    }
+    if (searchvalue=='number'){
+      query={'indexnum':term};
+    }
+    const questions = await Question.paginate(query,{
+      sort: {
+        createdAt: -1
+      },
+      populate:[
+        {
+          path:'item'
+        },
+        {
+          path:'author'
+        },
+        {
+          path:'manager',
+          select:{'name':'김우성'}
+        },
+        {
+          path:'company'
+        }
+      ],
+      page: page,
+      limit: limit
+    });
+    res.render('questions/result', {
+      questions: questions,
       query: req.query
     });
   }));
