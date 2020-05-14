@@ -267,22 +267,44 @@ module.exports = io => {
     if (req.user.adminflag != '1') {
       res.redirect('/questions')
     }
+    console.log(req.query.status);
+
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 15;
-    const questions = await Question.paginate({
-      manager: req.user._id
-    }, {
-      sort: {
-        createdAt: -1
-      },
-      populate: ['author', 'manager', 'company', 'item'],
-      page: page,
-      limit: limit
-    });
-    res.render('questions/adminpage', {
-      questions: questions,
-      query: req.query
-    });
+    if(req.query.status){
+      const questions = await Question.paginate({
+        manager: req.user._id,
+        status: req.query.status
+      }, {
+        sort: {
+          createdAt: -1
+        },
+        populate: ['author', 'manager', 'company', 'item'],
+        page: page,
+        limit: limit
+      });
+      res.render('questions/adminpage', {
+        questions: questions,
+        query: req.query
+      });
+    }else{
+      const questions = await Question.paginate({
+        manager: req.user._id
+      }, {
+        sort: {
+          createdAt: -1
+        },
+        populate: ['author', 'manager', 'company', 'item'],
+        page: page,
+        limit: limit
+      });
+      res.render('questions/adminpage', {
+        questions: questions,
+        query: req.query
+      });
+    }
+
+
   })
   router.get('/userpage', needAuth, async (req, res, next) => {
     const page = parseInt(req.query.page) || 1;
