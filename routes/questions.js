@@ -288,7 +288,9 @@ module.exports = io => {
         query: req.query
       });
     }else if(req.query.status&&req.query.chk_info){
-      const questions = await Question.paginate({},{
+      const questions = await Question.paginate({
+        status: req.query.status
+      },{
         sort: {
           createdAt: -1
         },
