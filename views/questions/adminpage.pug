@@ -9,6 +9,8 @@ block content
         a.main-title(href='/questions/adminpage') CSR Manager
       .col-xs-6
         form.navbar-form.navbar-right(action='/questions/adminpage',method='GET')
+          | 전체보기
+          input(type='checkbox' name='chk_info' value=1)
           select#statusvalue.form-control(type="text",name='status',onchange="this.form.submit()")
             option(value='', selected='') 선택하세요
             option(value='0') 접수대기

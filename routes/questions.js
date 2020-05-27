@@ -268,10 +268,10 @@ module.exports = io => {
       res.redirect('/questions')
     }
     console.log(req.query.status);
-
+    console.log(req.query.chk_info);
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 15;
-    if(req.query.status){
+    if(req.query.status&& !req.query.chk_info){
       const questions = await Question.paginate({
         manager: req.user._id,
         status: req.query.status
@@ -287,7 +287,21 @@ module.exports = io => {
         questions: questions,
         query: req.query
       });
-    }else{
+    }else if(req.query.status&&req.query.chk_info){
+      const questions = await Question.paginate({},{
+        sort: {
+          createdAt: -1
+        },
+        populate: ['author', 'manager', 'company', 'item'],
+        page: page,
+        limit: limit
+      });
+      res.render('questions/adminpage', {
+        questions: questions,
+        query: req.query
+      });
+    }
+    else{
       const questions = await Question.paginate({
         manager: req.user._id
       }, {
