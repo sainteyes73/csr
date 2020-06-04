@@ -45,8 +45,8 @@ module.exports = io => {
         secure: false,
         requireTLS: true,
         auth: {
-          user: 'amocsrsend@gmail.com',
-          pass: 'A190300('
+          user: 'amocsr2@gmail.com',
+          pass: 'antusdk23#'
         }
       });
       // 메일 옵션
@@ -148,7 +148,29 @@ module.exports = io => {
     if (searchvalue=='number'){
       query={'indexnum':term};
     }
-
+    const notice = await Question.paginate({
+      noticenum:1
+    },{
+      sort:{
+        createdAt: -1
+      },
+      populate:[
+        {
+          path:'item'
+        },
+        {
+          path:'author'
+        },
+        {
+          path:'manager',
+        },
+        {
+          path:'company'
+        }
+      ],
+      page: page,
+      limit: limit
+    })
     const questions = await Question.paginate(query,{
       sort: {
         createdAt: -1
@@ -558,7 +580,9 @@ module.exports = io => {
       company: company._id,
       statusDate: 0,
       item: item._id,
-      indexnum: count.totalCount
+      indexnum: count.totalCount,
+      noticenum: req.query.noticenum
+
     });
     await count.totalCount++;
     await count.save();
@@ -574,8 +598,8 @@ module.exports = io => {
         "<h4> 요청자: " + author.name + ' ' + author.minorname + "(" + company.name + ")</h4>" +
         "<a href='http://its.amotech.co.kr" + url + "' target='_blank'>페이지 이동</a>"
     }
-    mailSender.sendGmail(emailParam);
 
+    mailSender.sendGmail(emailParam);
 
 
     io.to(question.manager.toString())
