@@ -1,0 +1,24 @@
+
+.form-group
+  label(for="title") 제목
+  input(
+    type='text', id='title', name='title', class='form-control', value=notice.title
+    placeholder='제목', required, autofocus
+  )
+
+
+.form-group
+  label(for='editor') 내용 (*파일, 이미지는 직접 파일을 드래그해서 올려놓으면 됩니다.)
+  textarea#comment.form-control( type='text', name='noticeContent', 
+  placeholder='내용', required, autofocus ) #{notice.noticeContent}
+    
+    
+  script.
+    var EDITOR_NAME='comment';
+    CKEDITOR.replace('comment',{
+      height: 500
+    });
+
+
+      
+      

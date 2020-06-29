@@ -16,7 +16,11 @@ block content
             option(value='0') 접수대기
             option(value='1') 처리중
             option(value='2') 처리완료
-            option(value='') 전체보기 
+            option(value='') 전체보기
+            
+    .row
+      .col-xs-6
+         a.btn.btn-primary(href='/questions/noticenew') 공지사항
 
     if questions.total <= 0 
       .alert.alert-info 등록된 질문이 없습니다.

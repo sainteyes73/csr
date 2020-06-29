@@ -5,6 +5,7 @@ const User = require('../models/user');
 const Company = require('../models/company');
 const Item = require('../models/item');
 const Counter = require('../models/counter');
+const Notice = require('../models/notice')
 const nodemailer = require('nodemailer');
 const smtpPool = require('nodemailer-smtp-pool');
 const catchErrors = require('../lib/async-error');
@@ -65,7 +66,6 @@ module.exports = io => {
           console.log('Email sent: ' + info.response);
         }
       });
-
     }
   }
 
@@ -148,24 +148,13 @@ module.exports = io => {
     if (searchvalue=='number'){
       query={'indexnum':term};
     }
-    const notice = await Question.paginate({
-      noticenum:1
-    },{
+    const notices = await Notice.paginate({},{
       sort:{
         createdAt: -1
       },
       populate:[
         {
-          path:'item'
-        },
-        {
           path:'author'
-        },
-        {
-          path:'manager',
-        },
-        {
-          path:'company'
         }
       ],
       page: page,
@@ -195,6 +184,7 @@ module.exports = io => {
 
     console.log(questions);
     res.render('questions/index', {
+      notices: notices,
       questions: questions,
       term: term,
       query: req.query
@@ -284,6 +274,32 @@ module.exports = io => {
       question: {}
     });
   });
+
+  router.get('/noticenew', needAuth, async (req, res, next) => {
+    if (req.user.adminflag != '1') {
+      res.redirect('/questions')
+    }
+    res.render('questions/noticenew', {
+      notice: {}
+    });
+  });
+
+  router.post('/noticenew', needAuth, catchErrors(async(req,res,next)=>{
+    if (req.user.adminflag != '1') {
+      res.redirect('/questions')
+    }
+    const user = req.user;
+    var notice = new Notice({
+      author: user._id,
+      title: req.body.title,
+      noticeContent: req.body.noticeContent,
+
+    });
+      await notice.save();
+      req.flash('success', '성공적으로 등록되었습니다.');
+      res.redirect('/questions');
+  }))
+
 
   router.get('/adminpage', needAuth, async (req, res, next) => {
     if (req.user.adminflag != '1') {
@@ -449,14 +465,37 @@ module.exports = io => {
     });
   });
 
+  router.get('/:id/notice', needAuth, catchErrors(async (req, res, next) => {
+    console.log('oknotice')
+    const notice = await Notice.findById(req.params.id).populate('author');
+    notice.numReads++; // TODO: 동일한 사람이 본 경우에 Read가 증가하지 않도록???
+    await notice.save();
+    res.render('questions/noticeshow', {
+      notice: notice
+    });
+  }));
+  router.get('/:id/noticeedit', needAuth, catchErrors(async (req, res, next) => {
+    const notice = await Notice.findById(req.params.id);
+    if (notice.author._id != req._passport.session.user) { //타사용자가 edit 방지
+      res.redirect('/questions')
+    }
+
+    console.log(req._passport.session.user)
+
+    res.render('questions/noticeedit', {
+      notice:notice
+    });
+  }));
   router.get('/:id/edit', needAuth, catchErrors(async (req, res, next) => {
-    console.log('okedit');
-    console.log(req._passport.session.user);
     const question = await Question.findById(req.params.id);
     const author = await Question.findById(req.params.id).populate('author');
     if (question.manager._id != req._passport.session.user) { //타사용자가 edit 방지
       res.redirect('/questions')
     }
+    console.log('okedit');
+    console.log(req._passport.session.user);
+
+
     res.render('questions/edit', {
       question: question
     });
@@ -525,9 +564,41 @@ module.exports = io => {
     req.flash('success', '성공적으로 업데이트 되었습니다.');
     res.redirect('/questions');
   }));
+  router.put('/:id/notice', catchErrors(async (req, res, next) => {
+    if (question.manager._id != req._passport.session.user) { //타사용자가 edit 방지
+      res.redirect('/questions')
+    }
+    const notice = await Notice.findById(req.params.id);
+
+    if (!notice) {
+      req.flash('danger', '등록된 질문이 없습니다.');
+      return res.redirect('back');
+    }
+    const err = validateForm(req.body);
+    if (err) {
+      req.flash('danger', err);
+      return res.redirect('back');
+    }
+
+    notice.title = req.body.title;
+    notice.noticeContent = req.body.noticeContent;
+    //  question.tags = req.body.tags.split(" ").map(e => e.trim());
+
+    await notice.save();
+    req.flash('success', '성공적으로 업데이트 되었습니다.');
+    res.redirect('/questions');
+  }));
 
   router.delete('/:id', needAuth, catchErrors(async (req, res, next) => {
     await Question.findOneAndRemove({
+      _id: req.params.id
+    });
+    req.flash('success', '성공적으로 삭제 되었습니다.');
+    res.redirect('/questions');
+  }));
+  router.delete('/:id/notice', needAuth, catchErrors(async (req, res, next) => {
+
+    await Notice.findOneAndRemove({
       _id: req.params.id
     });
     req.flash('success', '성공적으로 삭제 되었습니다.');
@@ -542,6 +613,7 @@ module.exports = io => {
       req.flash('danger', err);
       return res.redirect('back');
     }
+    var noticenum=req.body.noticenum;
     console.log(req.body.manager);
     if (req.body.manager == '01') { //김기권
       managerid = 'A0607024'
@@ -568,10 +640,9 @@ module.exports = io => {
       "adminflag": 1
     });
     var count = await Counter.findOne({name:"posts"});
-    console.log(count);
     const user = req.user;
-    console.log(user);
     console.log('//' + manager + 'okaybab');
+    console.log(req.body.noticenum+'okokok')
     var question = new Question({
       author: user._id,
       title: req.body.title,
@@ -581,8 +652,7 @@ module.exports = io => {
       statusDate: 0,
       item: item._id,
       indexnum: count.totalCount,
-      noticenum: req.query.noticenum
-
+      noticenum: req.body.noticenum
     });
     await count.totalCount++;
     await count.save();
@@ -598,10 +668,7 @@ module.exports = io => {
         "<h4> 요청자: " + author.name + ' ' + author.minorname + "(" + company.name + ")</h4>" +
         "<a href='http://its.amotech.co.kr" + url + "' target='_blank'>페이지 이동</a>"
     }
-
     mailSender.sendGmail(emailParam);
-
-
     io.to(question.manager.toString())
       .emit('trans', {
         url: url,
@@ -613,6 +680,9 @@ module.exports = io => {
     })
     req.flash('success', '성공적으로 등록되었습니다.');
     res.redirect('/questions');
+
+
+
   }));
 
   router.post('/:id/answers', needAuth, catchErrors(async (req, res, next) => {

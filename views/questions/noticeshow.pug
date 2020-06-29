@@ -1,0 +1,23 @@
+extends ../layout
+
+block content
+  .container
+    .row
+      .main
+        h1.main-title=notice.title
+
+    .question.show
+      br
+      include _notice
+      .buttons
+        if notice.author.id==currentUser.id
+          | 
+          a.btn.btn-primary(href=`/questions/${notice.id}/noticeedit`) 수정
+          | 
+          a.btn.btn-danger(href=`/questions/${notice.id}/notice?_method=delete`) 삭제
+
+    
+  script(src='/javascripts/question_client.js')
+  script.
+      var EDITOR_NAME='editor';
+      CKEDITOR.replace('editor');

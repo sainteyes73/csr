@@ -28,6 +28,22 @@ block content
               th(style='text-align:center') 조회수
               th 처리상태
               tbody
+                
+                each notice in notices.docs
+                  tr(style='background-color:#90F6AC')
+                    td
+                    td(style='text-align:center')
+                      span.label.label-danger 공지사항
+                    td
+                    td(style='display: inline-block; width: 500px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap')
+                      a(href=`/questions/${notice.id}/notice` target='_blank')=notice.title + " "  
+                    td
+                    td
+                    td=notice.author.name
+                    td(style='text-align:center')=moment(notice.createdAt).format('YYYY-MM-DD')
+                    td
+                    td(style='text-align:center')=notice.numReads
+                    td
                 each question in questions.docs
                   if question.numReads > 25
                     tr(style='background-color:#F68686')

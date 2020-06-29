@@ -26,7 +26,7 @@ block content
         if question.author && question.author.id == currentUser.id || question.manager && question.manager.id == currentUser.id
           | 
           a.btn.btn-primary(href=`/questions/${question.id}/edit`) 수정
-          | 
+
         if question.status==0 && question.manager.id == currentUser.id
           button.btn.btn-primary#firststep(data-id=question.id style="float:right" ) 접수
             span.for-loading #[i.fa.fa-spin.fa-refresh] Loading

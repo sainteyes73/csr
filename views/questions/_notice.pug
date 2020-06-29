@@ -1,0 +1,10 @@
+.content!= notice.noticeContent
+
+.row
+
+  .col-sm
+    .author
+      if notice.manager
+        |
+        | CSR 담당자 #[a(href=`/users/${notice.manager.id}`)= notice.manager.name]
+        

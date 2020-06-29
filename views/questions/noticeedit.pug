@@ -1,0 +1,23 @@
+extends ../layout
+
+block content
+  .container
+    h1.main-title Notice Edit
+    form(action=`/questions/${notice.id}/notice?_method=PUT`, method="POST")
+      input(type="hidden", name="_method", value="PUT")
+      include _noticeform
+      button.btn.btn-outline-primary#sub_button(type="submit") 재등록
+      
+  script.
+    $('#sub_button').on('click', function(event){
+      if($("#event-tomenu1").val()==''){
+        console.log("empty1");
+        alert('법인을 선택해주세요.');
+        event.preventDefault();
+      }
+      if($("#event-tomenu2").val()==''){
+        console.log("empty2");
+        alert('담당자를 선택해주세요.');
+        event.preventDefault();
+      }
+    });

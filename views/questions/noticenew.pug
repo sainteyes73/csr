@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+  .container
+    h1.main-title Notice New
+    form(action="/questions/noticenew" method="POST")
+      include _noticeform
+      button.btn.btn-outline-primary#sub_button(type="submit") 등록
+
+  script.
