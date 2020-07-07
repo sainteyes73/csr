@@ -293,7 +293,6 @@ module.exports = io => {
       author: user._id,
       title: req.body.title,
       noticeContent: req.body.noticeContent,
-
     });
       await notice.save();
       req.flash('success', '성공적으로 등록되었습니다.');

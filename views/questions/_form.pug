@@ -1,10 +1,6 @@
 
 .form-group
   
-  if currentUser.adminflag==1
-    | 공지사항
-    input(type='checkbox' name='noticenum' value=1)
-    br
   label(for="title") 제목
   input(
     type='text', id='title', name='title', class='form-control', value=question.title
