@@ -17,7 +17,7 @@ var schema = new Schema({
   item:{type: Schema.Types.ObjectId, ref: 'Item'},
   statusDate:{type:Date, default:0},
   indexnum:{type:Number, required: true},
-  noticenum:{type:Number, default:0}
+  secretnum:{type:Number, default:0}
 }, {
   toJSON: { virtuals: true},
   toObject: {virtuals: true}

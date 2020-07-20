@@ -1,6 +1,8 @@
 
 .form-group
-  
+  input(type='checkbox' name='secretnum' value=1)
+  | 비밀글(급여, 신규입사자, 회계등 개인정보나 민감한 사항이 포함되어있을 시 체크 부탁드립니다.)
+  br
   label(for="title") 제목
   input(
     type='text', id='title', name='title', class='form-control', value=question.title

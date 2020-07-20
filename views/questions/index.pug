@@ -28,7 +28,6 @@ block content
               th(style='text-align:center') 조회수
               th 처리상태
               tbody
-                
                 each notice in notices.docs
                   tr(style='background-color:#90F6AC')
                     td
@@ -53,9 +52,15 @@ block content
                       else
                         td
                       td(style='text-align:center')=question.manager.name
-
-                      td(style='display: inline-block; width: 500px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap')
-                        a(href=`/questions/${question.id}` )=question.title + " "  
+                      if question.secretnum==0
+                        td(style='display: inline-block; width: 500px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap')
+                          a(href=`/questions/${question.id}` )=question.title + " " 
+                      else if questions.secretnum == 1&&question.author.id==currentUser.id ||question.secretnum ==1 && currentUser.adminflag==1
+                        td(style='display: inline-block; width: 500px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap')
+                          a(href=`/questions/${question.id}` )=question.title + " " 
+                      else if question.secretnum == 1
+                        td
+                          .content(style='color: #A71111') 비밀글 입니다. 요청자, 관리자만 확인할 수 있습니다.
                       td
                         span.badge.badge-pill.badge-warning=" + "+question.numAnswers
                       if question.company
@@ -84,9 +89,15 @@ block content
                       else
                         td
                       td(style='text-align:center')=question.manager.name
-
-                      td(style='display: inline-block; width: 500px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap')
-                        a(href=`/questions/${question.id}` )=question.title + " "  
+                      if question.secretnum==0
+                        td(style='display: inline-block; width: 500px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap')
+                          a(href=`/questions/${question.id}` )=question.title + " " 
+                      else if questions.secretnum == 1&&question.author.id==currentUser.id ||question.secretnum ==1 && currentUser.adminflag==1
+                        td(style='display: inline-block; width: 500px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap')
+                          a(href=`/questions/${question.id}` )=question.title + " " 
+                      else if question.secretnum == 1
+                        td
+                          .content(style='color: #A71111') 비밀글 입니다. 요청자, 관리자만 확인할 수 있습니다.
                       td
                         span.badge.badge-pill.badge-warning=" + "+question.numAnswers
                       if question.company

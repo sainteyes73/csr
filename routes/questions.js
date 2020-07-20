@@ -612,7 +612,7 @@ module.exports = io => {
       req.flash('danger', err);
       return res.redirect('back');
     }
-    var noticenum=req.body.noticenum;
+    var noticenum=req.body.secretnum;
     console.log(req.body.manager);
     if (req.body.manager == '01') { //김기권
       managerid = 'A0607024'
@@ -641,7 +641,7 @@ module.exports = io => {
     var count = await Counter.findOne({name:"posts"});
     const user = req.user;
     console.log('//' + manager + 'okaybab');
-    console.log(req.body.noticenum+'okokok')
+    console.log(req.body.secretnum+'okokok')
     var question = new Question({
       author: user._id,
       title: req.body.title,
@@ -651,7 +651,7 @@ module.exports = io => {
       statusDate: 0,
       item: item._id,
       indexnum: count.totalCount,
-      noticenum: req.body.noticenum
+      secretnum: req.body.secretnum
     });
     await count.totalCount++;
     await count.save();
