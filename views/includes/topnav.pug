@@ -15,6 +15,9 @@ nav.navbar.navbar-inverse(style="margin-bottom:30px")
           a.nav-link(href='/questions/userpage') My Page
         li.nav-item
           a.nav-link(href=`/users/${currentUser._id}/edit`) Email Register
+        if currentUser.adminflag==1
+          li.nav-item
+            a.nav-link(href='/statistics') Statistics
         li.nav-item
           a.nav-link(href='/signout') LogOut
       form.navbar-form.navbar-right(action='/questions/result',method='GET')

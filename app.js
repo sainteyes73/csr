@@ -17,6 +17,7 @@ var passportSocketIo = require('passport.socketio');
 var methodOverride = require('method-override');
 var favicon = require('serve-favicon');
 var users = require('./routes/users');
+var statistics = require('./routes/statistics');
 
 module.exports = (app, io) => {
   // view engine setup
@@ -130,6 +131,7 @@ module.exports = (app, io) => {
   app.use('/questions', questions(io));
   app.use('/api', require('./routes/api'));
   app.use('/users', users);
+  app.use('/statistics', statistics);
   // public 디렉토리에 있는 내용은 static하게 service하도록.
 
   app.use(function(req, res, next) {

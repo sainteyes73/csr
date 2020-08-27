@@ -7,7 +7,7 @@ const logger = winston.createLogger({
     // 파일저장
     transports: [
         new winston.transports.DailyRotateFile({
-            filename : 'log/system.log', // log 폴더에 system.log 이름으로 저장
+            filename : 'public/log/system.log', // log 폴더에 system.log 이름으로 저장
             zippedArchive: false, // 압축여부
             format: winston.format.printf(
                 info => `${new Date().toFormat('YYYY-MM-DD HH24:MI:SS')} [${info.level.toUpperCase()}] - ${info.message}`)

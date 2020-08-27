@@ -74,6 +74,7 @@ router.get('/answers/:id/edit', catchErrors(async(req, res, next)=>{
   res.json({
     content:answer.noticeContent
   });
+  
 
 }));
 module.exports = router;

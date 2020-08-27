@@ -36,6 +36,7 @@ router.get('/', needAuth, catchErrors(async (req, res, next) => {
 
   res.render('users/index', {users: users});
 }));
+
 router.get('/:id/edit', needAuth, catchErrors(async (req, res, next) => {
   const user = await User.findById(req.params.id);
   res.render('users/edit', {user: user});
