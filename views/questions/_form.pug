@@ -13,7 +13,7 @@
 .row
   .col-xs-6
     .form-group
-      event 법인
+      event 법인(필수)
         .event-topic
           select#event-tomenu1.form-control(type="text",name='company')
             option(value='', selected='') 선택하세요
@@ -25,7 +25,7 @@
             option(value='104') 기타                 
   .col-xs-6
     .form-group
-      event 담당자
+      event 담당자(필수)
         .company
           select#event-tomenu2.form-control(type="text",name='manager')
             option(value='', selected='') 선택하세요
@@ -38,7 +38,7 @@
 .row
   .col-xs-6
     .form-group
-      event 구분
+      event 구분(필수)
         .item
           select#event-tomenu3.form-control(type="text",name='item')
             option(value='', selected='') 선택하세요
@@ -54,7 +54,6 @@
             option(value='10') SCM
             option(value='11') VPN/UTM
             option(value='12') 그룹웨어
-            option(value='13') 기타
                       
 
 
