@@ -111,7 +111,7 @@ module.exports = io => {
 
     if (req.query.search=='item'){
       console.log('item'+'okay');
-      itemval= await Item.findOne({'name': {'$regex':term, '$options':'i'}}, function(err, value){
+      itemval= await Option.findOne({'name': {'$regex':term, '$options':'i'}}, function(err, value){
         if(value != null){
           query={'item':value._id};
         }else{
@@ -204,7 +204,7 @@ module.exports = io => {
 
     if (req.query.search=='item'){
       console.log('item'+'okay');
-      itemval= await Item.findOne({'name': {'$regex':term, '$options':'i'}}, function(err, value){
+      itemval= await Option.findOne({'name': {'$regex':term, '$options':'i'}}, function(err, value){
         if(value != null){
           query={'item':value._id};
         }else{
@@ -552,7 +552,7 @@ module.exports = io => {
     const company = await Company.findOne({
       "number": req.body.company
     });
-    const item = await Item.findOne({
+    const item = await Option.findOne({
       "number": req.body.item
     });
 
@@ -636,7 +636,7 @@ module.exports = io => {
     const company = await Company.findOne({
       "number": req.body.company
     });
-    const item = await Item.findOne({
+    const item = await Option.findOne({
       "number": req.body.item
     });
     const othermanager = await User.distinct("email", {
