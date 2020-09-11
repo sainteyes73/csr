@@ -17,13 +17,13 @@ nav.navbar.navbar-inverse(style="margin-bottom:30px")
           a.nav-link(href=`/users/${currentUser._id}/email`) Email Register
         if currentUser.adminflag==1
           li.nav-item
-            a.nav-link(href='#') Statistics
+            a.nav-link(href='/statistics') Statistics
         if currentUser.adminflag==1
           li.dropdown
             a.dropdown-toggle(href='#' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false') setting
             ul.dropdown-menu
               li
-                a(href='#') users
+                a(href='/users') users
               li
                 a(href='/companys') companys
               li
