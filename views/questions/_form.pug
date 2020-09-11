@@ -39,7 +39,8 @@
           select#event-tomenu3.form-control(type="text",name='item')
             option(value='', selected='') 선택하세요
             each option in options
-              option(value=option.number)=option.name
+              if option.name!='기타'
+                option(value=option.number)=option.name
 
 
 
