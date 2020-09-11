@@ -13,19 +13,15 @@
 .row
   .col-xs-6
     .form-group
-      event 법인(필수)
+      event 법인
         .event-topic
           select#event-tomenu1.form-control(type="text",name='company')
             option(value='', selected='') 선택하세요
-            option(value='100') 아모텍
-            option(value='101') 아모그린텍
-            option(value='102') 아모센스
-            option(value='103') 아모라이프사이언스
-            option(value='105') 아모비나
-            option(value='104') 기타                 
+            each company in companys
+              option(value=company.number)=company.name         
   .col-xs-6
     .form-group
-      event 담당자(필수)
+      event 담당자
         .company
           select#event-tomenu2.form-control(type="text",name='manager')
             option(value='', selected='') 선택하세요
@@ -38,23 +34,12 @@
 .row
   .col-xs-6
     .form-group
-      event 구분(필수)
+      event 구분
         .item
           select#event-tomenu3.form-control(type="text",name='item')
             option(value='', selected='') 선택하세요
-            option(value='1') ERP
-            option(value='2') 네트워크
-            option(value='3') 소프트웨어 라이센스
-            option(value='4') USB
-            option(value='5') E-Mail
-            option(value='6') ECM
-            option(value='7') 자산관리
-            option(value='8') 백신 
-            option(value='9') BIS
-            option(value='10') SCM
-            option(value='11') VPN/UTM
-            option(value='12') 그룹웨어
-                      
+            each option in options
+              option(value=option.number)=option.name
 
 
 
@@ -69,6 +54,10 @@
     CKEDITOR.replace('comment',{
       height: 500
     });
+
+
+      
+      
 
 
       

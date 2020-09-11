@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+  .container
+    h1.main-title Company
+    
+    table.table.table-hover
+      thead
+        tr
+          th Name
+          th Number
+          th
+          th
+      tbody
+        each company in companys
+          tr
+            td
+              a(href=`/companys/${company._id}`)= company.name
+            td= company.number
+            td
+            td
+              a.btn.btn-sm.btn-outline-secondary(href=`/companys/${company._id}/edit`) 
+                | #[i.fa.fa-pencil] Edit
+              | 
+              a.btn.btn-sm.need-confirm-btn.btn-outline-danger(href=`/companys/${company._id}?_method=DELETE`)
+                | #[i.fa.fa-trash] Delete
+    a.btn.btn-primary(href='/companys/new') #[i.fa.fa-plus] Register a new company

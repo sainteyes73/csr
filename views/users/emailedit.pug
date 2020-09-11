@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+  .container
+    h1.main-title Email Register
+    form(action=`/users/${user._id}/email?_method=PUT`, method='POST')
+      .form-group
+        label(for='email') 이메일 주소
+        input.form-control(type='email', id='email', name='email', placeholder='Email', value=user.email)
+      a.btn.btn-outline-secondary(href='javascript:window.history.back();') 뒤로가기 
+      | 
+      button.btn.btn-primary(type='submit') 업데이트

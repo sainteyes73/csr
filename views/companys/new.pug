@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+  .container
+    h1.main-title Company Register
+    form(action='/companys', method='POST')
+      .form-group
+        label(for='name') Name
+        input.form-control(type='text', id='name', name='name', placeholder='Company name')
+      .form-group
+        label(for='number') Number
+        input.form-control(type='number', id='number', name='number', placeholder='number')
+      | 
+      button.btn.btn-primary(type='submit') Register 

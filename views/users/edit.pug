@@ -2,11 +2,26 @@ extends ../layout
 
 block content
   .container
-    h1.main-title Email Register
+    h1.main-title Profile Update
     form(action=`/users/${user._id}?_method=PUT`, method='POST')
       .form-group
-        label(for='email') 이메일 주소
+        label(for='userid') userid
+        input.form-control(type='text', id='userid', name='userid', placeholder='userid', value=user.userid)
+      .form-group
+        label(for='name') name
+        input.form-control(type='text', id='name', name='name', placeholder='name', value=user.name)
+      .form-group
+        label(for='email') Email address
         input.form-control(type='email', id='email', name='email', placeholder='Email', value=user.email)
-      a.btn.btn-outline-secondary(href='javascript:window.history.back();') 뒤로가기 
+      .form-group
+        label(for='password') Password
+        input.form-control(type='password', id='password', name='password', placeholder='Password')
+      .form-group
+        label(for='password_confirmation') Password Confirmation
+        input.form-control(type='password', id='password_confirmation', name='password_confirmation', placeholder='Password Confirmation')
+      .form-group
+        label(for='adminflag') adminflag
+        input.form-control(type='text', id='adminflag', name='adminflag', placeholder='adminflag', value=user.adminflag)
+      a.btn.btn-outline-secondary(href='javascript:window.history.back();') Back 
       | 
-      button.btn.btn-primary(type='submit') 업데이트
+      button.btn.btn-primary(type='submit') Update

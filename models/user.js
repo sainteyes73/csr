@@ -11,7 +11,8 @@ var schema = new Schema({
   createdAt: {type: Date, default: Date.now},
   minorname: {type: String, trim: true},
   adminflag:{type:Number, default: 0},
-  email:{type: String}
+  email:{type: String},
+  csrflag:{type: Number, default: 0}
 }, {
   toJSON: { virtuals: true},
   toObject: {virtuals: true}

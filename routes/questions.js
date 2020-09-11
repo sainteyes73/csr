@@ -3,9 +3,9 @@ const Question = require('../models/question');
 const Answer = require('../models/answer');
 const User = require('../models/user');
 const Company = require('../models/company');
-const Item = require('../models/item');
 const Counter = require('../models/counter');
-const Notice = require('../models/notice')
+const Notice = require('../models/notice');
+const Option = require('../models/item')
 const nodemailer = require('nodemailer');
 const smtpPool = require('nodemailer-smtp-pool');
 const catchErrors = require('../lib/async-error');
@@ -269,11 +269,15 @@ module.exports = io => {
     });
   }));
 
-  router.get('/new', needAuth, (req, res, next) => {
+  router.get('/new', needAuth, catchErrors(async (req, res, next) => {
+    const options = await Option.find();
+    const companys = await Company.find();
     res.render('questions/new', {
-      question: {}
+      question: {},
+      companys: companys,
+      options: options
     });
-  });
+  }));
 
   router.get('/noticenew', needAuth, async (req, res, next) => {
     if (req.user.adminflag != '1') {

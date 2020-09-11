@@ -18,7 +18,8 @@ var methodOverride = require('method-override');
 var favicon = require('serve-favicon');
 var users = require('./routes/users');
 var statistics = require('./routes/statistics');
-
+var companys = require('./routes/companys');
+var options = require('./routes/options');
 module.exports = (app, io) => {
   // view engine setup
   app.set('views', path.join(__dirname, 'views'));
@@ -130,10 +131,11 @@ module.exports = (app, io) => {
 //  app.use('/list', list);
   app.use('/questions', questions(io));
   app.use('/api', require('./routes/api'));
-  app.use('/users', users);
   app.use('/statistics', statistics);
+  app.use('/users', users);
+  app.use('/options', options);
   // public 디렉토리에 있는 내용은 static하게 service하도록.
-
+  app.use('/companys', companys)
   app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
