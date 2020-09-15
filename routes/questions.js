@@ -492,6 +492,8 @@ module.exports = io => {
   router.get('/:id/edit', needAuth, catchErrors(async (req, res, next) => {
     const question = await Question.findById(req.params.id);
     const author = await Question.findById(req.params.id).populate('author');
+    const options = await Option.find();
+    const companys = await Company.find();
     if (question.manager._id != req._passport.session.user) { //타사용자가 edit 방지
       res.redirect('/questions')
     }
@@ -500,7 +502,9 @@ module.exports = io => {
 
 
     res.render('questions/edit', {
-      question: question
+      question: question,
+      companys: companys,
+      options : options
     });
   }));
   router.get('/:id/indexcall', needAuth, catchErrors(async (req, res, next) => {
