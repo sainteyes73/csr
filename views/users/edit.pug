@@ -14,7 +14,7 @@ block content
         label(for='email') Email address
         input.form-control(type='email', id='email', name='email', placeholder='Email', value=user.email)
       .form-group
-        label(for='adminflag') adminflag
+        label(for='adminflag') adminflag(일반 유저 : 0, 관리자 : 1)
         input.form-control(type='text', id='adminflag', name='adminflag', placeholder='adminflag', value=user.adminflag)
       a.btn.btn-outline-secondary(href='javascript:window.history.back();') Back 
       | 

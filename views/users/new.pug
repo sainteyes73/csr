@@ -23,7 +23,7 @@ block content
         label(for='password_confirmation') Password Confirmation
         input.form-control(type='password', id='password_confirmation', name='password_confirmation', placeholder='Password')
       .form-group
-        label(for='email') adminflag
+        label(for='email') adminflag(일반 유저 : 0, 관리자 : 1)
         input.form-control(type='number', id='adminflag', name='adminflag', placeholder='adminflag')
       a.btn.btn-outline-secondary(href='/csrusers') List
       | 
