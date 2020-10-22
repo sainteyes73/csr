@@ -29,6 +29,16 @@ router.get('/', needAuth, catchErrors(async (req, res, next) => {
   console.log(req.query.static);
   var result;
   Question.aggregate([
+    {
+    '$match':
+        {
+          'createdAt':
+          {
+            $gte: new Date(req.query.datefrom),
+            $lte: new Date(req.query.dateto)
+           }
+        }
+      },
       {
           '$group':
               {
@@ -80,15 +90,31 @@ router.get('/corporation', needAuth, catchErrors(async (req, res, next) => {
   }
   console.log(req.query.static);
   var result;
+  console.log(req.query.datefrom);
+  console.log(req.query.dateto);
+  console.log(new Date(req.query.datefrom));
+  console.log(new Date(req.query.dateto));
   Question.aggregate([
+    {
+    '$match':
+        {
+          'createdAt':
+          {
+            $gte: new Date(req.query.datefrom),
+            $lte: new Date(req.query.dateto)
+           }
+        }
+      },
       {
-          '$group':
+         '$group':
               {
                   '_id': '$company',
-                  'y_data':{'$sum':1}
+                  'y_data':{'$sum':1},
               }
        }
     ]).exec(function(err, questions){
+      console.log('x');
+      console.log(questions);
       Company.populate(questions, {path:'_id'}, function(err,populatedQuestions){
         console.log(populatedQuestions);
         console.log('x');
