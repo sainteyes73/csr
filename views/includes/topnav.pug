@@ -16,8 +16,15 @@ nav.navbar.navbar-inverse(style="margin-bottom:30px")
         li.nav-item
           a.nav-link(href=`/users/${currentUser._id}/email`) Email Register
         if currentUser.adminflag==1
-          li.nav-item
-            a.nav-link(href='/statistics') Statistics
+          li.dropdown
+            a.dropdown-toggle(href='#' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false') statistics
+            ul.dropdown-menu
+              li
+                a(href='/statistics') 구분별
+              li
+                a(href='/statistics/corporation') 법인별
+              li
+                a(href='/statistics/login') 로그인 기록
         if currentUser.adminflag==1
           li.dropdown
             a.dropdown-toggle(href='#' data-toggle='dropdown' role='button' aria-haspopup='true' aria-expanded='false') setting

@@ -5,20 +5,7 @@ block content
     .row
       .col-xs-6
         a.main-title(href='/statistics/login') 법인별
-      .col-xs-6
-        .btn-group
-          button.btn.btn-default(type='button') 선택하세요
-          button.btn.btn-default.dropdown-toggle(type='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false')
-            span.caret
-            span.sr-only Toggle Dropdown
-          ul.dropdown-menu
-            li
-              a(href='/statistics/login') 로그인 기록
-            li
-              a(href='/statistics/corporation') 법인별
-            li
-              a(href='/statistics') 구분별
-              
+  
     .row
       form(action="/statistics/corporation" method='GET')
         .col-lg-12
@@ -164,6 +151,7 @@ block content
     monthNamesShort: ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'] // 월의 한글 형식.
 
     });
+    
         
 
 

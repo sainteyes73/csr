@@ -7,6 +7,15 @@ const Item = require('../models/item');
 const Company = require('../models/company');
 var fs = require('fs');
 
+function getToday(){
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = ("0" + (1 + date.getMonth())).slice(-2);
+    var day = ("0" + date.getDate()).slice(-2);
+
+    return year + "-" + month + "-" + day;
+}
+
 function needAuth(req, res, next) {
   if (req.isAuthenticated()) {
     next();
@@ -23,6 +32,12 @@ function needAuth(req, res, next) {
 router.get('/', needAuth, catchErrors(async (req, res, next) => {
   x_data=[]
   y_data=[]
+  var fromdate=req.query.datefrom;
+  var todate=req.query.dateto;
+  if(req.query.datefrom==null&&req.query.dateto==null){
+    fromdate="2000-01-01";
+    todate=getToday();
+  }
   if (req.user.adminflag != '1') {
     res.redirect('/questions')
   }
@@ -34,8 +49,8 @@ router.get('/', needAuth, catchErrors(async (req, res, next) => {
         {
           'createdAt':
           {
-            $gte: new Date(req.query.datefrom),
-            $lte: new Date(req.query.dateto)
+            $gte: new Date(fromdate),
+            $lte: new Date(todate)
            }
         }
       },
@@ -67,6 +82,8 @@ router.get('/', needAuth, catchErrors(async (req, res, next) => {
         console.log(y_data);
         res.render('statistics/index', {
           title: 'test',
+          datefrom: fromdate,
+          dateto: todate,
           datai: JSON.stringify(y_data),
           labeli: JSON.stringify(x_data)
         });
@@ -76,8 +93,9 @@ router.get('/', needAuth, catchErrors(async (req, res, next) => {
 }));
 
 router.get('/login', needAuth, catchErrors(async (req, res, next) => {
+  var date= getToday();
   res.render('statistics/login',{
-
+    date : date
   })
 }));
 
@@ -85,23 +103,25 @@ router.get('/login', needAuth, catchErrors(async (req, res, next) => {
 router.get('/corporation', needAuth, catchErrors(async (req, res, next) => {
   x_data=[]
   y_data=[]
+  var fromdate=req.query.datefrom;
+  var todate=req.query.dateto;
   if (req.user.adminflag != '1') {
     res.redirect('/questions')
   }
   console.log(req.query.static);
   var result;
-  console.log(req.query.datefrom);
-  console.log(req.query.dateto);
-  console.log(new Date(req.query.datefrom));
-  console.log(new Date(req.query.dateto));
+  if(req.query.datefrom==null&&req.query.dateto==null){
+    fromdate="2000-01-01";
+    todate=getToday();
+  }
   Question.aggregate([
     {
     '$match':
         {
           'createdAt':
           {
-            $gte: new Date(req.query.datefrom),
-            $lte: new Date(req.query.dateto)
+            $gte: new Date(fromdate),
+            $lte: new Date(todate)
            }
         }
       },
@@ -135,6 +155,8 @@ router.get('/corporation', needAuth, catchErrors(async (req, res, next) => {
         console.log(y_data);
         res.render('statistics/corporation', {
           title: 'test',
+          datefrom: fromdate,
+          dateto: todate,
           datai: JSON.stringify(y_data),
           labeli: JSON.stringify(x_data)
         });
