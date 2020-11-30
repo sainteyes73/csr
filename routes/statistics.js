@@ -35,7 +35,7 @@ router.get('/', needAuth, catchErrors(async (req, res, next) => {
   var fromdate=req.query.datefrom;
   var todate=req.query.dateto;
   if(req.query.datefrom==null&&req.query.dateto==null){
-    fromdate="2000-01-01";
+    fromdate="2019-01-01";
     todate=getToday();
   }
   if (req.user.adminflag != '1') {
@@ -111,7 +111,7 @@ router.get('/corporation', needAuth, catchErrors(async (req, res, next) => {
   console.log(req.query.static);
   var result;
   if(req.query.datefrom==null&&req.query.dateto==null){
-    fromdate="2000-01-01";
+    fromdate="2019-01-01";
     todate=getToday();
   }
   Question.aggregate([
