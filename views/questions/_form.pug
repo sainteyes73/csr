@@ -24,11 +24,8 @@
         .company
           select#event-tomenu2.form-control(type="text",name='manager')
             option(value='', selected='') 선택하세요
-            option(value='01') 김기권(BIS, 해외출장, VPN/UTM, 소프트웨어 구매)
-            option(value='02') 금봉권(ECM 장애, 네트워크 장애)
-            option(value='04') 김우성(Email, AMONET, ERP)
-            option(value='05') 강현모(USB, 소프트웨어 유지보수, ERP PLUS)    
-            option(value='06') 김한성(네트워크 연결, ECM 단순문의) 
+            each manager in managers
+              option(value=manager.number)=manager.name
 
 
 .row
@@ -41,6 +38,31 @@
             each option in options
               if option.name!='기타'
                 option(value=option.number)=option.name
+                
+  .col-xs-6
+    event 
+      button.btn.btn-primary.btn-md(type='button' data-toggle='modal' data-target='#myModal')
+        | 담당자 설정법
+#myModal.modal.fade(z-index='10' tabindex='3' role='dialog' aria-labelledby='myModalLabel')
+  .modal-dialog(role='document')
+    .modal-content
+      .modal-header
+        button.close(type='button' data-dismiss='modal' aria-label='Close')
+          span(aria-hidden='true') &times;
+        h4#myModalLabel.modal-title 담당자
+          .modal-body
+            .row
+              | 김기권: BIS, 해외출장, VPN/UTM, 소프트웨어 구매
+            .row
+              | 금봉권: ECM 장애, 네트워크 장애
+            .row
+              | 강현모: ERP, 소프트웨어 라이선스, USB
+            .row
+              | 김한성: 네트워크, 메일, 근태, 신규입사, AMONET
+          .modal-footer
+            button.btn.btn-default(type='button' data-dismiss='modal') Close
+
+
 
 
 .form-group
@@ -54,9 +76,14 @@
     CKEDITOR.replace('comment',{
       height: 500
     });
-    $('[data-toggle="popover"]').popover({
+    $('#openModalBtn').on('click', function(){
+    $('#modalBox').modal('show');
     });
-    
+
+    $('#closeModalBtn').on('click', function(){
+    $('#modalBox').modal('hide');
+    });
+
       
       
 
