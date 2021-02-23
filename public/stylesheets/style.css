@@ -249,7 +249,7 @@ a:hover {
 
 .author {
   text-align: right;
-  font-size: 0.8em;
+  font-size: 1.1em;
   color: #81bbf2; }
 
 .numbers {
@@ -329,5 +329,8 @@ div.content img {
   bottom: 0;
   height: 100px;
   width: 100%; }
+
+.modal-backdrop {
+  z-index: 0; }
 
 /*# sourceMappingURL=style.css.map */
