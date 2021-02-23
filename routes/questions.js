@@ -5,7 +5,7 @@ const User = require('../models/user');
 const Company = require('../models/company');
 const Counter = require('../models/counter');
 const Notice = require('../models/notice');
-const Option = require('../models/item')
+const Option = require('../models/item');
 const nodemailer = require('nodemailer');
 const smtpPool = require('nodemailer-smtp-pool');
 const catchErrors = require('../lib/async-error');
@@ -272,10 +272,12 @@ module.exports = io => {
   router.get('/new', needAuth, catchErrors(async (req, res, next) => {
     const options = await Option.find();
     const companys = await Company.find();
+    const managers = await User.find({"adminflag": 1});
     res.render('questions/new', {
       question: {},
       companys: companys,
-      options: options
+      options: options,
+      managers: managers
     });
   }));
 
@@ -494,6 +496,7 @@ module.exports = io => {
     const author = await Question.findById(req.params.id).populate('author');
     const options = await Option.find();
     const companys = await Company.find();
+    const managers = await User.find({"adminflag":1});
     if (question.manager._id != req._passport.session.user) { //타사용자가 edit 방지
       res.redirect('/questions')
     }
@@ -502,6 +505,7 @@ module.exports = io => {
 
 
     res.render('questions/edit', {
+      managers: managers,
       question: question,
       companys: companys,
       options : options
@@ -537,21 +541,8 @@ module.exports = io => {
       req.flash('danger', err);
       return res.redirect('back');
     }
-
-    if (req.body.manager == '01') { //김기권
-      managerid = 'A0607024'
-    } else if (req.body.manager == '02') { //금봉권
-      managerid = 'A0701008'
-    } else if (req.body.manager == '04') { //김우성
-      managerid = 'A1903009';
-      console.log('04ok')
-    } else if (req.body.manager == '05') { // 강현모
-      managerid = 'A1904002'
-    } else if (req.body.manager == '06') { //김한성
-      managerid = 'A2002004'
-    }
     const manager = await User.findOne({
-      "userid": managerid
+      "userid": req.body.manager
     });
     const company = await Company.findOne({
       "number": req.body.company
@@ -615,27 +606,14 @@ module.exports = io => {
 
   router.post('/', needAuth, catchErrors(async (req, res, next) => {
     const err = validateForm(req.body);
-    var managerid;
     if (err) {
       req.flash('danger', err);
       return res.redirect('back');
     }
     var noticenum=req.body.secretnum;
     console.log(req.body.manager);
-    if (req.body.manager == '01') { //김기권
-      managerid = 'A0607024'
-    } else if (req.body.manager == '02') { //금봉권
-      managerid = 'A0701008'
-    } else if (req.body.manager == '04') { //김우성
-      managerid = 'A1903009';
-      console.log('04ok')
-    } else if (req.body.manager == '05') { // 강현모
-      managerid = 'A1904002'
-    } else if (req.body.manager == '06') {
-      managerid = 'A2002004'
-    }
     const manager = await User.findOne({
-      "userid": managerid
+      "userid": req.body.manager
     });
     const company = await Company.findOne({
       "number": req.body.company
