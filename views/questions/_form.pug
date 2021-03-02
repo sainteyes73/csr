@@ -3,7 +3,7 @@
   input(type='checkbox' name='secretnum' value=1)
   | 비밀글(급여, 신규입사자, 회계등 개인정보나 민감한 사항이 포함되어있을 시 체크 부탁드립니다.)
   br
-  label(for="title") 제목
+  label(for="title" style='color: #F92828') 제목
   input(
     type='text', id='title', name='title', class='form-control', value=question.title
     placeholder='제목', required, autofocus
@@ -12,7 +12,7 @@
 .row
   .col-xs-6
     .form-group
-      event 법인
+      event(style='color: #F92828') 법인
         .event-topic
           select#event-tomenu1.form-control(type="text",name='company')
             option(value='', selected='') 선택하세요
@@ -20,7 +20,7 @@
               option(value=company.number)=company.name         
   .col-xs-6
     .form-group
-      event 담당자
+      event(style='color: #F92828') 담당자
         .company
           select#event-tomenu2.form-control(type="text",name='manager')
             option(value='', selected='') 선택하세요
@@ -31,7 +31,7 @@
 .row
   .col-xs-6
     .form-group
-      event 구분
+      event(style='color: #F92828') 구분
         .item
           select#event-tomenu3.form-control(type="text",name='item')
             option(value='', selected='') 선택하세요
