@@ -617,10 +617,10 @@ module.exports = io => {
     res.redirect('/questions');
   }));
   router.put('/:id/notice', catchErrors(async (req, res, next) => {
-    if (question.manager._id != req._passport.session.user) { //타사용자가 edit 방지
+    const notice = await Notice.findById(req.params.id);
+    if (notice.author._id != req._passport.session.user) { //타사용자가 edit 방지
       res.redirect('/questions')
     }
-    const notice = await Notice.findById(req.params.id);
 
     if (!notice) {
       req.flash('danger', '등록된 질문이 없습니다.');
