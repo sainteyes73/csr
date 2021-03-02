@@ -511,6 +511,60 @@ module.exports = io => {
       options : options
     });
   }));
+  router.post('/:id/uploader', multipartMiddleware, function(req, res) {
+    fs.readFile(req.files.upload.path, function(err, data) {
+      var id = makeid();
+      var makedir = __dirname + '/../public/uploads/' + id;
+      var dir = fs.mkdir(makedir, err => {
+        if (err && err.code != 'EEXIST') throw 'up'
+        console.log("Already exists");
+      })
+      fs.writeFile(makedir, data, function(err) {
+        if (err) console.log({
+          err: err
+        });
+        else {
+          html = "";
+          html += "<script type='text/javascript'>";
+          html += "    var funcNum = " + req.query.CKEditorFuncNum + ";";
+          html += "    var url     = \"/uploads/" + req.files.upload.name + "\";";
+          html += "    var message = \"이미지 크기 조절 후 확인버튼 눌러주세요.\";";
+          html += "";
+          html += "    window.parent.CKEDITOR.tools.callFunction(funcNum, url, message);";
+          html += "</script>";
+
+          res.send(html);
+        }
+      });
+    });
+  });
+  router.post('/:id/uploader/drag', multipartMiddleware, function(req, res) {
+    fs.readFile(req.files.upload.path, function(err, data) {
+      console.log(req);
+      var id = makeid();
+      var makedir = __dirname + '/../public/uploads/drag/' + id;
+      var dir = fs.mkdir(makedir, err => {
+        if (err && err.code != 'EEXIST') throw 'up'
+        console.log("Already exists");
+      })
+      console.log(makedir);
+      fs.writeFile(makedir + '/' + req.files.upload.name, data, function(err) {
+        if (err) console.log({
+          err: err
+        });
+        else {
+          var file = {
+            uploaded: 1,
+            url: "/uploads/drag/" + id + '/' + req.files.upload.name,
+            filename: req.files.upload.name
+          }
+          console.log(file);
+          res.json(file);
+        }
+      });
+    });
+  });
+
   router.get('/:id/indexcall', needAuth, catchErrors(async (req, res, next) => {
     const question = await Question.findById(req.params.id);
 
