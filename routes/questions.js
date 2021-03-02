@@ -46,8 +46,8 @@ module.exports = io => {
         secure: false,
         requireTLS: true,
         auth: {
-          user: 'amocsr2@gmail.com',
-          pass: 'antusdk23#'
+          user: 'amocsr3@gmail.com',
+          pass: 'Am0tech821!!@@'
         }
       });
       // 메일 옵션
